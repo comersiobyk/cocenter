@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - Netflix Premium</title>
+
+<!-- IMPORT FONT TECHY (JETBRAINS MONO) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  /* PAKSA SEMUA ELEMEN PAKE FONT TECHY */
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+
+  html, body { 
+    margin: 0 !important; padding: 0 !important; height: 100% !important; 
+    overflow: hidden !important; background: #05060a !important; color: #fff; 
+  }
+
+  /* Overlay Penutup UI Blogger */
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 50px;
+  }
+
+  /* Background GIF */
+  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
+  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+
+  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
+  .cc-fade-top {
+    position: fixed; top: 0; left: 0; right: 0; height: 35px;
+    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
+    z-index: 90; pointer-events: none;
+  }
+  .cc-fade-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
+    background: linear-gradient(to top, #05060a 0%, transparent 100%);
+    z-index: 90; pointer-events: none;
+  }
+
+  /* Navigasi Presisi */
+  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
+  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+  .cc-img { 
+    width:35px; height:35px; border-radius:10px; cursor:pointer; object-fit: cover; 
+    transition: transform 0.5s ease;
+    transform: rotate(var(--rot, 0deg));
+  }
+
+  /* Navbar Dropdown Menu */
+  .cc-menu { 
+    position: absolute; top: 65px; left: 30px; 
+    background: rgba(15, 15, 20, 0.95); backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 10px;
+    z-index: 100; opacity: 0; visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .cc-menu.active { opacity: 1; visibility: visible; }
+  .cc-menu a { 
+    display: block; padding: 12px 15px; color: #fff; text-decoration: none; 
+    font-size: 13px; font-weight:700; border-radius: 10px; 
+    opacity: 0; transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .cc-menu.active a { opacity: 1; transform: translateY(0); }
+  .cc-menu.active a:nth-child(1) { transition-delay: 0.05s; }
+  .cc-menu.active a:nth-child(2) { transition-delay: 0.2s; }
+  .cc-menu.active a:nth-child(3) { transition-delay: 0.35s; }
+  .cc-menu.active a:nth-child(4) { transition-delay: 0.5s; }
+  .cc-menu a:hover { background: rgba(255,255,255,0.1); }
+  
+  /* Animasi Buat Stroke RGB */
+  @keyframes rgbStroke {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* Bubble Tutorial RGB */
+  .cc-container { padding: 10px 30px 30px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  
+  .cc-tutorial-bubble {
+    border-radius: 18px;
+    border: 2px solid transparent !important;
+    background: linear-gradient(#0d0f16, #0d0f16) padding-box,
+                linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a) border-box !important;
+    background-size: 200% 200% !important;
+    animation: rgbStroke 4s linear infinite;
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .cc-tutorial-img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .cc-tutorial-body { padding: 25px 20px; }
+
+  .cc-section-title {
+    color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
+  }
+
+  /* BENEFIT LIST */
+  .cc-benefit-list {
+    padding-left: 18px; margin: 0 0 25px 0; color: #29e0c9;
+  }
+  .cc-benefit-list li {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 8px;
+  }
+
+  /* HARGA */
+  .cc-price-highlight {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 16px; text-align: center; margin: 0 0 25px 0;
+  }
+  .cc-price-highlight .dur { font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-price-highlight .val { font-size: 22px; font-weight: 800; color: #29e0c9; margin: 6px 0 2px; }
+  .cc-price-highlight .per { font-size: 10px; color: #94a3b8; }
+
+  /* TUTORIAL LIST */
+  .cc-tutorial-list {
+    padding-left: 18px; margin: 0 0 25px 0; color: #ffd23f; font-weight: 700;
+  }
+  .cc-tutorial-list li {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; font-weight: 400; margin-bottom: 12px;
+  }
+
+  /* REFUND LIST */
+  .cc-refund-list {
+    padding-left: 0; margin: 0 0 25px 0; list-style: none;
+  }
+  .cc-refund-list li {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 12px;
+  }
+  .cc-refund-label {
+    color: #ff2d6a; font-weight: 700; display: inline-block; margin-right: 4px;
+  }
+
+  /* CUSTOM TEXT STYLES */
+  .cc-intro-text {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px;
+  }
+  .cc-footer-text {
+    font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
+  }
+
+  /* ============ ORDER BUTTON ============ */
+  .cc-order-btn-wrap { padding: 0 20px 25px; margin-top: 25px; }
+  .cc-order-btn {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 14px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #05060a; background: linear-gradient(90deg, #29e0c9, #7c5cff);
+    box-shadow: 0 8px 20px rgba(41, 224, 201, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cc-order-btn:active { transform: scale(0.97); }
+
+  /* ============ MODAL POPUP ============ */
+  .cc-modal-backdrop {
+    position: fixed; inset: 0; z-index: 1000000;
+    background: rgba(2,3,6,0.75); backdrop-filter: blur(4px);
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .cc-modal-backdrop.active { display: flex; }
+
+  @media (min-width: 640px) {
+    .cc-modal-backdrop { align-items: center; }
+  }
+
+  .cc-modal {
+    width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto;
+    background: #0d0f16;
+    border: 2px solid transparent;
+    background-image: linear-gradient(#0d0f16, #0d0f16), linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 200% 200%;
+    animation: rgbStroke 4s linear infinite;
+    border-radius: 22px 22px 0 0;
+    padding: 24px 22px 30px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  @media (min-width: 640px) {
+    .cc-modal { border-radius: 22px; }
+  }
+  .cc-modal-backdrop.active .cc-modal { transform: translateY(0); opacity: 1; }
+
+  .cc-modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
+  .cc-modal-title { font-size: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-modal-close {
+    width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 16px; line-height: 1;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .cc-modal-item {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    background: rgba(255,255,255,0.04); padding: 12px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-modal-item img { width: 54px; height: 54px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+  .cc-modal-item-name { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .cc-modal-item-sub { font-size: 11px; color: #94a3b8; }
+  .cc-modal-item-price { font-size: 12px; font-weight: 800; color: #29e0c9; margin-top: 4px; }
+
+  .cc-field-label {
+    font-size: 12px; font-weight: 800; color: #29e0c9; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px; display: block;
+  }
+
+  /* Qty stepper */
+  .cc-qty-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .cc-stepper { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 6px 8px; }
+  .cc-stepper button {
+    width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 16px; font-weight: 800;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cc-stepper button:active { background: rgba(255,255,255,0.18); }
+  .cc-stepper span { min-width: 22px; text-align: center; font-size: 15px; font-weight: 800; color: #fff; }
+
+  .cc-total-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 4px 0 20px; padding: 14px 16px; border-radius: 14px;
+    background: rgba(41,224,201,0.08); border: 1px solid rgba(41,224,201,0.2);
+  }
+  .cc-total-label { font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-total-value { font-size: 18px; font-weight: 800; color: #29e0c9; }
+
+  /* Field email akun */
+  .cc-input-wrap { margin-bottom: 20px; width: 100%; }
+  .cc-input {
+    display: block; box-sizing: border-box !important;
+    width: 100% !important; max-width: 100%; margin: 0; padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
+    color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    outline: none; -webkit-appearance: none; appearance: none;
+  }
+  .cc-input::placeholder { color: #5b6472; }
+  .cc-input:focus { border-color: #29e0c9; }
+  .cc-input-hint { font-size: 10px; color: #94a3b8; margin-top: 6px; }
+
+  /* Payment options */
+  .cc-pay-options { display: flex; gap: 10px; margin-bottom: 20px; }
+  .cc-pay-option {
+    flex: 1; padding: 14px 10px; border-radius: 14px; cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+    text-align: center; transition: all 0.15s ease;
+  }
+  .cc-pay-option.selected {
+    border-color: #29e0c9; background: rgba(41,224,201,0.1);
+    box-shadow: 0 0 0 1px rgba(41,224,201,0.3);
+  }
+  .cc-pay-option-label { font-size: 12px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+  .cc-pay-option-sub { font-size: 10px; color: #94a3b8; margin-top: 3px; }
+
+  .cc-modal-footer-note {
+    font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 18px;
+    background: rgba(255,45,106,0.06); border: 1px solid rgba(255,45,106,0.15);
+    padding: 10px 12px; border-radius: 10px;
+  }
+
+  .cc-confirm-btn {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #fff; background: #25D366;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .cc-confirm-btn:active { transform: scale(0.97); }
+  .cc-confirm-btn svg { width: 18px; height: 18px; }
+  .cc-confirm-btn:disabled {
+    opacity: 0.4; cursor: not-allowed; box-shadow: none;
+  }
+
+  /* Checkbox S&K */
+  .cc-tnc-row {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 14px; border-radius: 12px; cursor: pointer;
+  }
+  .cc-tnc-checkbox {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+    border-radius: 6px; border: 2px solid rgba(255,255,255,0.25);
+    background-color: transparent; cursor: pointer; position: relative;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    background-repeat: no-repeat; background-position: center; background-size: 12px 12px;
+    transition: all 0.15s ease;
+  }
+  .cc-tnc-checkbox:checked {
+    background-color: #29e0c9; border-color: #29e0c9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2305060a' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+  .cc-tnc-text { font-size: 12px; line-height: 1.6; color: #cbd5e1; }
+  .cc-tnc-text b { color: #fff; }
+</style>
+</head>
+<body>
+
+<div id="cc-container">
+  <div class="cc-bg"></div>
+  <div class="cc-overlay"></div>
+
+  <!-- EFEK FADE TOP & BOTTOM -->
+  <div class="cc-fade-top"></div>
+  <div class="cc-fade-bottom"></div>
+
+  <!-- NAVBAR -->
+  <div class="cc-nav">
+    <div class="cc-brand">
+      <img class="cc-img" id="menu-trigger" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
+      CO CENTER
+    </div>
+    <div id="menu" class="cc-menu">
+      <a href="https://cocenterpublic.blogspot.com">Home</a>
+      <a href="https://cocenterpublic.blogspot.com/2026/08/menu.html?m=1">Menu</a>
+      <a href="https://lynk.id/cocenter" target="_blank">Lynk.id</a>
+      <a href="#about">About Me</a>
+    </div>
+  </div>
+
+  <!-- BUBBLE KONTEN -->
+  <div class="cc-container">
+    <div class="cc-tutorial-bubble">
+      
+      <!-- GAMBAR PREVIEW (Langsung pakai URL gambar utama langsung ke file gambarnya) -->
+      <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSVfi6KR-Lr69M1pQm4kWOaEtgig_1uwrtrMbKWaqPZJvrv3PLSn2uBhD-5IXXhh27wzU5E2vfw56jR5Ql5TuVf9wTlHFdmpfAu2Cys4L_hfV75Phy9SiNrNrQAqaNGgUoNJIR1TBVTcAxzcbTb07bBwltZeytuHwzWStOYUOsdkyoeW24YEf1L90MYkNU/s736/72a27de0bc91eb0375953949629c8bee.jpg" alt="Netflix Premium">
+      
+      <div class="cc-tutorial-body">
+        
+        <!-- Intro Section -->
+        <h2 class="cc-section-title">🔥 NETFLIX PREMIUM (1 PENGGUNA 1 USER) 🔥</h2>
+        <div class="cc-intro-text">
+          Nikmati ribuan film, serial TV, dan anime sepuasnya dengan kualitas Ultra HD 4K tanpa batasan gangguan layar bersama Netflix Premium Co Center.<br><br>
+          Berikut adalah detail lengkap benefit dari Netflix 1P1U:
+        </div>
+
+        <!-- Harga -->
+        <h2 class="cc-section-title">💰 Harga Paket</h2>
+        <div class="cc-price-highlight">
+          <div class="dur">Netflix 1P1U (1 Bulan)</div>
+          <div class="val">Rp30.000</div>
+          <div class="per">per bulan / slot</div>
+        </div>
+
+        <!-- Benefit Section -->
+        <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
+        <ul class="cc-benefit-list">
+          <li><strong>Ultra HD (4K) + HDR:</strong> Kualitas visual paling jernih dan tajam untuk pengalaman menonton bioskop di rumah.</li>
+          <li><strong>1 Pengguna 1 User (1P1U):</strong> Profil privat khusus untuk kamu sendiri, lebih aman dan nyaman tanpa takut profil diganggu orang lain.</li>
+          <li><strong>Bebas Iklan (No Ads):</strong> Nonton film maraton tanpa jeda iklan komersial yang mengganggu.</li>
+          <li><strong>Download & Nonton Offline:</strong> Unduh film favorit ke perangkatmu untuk ditonton kapan saja tanpa kuota internet.</li>
+          <li><strong>Multi-Device Support:</strong> Bisa diakses melalui Smart TV, Laptop, Tablet, maupun Smartphone kesayanganmu.</li>
+        </ul>
+
+        <!-- Rules Section -->
+        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+        <ol class="cc-tutorial-list">
+          <li>Masa aktif akun berlaku 30 Hari sejak akun/profil diberikan.</li>
+          <li>Dilarang keras mengganti email, password, atau PIN profil utama yang diberikan admin.</li>
+          <li>Dilarang mengutak-atik sistem pembayaran atau langganan di dalam akun.</li>
+          <li>Dilarang keras membagikan detail akun ke orang lain.</li>
+          <li>Estimasi proses penanganan jika terjadi kendala/error: 0 - 3 Hari.</li>
+        </ol>
+
+        <!-- Garansi Section -->
+        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+        <ul class="cc-refund-list">
+          <li><span class="cc-refund-label">Masa Garansi:</span> Maksimal garansi berlaku seminggu (7 hari) sejak transaksi.</li>
+          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti kendala atau error pada akun.</li>
+          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin atau hubungi nomor yang tertera pada link setelah pembayaran berhasil.</li>
+          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+        </ul>
+
+        <div class="cc-footer-text">
+          Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati tontonan serunya! 🚀
+        </div>
+
+      </div>
+
+      <!-- ORDER BUTTON -->
+      <div class="cc-order-btn-wrap">
+        <button class="cc-order-btn" id="open-order-modal">Order Sekarang</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MODAL POPUP ORDER ============ -->
+<div class="cc-modal-backdrop" id="order-modal-backdrop">
+  <div class="cc-modal">
+    <div class="cc-modal-header">
+      <div class="cc-modal-title">Form Order</div>
+      <button class="cc-modal-close" id="close-order-modal">&times;</button>
+    </div>
+
+    <div class="cc-modal-item">
+      <!-- ICON MINI POPUP (Langsung pakai URL gambar icon dengan parameter s1600 agar tidak patah/gagal render) -->
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSTJoVzxte7BOYHqPJVqwtBPZu8ByQmlb-dJXrrhtFX0HSubwblrZmTdlLbF_13qpyKn6BnZEThBFNgBsML3n1JUgMFSRDXkiKJR4TzrzJg5vHxdjh2wWZh6ZATlu0ajc09VWYy4GRFiF3YAFWp3TEBqpP7NcGGzRkU6yl8ffK2vz3ebm23gHJWEyZv1Fp/s1600/d4b7a862e7b91333e4657460fedd737c.jpg" alt="Netflix Premium">
+      <div>
+        <div class="cc-modal-item-name">Netflix 1P1U</div>
+        <div class="cc-modal-item-sub">Akun / Slot Premium · 1 Bulan</div>
+        <div class="cc-modal-item-price">Rp30.000 / bulan</div>
+      </div>
+    </div>
+
+    <label class="cc-field-label">Jumlah Slot</label>
+    <div class="cc-qty-row">
+      <div class="cc-stepper">
+        <button id="qty-minus" type="button">&minus;</button>
+        <span id="qty-value">1</span>
+        <button id="qty-plus" type="button">+</button>
+      </div>
+    </div>
+
+    <div class="cc-total-row">
+      <span class="cc-total-label">Total Harga</span>
+      <span class="cc-total-value" id="total-price">Rp30.000</span>
+    </div>
+
+    <label class="cc-field-label">Email / Kontak Akun</label>
+    <div class="cc-input-wrap">
+      <input type="email" class="cc-input" id="user-email" placeholder="contoh: namakamu@gmail.com">
+      <div class="cc-input-hint">Kontak ini akan dikirim ke Admin untuk pengiriman detail akun.</div>
+    </div>
+
+    <label class="cc-field-label">Metode Pembayaran</label>
+    <div class="cc-pay-options">
+      <div class="cc-pay-option selected" data-method="QRIS">
+        <div class="cc-pay-option-label">QRIS</div>
+        <div class="cc-pay-option-sub">Semua e-wallet & bank</div>
+      </div>
+      <div class="cc-pay-option" data-method="GoPay">
+        <div class="cc-pay-option-label">GoPay</div>
+        <div class="cc-pay-option-sub">Transfer langsung</div>
+      </div>
+    </div>
+
+    <div class="cc-modal-footer-note">
+      Setelah klik konfirmasi, kamu akan diarahkan ke WhatsApp Admin dengan detail pesanan yang sudah terisi otomatis.
+    </div>
+
+    <label class="cc-tnc-row" for="tnc-checkbox">
+      <input type="checkbox" class="cc-tnc-checkbox" id="tnc-checkbox">
+      <span class="cc-tnc-text">Saya sudah membaca dan <b>setuju</b> dengan Rules, Syarat, serta Ketentuan Klaim Garansi Netflix Co Center yang berlaku.</span>
+    </label>
+
+    <button class="cc-confirm-btn" id="confirm-order" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.39c1.45.79 3.08 1.21 4.76 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.78 14.09c-.24.68-1.4 1.31-1.94 1.39-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.89-1.25-4.77-4.15-4.92-4.34-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .55.01.18.01.42-.07.65.5.24.58.81 2.01.88 2.15.07.15.11.32.02.51-.09.19-.14.31-.27.48-.14.17-.29.38-.41.51-.14.15-.28.31-.12.6.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.25 1.38.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.68.79 1.97.93.29.14.48.22.55.34.07.12.07.71-.17 1.39z"/></svg>
+      Konfirmasi ke WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+  const trigger = document.getElementById('menu-trigger');
+  const menu = document.getElementById('menu');
+  let rotation = 0;
+
+  trigger.onclick = (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('active');
+    rotation += 180;
+    trigger.style.setProperty('--rot', rotation + 'deg');
+  };
+
+  document.onclick = () => {
+    menu.classList.remove('active');
+  };
+
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', (e) => e.stopPropagation());
+  });
+
+  // ============ MODAL LOGIC ============
+  const modalBackdrop = document.getElementById('order-modal-backdrop');
+  const openBtn = document.getElementById('open-order-modal');
+  const closeBtn = document.getElementById('close-order-modal');
+
+  openBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modalBackdrop.classList.add('active');
+  });
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modalBackdrop.classList.remove('active');
+  });
+  modalBackdrop.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop) modalBackdrop.classList.remove('active');
+  });
+  modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
+
+  // Qty stepper & harga
+  const PRICE_PER_SLOT = 30000;
+  let qty = 1;
+  const qtyValueEl = document.getElementById('qty-value');
+  const totalPriceEl = document.getElementById('total-price');
+
+  function formatRupiah(num) {
+    return 'Rp' + num.toLocaleString('id-ID');
+  }
+  function updateTotal() {
+    totalPriceEl.textContent = formatRupiah(qty * PRICE_PER_SLOT);
+  }
+
+  document.getElementById('qty-minus').addEventListener('click', () => {
+    if (qty > 1) { qty--; qtyValueEl.textContent = qty; updateTotal(); }
+  });
+  document.getElementById('qty-plus').addEventListener('click', () => {
+    if (qty < 99) { qty++; qtyValueEl.textContent = qty; updateTotal(); }
+  });
+
+  // Payment method selection
+  let selectedMethod = 'QRIS';
+  const payOptions = document.querySelectorAll('.cc-pay-option');
+  payOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      payOptions.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedMethod = opt.getAttribute('data-method');
+    });
+  });
+
+  // Checkbox S&K -> enable/disable tombol konfirmasi
+  const tncCheckbox = document.getElementById('tnc-checkbox');
+  const confirmBtn = document.getElementById('confirm-order');
+  tncCheckbox.addEventListener('change', () => {
+    confirmBtn.disabled = !tncCheckbox.checked;
+  });
+
+  // Format tanggal real-time (Indonesia)
+  function getFormattedDate() {
+    const now = new Date();
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${dayName}, ${date} ${month} ${year} - ${hours}:${minutes} WIB`;
+  }
+
+  // Confirm order -> generate WA message
+  document.getElementById('confirm-order').addEventListener('click', () => {
+    if (!tncCheckbox.checked) return;
+
+    const itemName = 'Netflix 1P1U (1 Bulan)';
+    const tanggal = getFormattedDate();
+    const waNumber = '6288971071456';
+    const totalHarga = formatRupiah(qty * PRICE_PER_SLOT);
+    const emailInput = document.getElementById('user-email').value.trim();
+    const emailLine = emailInput ? emailInput : '(belum diisi)';
+
+    const message =
+`Nama Item : ${itemName}
+Jumlah Slot : ${qty}
+Total Harga : ${totalHarga}
+Email / Kontak : ${emailLine}
+Tanggal Pemesanan : ${tanggal}
+Metode Pembayaran : ${selectedMethod}
+Setuju Rules & Ketentuan : Ya, saya menyetujui Rules, Syarat, dan Ketentuan Klaim Garansi Netflix Co Center`;
+
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+  });
+</script>
+
+</body>
+</html>

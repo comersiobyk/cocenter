@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - Menu Layanan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0 !important; padding: 0 !important; height: 100% !important;
+    overflow: hidden !important; background: #05060a !important; color: #fff;
+  }
+
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 90px;
+  }
+
+  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
+  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+
+  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; }
+  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+
+  .cc-img {
+    width:35px; height:35px; border-radius:10px; cursor:default;
+  }
+
+  /* ICON UPDATE PATCH DI KANAN ATAS */
+  .cc-patch-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(41, 224, 201, 0.1);
+    border: 1px solid rgba(41, 224, 201, 0.35);
+    color: #29e0c9; font-weight: 800; font-size: 11px;
+    padding: 6px 12px; border-radius: 20px;
+    cursor: pointer; text-decoration: none; letter-spacing: 0.5px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-patch-badge svg { width: 14px; height: 14px; fill: currentColor; }
+  .cc-patch-badge:active { transform: scale(0.95); background: rgba(41, 224, 201, 0.25); }
+
+  @keyframes rgbStroke {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  .cc-banner-wrapper {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+    margin: 15px 30px 25px;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cc-banner-wrapper::-webkit-scrollbar { display: none; }
+
+  .cc-banner {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1); display: block; text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-banner img { width: 100%; display: block; cursor: pointer; }
+  .cc-banner:active { transform: scale(0.97); }
+
+  .cc-section { padding: 0 30px 30px; }
+  .cc-section-title {
+    font-weight:800; color:#29e0c9; margin-bottom:15px; font-size:12px;
+    text-transform:uppercase; letter-spacing:1px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .cc-section-title::after {
+    content:''; flex:1; height:1px; background: rgba(41,224,201,0.25);
+  }
+  .cc-section-title.cc-title-streaming { color:#ff2d6a; }
+  .cc-section-title.cc-title-streaming::after { background: rgba(255,45,106,0.25); }
+  .cc-section-title.cc-title-popular { color:#ffd23f; }
+  .cc-section-title.cc-title-popular::after { background: rgba(255,210,63,0.25); }
+  .cc-section-title.cc-title-bundling { color:#7c5cff; }
+  .cc-section-title.cc-title-bundling::after { background: rgba(124,92,255,0.25); }
+
+  .cc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .cc-card {
+    text-decoration: none;
+    display: block !important;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 2px solid transparent !important;
+    background: linear-gradient(#0d0f16, #0d0f16) padding-box,
+                linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a) border-box !important;
+    background-size: 200% 200% !important;
+    animation: rgbStroke 4s linear infinite;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-card:active { transform: scale(1.04); }
+
+  .cc-card-img-wrap {
+    width: 100%;
+    padding-top: 75%;
+    overflow: hidden;
+    border-radius: 14px 14px 0 0;
+    position: relative;
+    display: block !important;
+    margin: 0 !important;
+    background: #0d0f16;
+  }
+
+  .cc-card-img-wrap img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .cc-card-body { padding: 12px; }
+  .cc-card-name { font-weight: 800; font-size: 13px; margin-bottom: 6px; color:#fff; line-height: 1.2; }
+  .cc-card-desc { font-size: 11px; color: #a9b2c3; line-height:1.4; }
+
+  .cc-card-soon-img { opacity: 0.65; }
+  .cc-card-soon-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(5, 6, 10, 0.4);
+  }
+  .cc-card-soon-badge {
+    background: rgba(15, 15, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffd23f; font-weight: 800; font-size: 11px;
+    padding: 6px 12px; border-radius: 20px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  /* ===== CATEGORY PILLS ===== */
+  .cc-cat-wrapper {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    margin: 0 30px 20px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  .cc-cat-wrapper::-webkit-scrollbar { display: none; }
+
+  .cc-cat-pill {
+    flex: 0 0 auto;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    color: #ffd23f;
+    background: #0b1226;
+    border: 1.5px solid #ffd23f;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-cat-pill:active { transform: scale(0.95); }
+  .cc-cat-pill.cc-cat-active {
+    background: #ffd23f;
+    color: #0b1226;
+  }
+
+  /* ===== SWIPEABLE CATEGORY PAGES ===== */
+  .cc-pages-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+  .cc-pages-wrapper {
+    display: flex;
+    width: 500%;
+    transform: translateX(0%);
+    transition: transform 0.3s ease;
+  }
+  .cc-page {
+    width: 20%;
+    flex: 0 0 20%;
+  }
+
+  /* ===== BRAND SUBTITLE ===== */
+  .cc-brand-wrap { display:flex; flex-direction:column; gap:2px; }
+  .cc-brand-row { display:flex; align-items:center; gap:12px; }
+  .cc-subtitle {
+    font-size: 10px; font-weight:700; color:#a9b2c3;
+    letter-spacing: 2px; text-transform: uppercase; margin-left: 47px;
+  }
+
+  /* ===== POPUP PATCH UPDATE (Ganti Disקלaimer Lama) ===== */
+  .cc-popup-overlay {
+    position: fixed; inset: 0; z-index: 1000000;
+    background: rgba(3,4,8,0.85); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 30px;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .cc-popup-overlay.cc-popup-show { opacity: 1; visibility: visible; pointer-events: auto; }
+
+  .cc-popup-box {
+    max-width: 360px; width: 100%;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a);
+    background-size: 200% 200%;
+    animation: rgbStroke 4s linear infinite;
+  }
+  .cc-popup-inner {
+    background: #0d0f16; border-radius: 16px; padding: 26px 22px; text-align: left;
+    position: relative;
+  }
+  .cc-popup-title {
+    font-weight: 800; font-size: 15px; color: #29e0c9; margin-bottom: 14px;
+    text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;
+  }
+  .cc-popup-list {
+    margin: 0 0 16px 18px; padding: 0; font-size: 12px; color: #d5dae3; line-height: 1.6;
+  }
+  .cc-popup-list li { margin-bottom: 6px; }
+  .cc-popup-x {
+    position: absolute; top: 10px; right: 10px;
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: #fff; font-size: 16px; font-weight: 700; line-height: 1;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .cc-popup-x:active { background: rgba(255,255,255,0.2); }
+
+  /* ===== BOTTOM FLOATING NAVBAR ===== */
+  .cc-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background: rgba(13, 15, 22, 0.75);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 999999;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+  }
+  .cc-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: #a9b2c3;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-bottom-item svg {
+    width: 22px;
+    height: 22px;
+    fill: #a9b2c3;
+    transition: fill 0.2s ease, transform 0.2s ease;
+  }
+  .cc-bottom-item:active {
+    transform: scale(0.92);
+  }
+  .cc-bottom-item:hover, .cc-bottom-item.active {
+    color: #ffd23f;
+  }
+  .cc-bottom-item:hover svg, .cc-bottom-item.active svg {
+    fill: #ffd23f;
+  }
+</style>
+</head>
+<body>
+
+<div id="cc-container">
+  <div class="cc-bg"></div>
+  <div class="cc-overlay"></div>
+
+  <div class="cc-nav">
+    <div class="cc-brand-wrap">
+      <div class="cc-brand-row cc-brand">
+        <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
+        CO CENTER
+      </div>
+      <div class="cc-subtitle">Listing</div>
+    </div>
+    <div class="cc-patch-badge" id="open-patch-popup">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      Patch v2.6
+    </div>
+  </div>
+
+  <div class="cc-popup-overlay" id="cc-popup">
+    <div class="cc-popup-box">
+      <div class="cc-popup-inner">
+        <span class="cc-popup-x" id="cc-popup-close">&times;</span>
+        <div class="cc-popup-title">
+          <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.7-9.88 0C5.74 8.78 5 10.57 5 12.5s.74 3.72 2.08 5.08c1.36 1.36 3.14 2.08 5.08 2.08s3.72-.74 5.08-2.08c.38-.38.68-.82.91-1.28l1.92.81c-.39.87-.91 1.68-1.58 2.35-1.8 1.8-4.18 2.79-6.72 2.79s-4.92-.99-6.72-2.79C1.99 17.42 1 15.04 1 12.5s.99-4.92 2.79-6.72c3.62-3.62 9.5-3.62 13.12 0l2.74-2.82v7.16z"/></svg>
+          Patch Update v2.6
+        </div>
+        <ul class="cc-popup-list">
+          <li><b>Optimasi UI/UX:</b> Perbaikan layout card dan navigasi agar lebih responsif di berbagai perangkat seluler.</li>
+          <li><b>Swipe Kategori:</b> Peningkatan performa transisi geser antar kategori produk secara mulus.</li>
+          <li><b>Pintasan Bawah:</b> Navigasi direct link bawah dioptimalkan agar anti error saat dibuka melalui WebView.</li>
+          <li><b>Pembersihan Sistem:</b> Penghapusan popup disclaimer lama dan pembaruan struktur kode secara menyeluruh.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc-banner-wrapper">
+    <a class="cc-banner" href="banner1.html">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgfeNn2QqwIKEbN9HA1ag56ms_SEpC6bskkv_FyhMtkfVPbFr6gydb5Ym41EwUTvOHNjw4OuAvpCDTGjytm6es2N1sPxzgrhtyo-CPIa7mCwifOoGix9MYaLbiZnirMe-agg2Yg6DKut2F0e4w4fKIafwvbxju3k1N9ffLwIC-jm-Qs3Y3Lj0U4p81Trmmg/s1600/IMG_20260821_015014.png" alt="Banner Promo 1">
+    </a>
+    <a class="cc-banner" href="googlebundle.html">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHa854DuFYVVZ8V-m-XnvzQSXq3fJnf2sHAHXbIw4nJtiNGCB28jJo_dsBASaXsFGELDRhLxCqhq5h_oFNe2U2qCCZuySAxPSGvVsPjvyf1Oz8s6cefIrEx4XU2WNZ16TnMlKuECnMrUstfOk2cwKq-MqhxiF4LeHkalVCK80lWHYMiAUUTbIBeocGvMM5/s1600/20260821_014757.png" alt="Banner Promo 2">
+    </a>
+  </div>
+
+  <div class="cc-section" style="padding-bottom: 15px;">
+    <a class="cc-card" href="comparquo.html" style="background: linear-gradient(135deg, #2c163a 0%, #150c22 100%) !important;">
+      <div style="display: flex; align-items: center; padding: 16px; gap: 14px;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: 1.5px solid #ffd23f; background: #0b1226;">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg0syAOdPfwZ1oJ0FQEV8Gf_1WrFJWyvfhxJ2kM38bh6ax3X8WHbRSUOOJv0OKcUsGryfui4UMSnRWgRVogbxLsJSvpUa3nnPw0rwZu7MKQJDZZVHf9QzWkR2tHGYr-irvwN0-H4fDEBjba6KkZ12wgfYVzWY41acwsWhfTirLdeBAmi3i24ja2_I0WSI8t/s626/d3028a7b41218636593d458b4de6cbe8.jpg" alt="Rekomendasi Kuota" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;">
+          <div style="font-weight: 800; font-size: 14px; color: #ffd23f;">Rekomendasi & Compare Kuota ⚡</div>
+          <div style="font-size: 11px; color: #a9b2c3;">Cari kuota hemat, untung banyak, & akhir bulan terbaik di sini!</div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="cc-section">
+    <div class="cc-section-title cc-title-popular">Populer Sejauh Ini</div>
+    <div class="cc-grid">
+      <a class="cc-card" href="youtubesimple.html">
+        <div class="cc-card-img-wrap">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9jFccjLfiUi3Ew3JbmXH3p7bI343I3uu1QQxM-dGXthz1iwdtglwPP5C6bJpZM_oRiOpDW1VyCmQbT0vtsaqa7X0D8aIaSKiaCn0-mQXzEn7nsnxaPJbTugaZaHMxVUAnQLUsyT79n3MmtxrwsnvSGjfM0oyXmwWJC02w_YEvq5ePkWK0MIlGEhuh4D4U/s651/a1f5838deaa37d81fa9002c9e0ec99cf.jpg" alt="YouTube Premium Ketengan">
+        </div>
+        <div class="cc-card-body">
+          <div class="cc-card-name">YT Premium Ketengan</div>
+          <div class="cc-card-desc">Mulai dari 1 harian, fleksibel &amp; murah.</div>
+        </div>
+      </a>
+
+      <a class="cc-card" href="youtube.html">
+        <div class="cc-card-img-wrap">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9jFccjLfiUi3Ew3JbmXH3p7bI343I3uu1QQxM-dGXthz1iwdtglwPP5C6bJpZM_oRiOpDW1VyCmQbT0vtsaqa7X0D8aIaSKiaCn0-mQXzEn7nsnxaPJbTugaZaHMxVUAnQLUsyT79n3MmtxrwsnvSGjfM0oyXmwWJC02w_YEvq5ePkWK0MIlGEhuh4D4U/s651/a1f5838deaa37d81fa9002c9e0ec99cf.jpg" alt="YouTube Premium">
+        </div>
+        <div class="cc-card-body">
+          <div class="cc-card-name">YouTube Premium</div>
+          <div class="cc-card-desc">Bebas iklan, background play, akses YT Music.</div>
+        </div>
+      </a>
+
+      <a class="cc-card" href="spotifypremi.html">
+        <div class="cc-card-img-wrap">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNnFiytNVsOsM-yD4XtGe3llqz6AaN6oeWnlLVmXnRHCazFJMvqWmhePVYsuYK69NyWKD5SfnXQDnw79ajRfBDYzmsJFE_jyIojBtkKG_gPHZBXAmvgGaMFK-G6RUuk0xVaOIJI2Lq2Qo8o1Q5SIPa7oddiZqdp4yqOJXt-ZIZyATZHoRQt-_k_kcq5Wpg/s736/9b1857defd4e25ce19cfb390b9c9fdba.jpg" alt="Spotify Premium">
+        </div>
+        <div class="cc-card-body">
+          <div class="cc-card-name">Spotify Premium</div>
+          <div class="cc-card-desc">Bebas iklan, offline mode, kualitas audio tinggi.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="cc-cat-wrapper" id="cc-cat-wrapper">
+    <div class="cc-cat-pill cc-cat-active" data-cat="all">Semua</div>
+    <div class="cc-cat-pill" data-cat="ai">AI Subscription</div>
+    <div class="cc-cat-pill" data-cat="streaming">Streaming</div>
+    <div class="cc-cat-pill" data-cat="bundling">Bundling</div>
+    <div class="cc-cat-pill" data-cat="kuota">Kuota Internet</div>
+  </div>
+
+  <div class="cc-pages-viewport">
+    <div class="cc-pages-wrapper" id="cc-pages-wrapper">
+      <div class="cc-page" data-page="all">
+        <div class="cc-section"><div class="cc-grid" id="cc-grid-all"></div></div>
+      </div>
+      <div class="cc-page" data-page="ai">
+        <div class="cc-section"><div class="cc-grid" id="cc-grid-ai"></div></div>
+      </div>
+      <div class="cc-page" data-page="streaming">
+        <div class="cc-section"><div class="cc-grid" id="cc-grid-streaming"></div></div>
+      </div>
+      <div class="cc-page" data-page="bundling">
+        <div class="cc-section"><div class="cc-grid" id="cc-grid-bundling"></div></div>
+      </div>
+      <div class="cc-page" data-page="kuota">
+        <div class="cc-section"><div class="cc-grid" id="cc-grid-kuota"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc-bottom-nav">
+    <a class="cc-bottom-item active" href="menu.html">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Menu
+    </a>
+    <a class="cc-bottom-item" href="https://lynk.id/cocenter" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Lynk.id
+    </a>
+    <a class="cc-bottom-item" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      Transaksi
+    </a>
+    <a class="cc-bottom-item" href="#about">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      About Me
+    </a>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= POPUP PATCH LOGIC =================
+  var patchBadge = document.getElementById('open-patch-popup');
+  var popupOverlay = document.getElementById('cc-popup');
+  var popupClose = document.getElementById('cc-popup-close');
+
+  if (patchBadge && popupOverlay) {
+    patchBadge.addEventListener('click', function(e) {
+      e.stopPropagation();
+      popupOverlay.classList.add('cc-popup-show');
+    });
+  }
+
+  if (popupClose && popupOverlay) {
+    popupClose.addEventListener('click', function(e) {
+      e.stopPropagation();
+      popupOverlay.classList.remove('cc-popup-show');
+    });
+  }
+
+  if (popupOverlay) {
+    popupOverlay.addEventListener('click', function(e) {
+      if (e.target === popupOverlay) {
+        popupOverlay.classList.remove('cc-popup-show');
+      }
+    });
+  }
+
+  // ================= DATA PRODUK =================
+  var PRODUCTS = [
+    { name: "Gemini AI Plus", desc: "Gemini Advanced Plus, storage 2TB.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjI89VpN4aoKayYKlOjz4Wycs-MnLVc0HFsTP_NK6mM1nRHm7Ws-m6T-1-eI83X-qlTaUrFILEOgbIpA0I5q3xwH0wMMyFTOvdcU9qrItqHMT0HO_JLLAB-f3sPyL_eyf0qCQXQ_EtEl81xFlJKhAJBn6Pv6q_-qHwPUyE3i4Fgy-j17gxkLox4BStlZ5di/s376/fdb88f0e8e7536e0a65640cae3494007.jpg", link: "geminiplus.html", cat: "ai", soon: false },
+    { name: "Gemini AI Pro", desc: "Tier di atas Plus.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjI89VpN4aoKayYKlOjz4Wycs-MnLVc0HFsTP_NK6mM1nRHm7Ws-m6T-1-eI83X-qlTaUrFILEOgbIpA0I5q3xwH0wMMyFTOvdcU9qrItqHMT0HO_JLLAB-f3sPyL_eyf0qCQXQ_EtEl81xFlJKhAJBn6Pv6q_-qHwPUyE3i4Fgy-j17gxkLox4BStlZ5di/s376/fdb88f0e8e7536e0a65640cae3494007.jpg", link: "geminiprobyjio.html", cat: "ai", soon: false },
+    { name: "Chat GPT Go", desc: "Paket hemat akses ChatGPT.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAIbRzQ57XpyZGoEdBGVgp4B4kiGLd6KZM7e08HI3my2OvyCBt-mZWqad1yDEUWG_nMUxEwyrAxdpv8fooFzZDXI0_yME9FPMCzQdS-Rsppwaem5ejGdVXHo9VQhKqfkp4RpIksVHwr8wf5nPRiWZ0hAfGIv2OCP5TIKuygXhFYeRaVlm_YVaGeeHhdUqX/s736/7ddfdc707caa84d53bfbb3bbe31342ee.jpg", link: "chatgptgo.html", cat: "ai", soon: false },
+    { name: "Chat GPT Plus", desc: "Akses penuh fitur premium ChatGPT.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAIbRzQ57XpyZGoEdBGVgp4B4kiGLd6KZM7e08HI3my2OvyCBt-mZWqad1yDEUWG_nMUxEwyrAxdpv8fooFzZDXI0_yME9FPMCzQdS-Rsppwaem5ejGdVXHo9VQhKqfkp4RpIksVHwr8wf5nPRiWZ0hAfGIv2OCP5TIKuygXhFYeRaVlm_YVaGeeHhdUqX/s736/7ddfdc707caa84d53bfbb3bbe31342ee.jpg", link: "chatgptplus.html", cat: "ai", soon: false },
+    { name: "Canva Pro", desc: "Segera hadir, tools desain premium.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMoXVmcYe_DJYRsqkj8euu5mtRVUUjvXB2p4cT1IU5Qxkedl0g4yCacfM5M2MA8SyzVK1iGWvRSlTvti_FzTJ-ipo0F1rukUGDnv_YoPB3six1beXwXCx5zeLlwsF9bKIfIasYnvHx9JfCKC1RpxtJ5zmZyL9ai1yQ9ITCNkaBAVWAnNfCo8NDG1-wPnYV/s736/b224bcfb58a1861dee8afc847a5d657d.jpg", link: null, cat: "ai", soon: true },
+
+    { name: "YouTube Premium", desc: "Bebas iklan, background play, akses YT Music.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9jFccjLfiUi3Ew3JbmXH3p7bI343I3uu1QQxM-dGXthz1iwdtglwPP5C6bJpZM_oRiOpDW1VyCmQbT0vtsaqa7X0D8aIaSKiaCn0-mQXzEn7nsnxaPJbTugaZaHMxVUAnQLUsyT79n3MmtxrwsnvSGjfM0oyXmwWJC02w_YEvq5ePkWK0MIlGEhuh4D4U/s651/a1f5838deaa37d81fa9002c9e0ec99cf.jpg", link: "youtube.html", cat: "streaming", soon: false },
+    { name: "YT Premium Ketengan", desc: "Mulai dari 1 harian, fleksibel & murah.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9jFccjLfiUi3Ew3JbmXH3p7bI343I3uu1QQxM-dGXthz1iwdtglwPP5C6bJpZM_oRiOpDW1VyCmQbT0vtsaqa7X0D8aIaSKiaCn0-mQXzEn7nsnxaPJbTugaZaHMxVUAnQLUsyT79n3MmtxrwsnvSGjfM0oyXmwWJC02w_YEvq5ePkWK0MIlGEhuh4D4U/s651/a1f5838deaa37d81fa9002c9e0ec99cf.jpg", link: "youtubesimple.html", cat: "streaming", soon: false },
+    { name: "Spotify", desc: "Bebas iklan, offline mode, kualitas audio tinggi.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNnFiytNVsOsM-yD4XtGe3llqz6AaN6oeWnlLVmXnRHCazFJMvqWmhePVYsuYK69NyWKD5SfnXQDnw79ajRfBDYzmsJFE_jyIojBtkKG_gPHZBXAmvgGaMFK-G6RUuk0xVaOIJI2Lq2Qo8o1Q5SIPa7oddiZqdp4yqOJXt-ZIZyATZHoRQt-_k_kcq5Wpg/s736/9b1857defd4e25ce19cfb390b9c9fdba.jpg", link: "spotifypremi.html", cat: "streaming", soon: false },
+    { name: "Deezer Pro", desc: "Streaming musik kualitas tinggi.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhCpTy4WjC3r3Ni0dRe_g8f4idc-4jRWPEFsfQase6Jyt_kAnOKRXxQ2Bz3kAUE7_fbu_AdS2-zWkbfDUfLLXZeFGvnFOi6LCQvBb5afmG68cQfcob1Ft_kc08fbBtb7UuddpVtevb-fTZZUJAEFX0mnlrt8Ee9e4sFVsajVmasHeEjdBo6vkVF56-3rWfs/s400/8107aa3e2c494957379e6d3196a5737a.jpg", link: "deezerpremi.html", cat: "streaming", soon: false },
+    { name: "Bilibili / Bstation", desc: "Segera hadir, streaming anime & konten.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEizW0tM9yr5Xp55QBFA6TM64KkXdEmCBNkKbytntUiCdD_h6B5LBQ7QK50ydhf84478ZQU8R7is2dr1BMwzk30CosseS211jYa4FGLN2-vcHSB1f_igd5N3ILr2x0csirzaEWe60oXtXQVYvBnJkgbVrH84s01yu7kUp_y_iY0QbOtyJmULDWKme35exhV-/s512/ca3fab4383ecf85d85acc34aead357a9.jpg", link: null, cat: "streaming", soon: true },
+    { name: "Netflix", desc: "Streaming film & series.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSTJoVzxte7BOYHqPJVqwtBPZu8ByQmlb-dJXrrhtFX0HSubwblrZmTdlLbF_13qpyKn6BnZEThBFNgBsML3n1JUgMFSRDXkiKJR4TzrzJg5vHxdjh2wWZh6ZATlu0ajc09VWYy4GRFiF3YAFWp3TEBqpP7NcGGzRkU6yl8ffK2vz3ebm23gHJWEyZv1Fp/s736/d4b7a862e7b91333e4657460fedd737c.jpg", link: "netflixprem.html", cat: "streaming", soon: false },
+
+    { name: "Gemini x YouTube Premium", desc: "Gemini Adv Plus (2TB) & YT Premium 30 Hari.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhawwkpabUo8YY4fU50CH5vAqjWyDIJGp6uFdx0G3zJiipKC2AGRlZYuHMaf8Lv2RlGnKsOaj7h2DDQUDQT0u2yzWbQeorc1b8TPUHLRK3bcptNTk-A2gx177G8zzaoYHdf5QUNgYqzaVpvmaT2fk1vlhQXZuGQEYIDnL5lHRwAHlWzRzzT-xe-OJFAvRf9/s893/64bc46f9bd44b3d44f498746fb8ee058.jpg", link: "googlebundle.html", cat: "bundling", soon: false },
+
+    { name: "Indosat", desc: "Freedom Internet All Net, harian s.d bulanan.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhti7epnkCnwzSD4CbwL3q02IDp_5KptBstXYabK8Y0FRFk8MI-Vr16T22xcQhYEQ9IS0yXQVS5KYJey1LqBsII-YObzrZqO8Fp73g7fX7Rn3y6rm5-NDbygkyrTkCKNowTnBmXjdsC9nNYhUy5SRDh9JaXFvCvTk1LuNQbMYZ0wVawTVzITY7ZPB4eajjM/s736/f4bd2c5f08da049417313b10c6b89332.jpg", link: "indosat.html", cat: "kuota", soon: false },
+    { name: "Axis", desc: "Paket kuota internet Axis murah & hemat.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdHplLSgP-sBUP5K93-sDWeoCtlDiCEnPmpfQdCoaiGjqQhvGnwgzo2Gb6VHjnZiO8gIXTBZ6JmHgxnxQrbz7RC5X4PHcf_FNLhqQ_oC5nOqj6VtYhrK5AornAqbJk0lsKA7haR7nk9t6Cm3WUAyV9ZCqAMx3wqVD3T3BjmalT7XjBIxtNIt0vnZFJ-6z7/s640/7e2c38576ebeee1b5a5ca5874a11ea58.jpg", link: "axis.html", cat: "kuota", soon: false },
+    { name: "Smartfren", desc: "Kuota internet Smartfren cepat & stabil.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKb_GZI1gUMCOm8EzCo_hnwBDpOqrO4XAIJ00z8j2E8iGANAXcoljHdwOOvePxuvc4_hY2tcQmaddEIXheNw9ScQjfom2EQWsGSpcATtri0Cw_AcRkjMGljToaO8dcA1azYysciiXrEc0xpRpS0cq-Nod2GIIAlNJwIkQvldNWFISqaEgtW6A6T6PZLd-k/s735/8b51dbcadcbe904892c95af6515620dd.jpg", link: "smartfren.html", cat: "kuota", soon: false },
+    { name: "XL", desc: "Paket data internet XL pilihan terbaik.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEkseO8v9xbUunA54g17nGY6ThyQgezxHOXW6CVPszORbPXnjjyC7AL8MtPxG-Hx2eoF-E2Zp_6k3RazssODlEgtVicJXv8NpIoCdGLBTy9g1QLF51ZcRy1CtNaZtgx-aNVGHzh1BF5gfzcBcJZYSHBgjfE4m38LLO7fC8lqBmWeqNq-HwDiv-8Bi1H8Rk/s340/4dd0bd046fb7de7daa409b6530459481.jpg", link: "xl.html", cat: "kuota", soon: false },
+    { name: "Telkomsel", desc: "Internet Telkomsel jaringan terluas.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTDs_yg3loOrpQAn35HgjHhznXU275Y5M6V-8LgBmVDFGDvtwC26o9BWsoIfvPTgKLqUnTBSfpbTjwYFLbS1yqzs71Xc5RArzirCQ-_Cj3KQQvOzoz4EVd82qbSTAogrNsF3ERyiA8RkgkYz8LY9af65IyUC39Y29ZXEq8u2XBKeYdqw9PUcJe-cTx_91l/s600/e8b6516223465d6adfee34777c0e8de0.jpg", link: "telkomsel.html", cat: "kuota", soon: false },
+    { name: "Three", desc: "Kuota data Three hemat & melimpah.", img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAI31ptwdvPNRtv5d0ryxhAHUr01sGbmvu8BhfEPzj7KavNrTpjCimRU888mEz9x86rwrmcraFlWlZgk7CWp0KyzS1VmzO_i3QsrRAtF6ZP11ca613tb4iFZHYHdDxs80xb5kcL2ePLidoTpLV0jTr7Wg8huEmqq56CwS8IPYA2t-r_dYjCnR3pQwm1yq6/s735/b79db84fc52062822cc255c53b09d336.jpg", link: "three.html", cat: "kuota", soon: false }
+  ];
+
+  function escHtml(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function cardHtml(p) {
+    var imgClass = p.soon ? ' class="cc-card-soon-img"' : '';
+    var overlay = p.soon ? '<div class="cc-card-soon-overlay"><span class="cc-card-soon-badge">Coming Soon</span></div>' : '';
+    var inner =
+      '<div class="cc-card-img-wrap">' +
+        '<img' + imgClass + ' src="' + p.img + '" alt="' + escHtml(p.name) + '">' +
+        overlay +
+      '</div>' +
+      '<div class="cc-card-body">' +
+        '<div class="cc-card-name">' + escHtml(p.name) + '</div>' +
+        '<div class="cc-card-desc">' + p.desc + '</div>' +
+      '</div>';
+
+    if (p.link) {
+      return '<a class="cc-card" href="' + p.link + '">' + inner + '</a>';
+    }
+    return '<div class="cc-card">' + inner + '</div>';
+  }
+
+  // ---- Render tab per kategori ----
+  ['ai', 'streaming', 'bundling', 'kuota'].forEach(function (cat) {
+    var grid = document.getElementById('cc-grid-' + cat);
+    if (!grid) return;
+    var items = PRODUCTS.filter(function (p) { return p.cat === cat; });
+    grid.innerHTML = items.map(cardHtml).join('');
+  });
+
+  // ---- Render tab SEMUA: urut A-Z ----
+  var gridAll = document.getElementById('cc-grid-all');
+  var allSorted = PRODUCTS.slice().sort(function (a, b) {
+    return a.name.localeCompare(b.name, 'id', { sensitivity: 'base' });
+  });
+  gridAll.innerHTML = allSorted.map(cardHtml).join('');
+
+  // ================= KATEGORI: PILL + SWIPE =================
+  var catPills = document.querySelectorAll('.cc-cat-pill');
+  var pagesWrapper = document.getElementById('cc-pages-wrapper');
+  var pagesViewport = document.querySelector('.cc-pages-viewport');
+  var catOrder = ['all', 'ai', 'streaming', 'bundling', 'kuota'];
+  var pagePercent = 100 / catOrder.length;
+  var currentIndex = 0;
+
+  var catWrapper = document.getElementById('cc-cat-wrapper');
+  var lastActiveCat = null;
+
+  function setActivePill(cat) {
+    if (cat === lastActiveCat) return;
+    lastActiveCat = cat;
+    var activeEl = null;
+    catPills.forEach(function (p) {
+      var isActive = p.dataset.cat === cat;
+      p.classList.toggle('cc-cat-active', isActive);
+      if (isActive) activeEl = p;
+    });
+    if (activeEl && catWrapper) {
+      var wrapRect = catWrapper.getBoundingClientRect();
+      var pillRect = activeEl.getBoundingClientRect();
+      var offset = (pillRect.left + pillRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
+      catWrapper.scrollLeft += offset;
+    }
+  }
+
+  function goToIndex(idx, animate) {
+    if (idx < 0) idx = 0;
+    if (idx > catOrder.length - 1) idx = catOrder.length - 1;
+    currentIndex = idx;
+    pagesWrapper.style.transition = animate ? 'transform 0.3s ease' : 'none';
+    pagesWrapper.style.transform = 'translateX(-' + (idx * pagePercent) + '%)';
+    setActivePill(catOrder[idx]);
+  }
+
+  catPills.forEach(function (pill) {
+    pill.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var idx = catOrder.indexOf(pill.dataset.cat);
+      goToIndex(idx, true);
+    });
+  });
+
+  // ---- Swipe manual via touch ----
+  var startX = 0, startY = 0, deltaX = 0, isDragging = false, isHorizontal = null;
+
+  document.addEventListener('touchstart', function (e) {
+    if (!pagesViewport.contains(e.target)) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    deltaX = 0;
+    isDragging = true;
+    isHorizontal = null;
+    pagesWrapper.style.transition = 'none';
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function (e) {
+    if (!isDragging) return;
+    var curX = e.touches[0].clientX;
+    var curY = e.touches[0].clientY;
+    deltaX = curX - startX;
+    var deltaY = curY - startY;
+
+    if (isHorizontal === null && (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6)) {
+      isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
+    }
+    if (isHorizontal === false) return;
+    if (isHorizontal === null) return;
+
+    if (e.cancelable) e.preventDefault();
+    var basePercent = -(currentIndex * pagePercent);
+    var dragPercent = (deltaX / pagesViewport.clientWidth) * pagePercent;
+    pagesWrapper.style.transform = 'translateX(' + (basePercent + dragPercent) + '%)';
+
+    var progress = -((basePercent + dragPercent) / pagePercent);
+    var previewIndex = Math.round(progress);
+    if (previewIndex < 0) previewIndex = 0;
+    if (previewIndex > catOrder.length - 1) previewIndex = catOrder.length - 1;
+    setActivePill(catOrder[previewIndex]);
+  }, { passive: false });
+
+  document.addEventListener('touchend', function () {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!isHorizontal) {
+      goToIndex(currentIndex, true);
+      return;
+    }
+    var threshold = pagesViewport.clientWidth * 0.15;
+    if (deltaX < -threshold && currentIndex < catOrder.length - 1) {
+      goToIndex(currentIndex + 1, true);
+    } else if (deltaX > threshold && currentIndex > 0) {
+      goToIndex(currentIndex - 1, true);
+    } else {
+      goToIndex(currentIndex, true);
+    }
+  });
+
+  goToIndex(0, false);
+
+});
+</script>
+
+</body>
+</html>

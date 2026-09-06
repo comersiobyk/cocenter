@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - Pilih Provider & Paket Kuota</title>
+
+<!-- IMPORT FONT TECHY (JETBRAINS MONO) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0 !important; padding: 0 !important; height: 100% !important;
+    overflow: hidden !important; background: #05060a !important; color: #fff;
+  }
+
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 50px;
+  }
+
+  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
+  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+
+  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; }
+  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+
+  .cc-img {
+    width:35px; height:35px; border-radius:10px; cursor:pointer;
+    transition: transform 0.5s ease;
+    transform: rotate(var(--rot, 0deg));
+  }
+
+  .cc-menu {
+    position: absolute; top: 65px; left: 30px;
+    background: rgba(15, 15, 20, 0.95); backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 10px;
+    z-index: 100; opacity: 0; visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .cc-menu.active { opacity: 1; visibility: visible; }
+  .cc-menu a {
+    display: block; padding: 12px 15px; color: #fff; text-decoration: none;
+    font-size: 13px; font-weight:700; border-radius: 10px;
+    opacity: 0; transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .cc-menu.active a { opacity: 1; transform: translateY(0); }
+  .cc-menu.active a:nth-child(1) { transition-delay: 0.05s; }
+  .cc-menu.active a:nth-child(2) { transition-delay: 0.15s; }
+  .cc-menu.active a:nth-child(3) { transition-delay: 0.25s; }
+  .cc-menu.active a:nth-child(4) { transition-delay: 0.35s; }
+  .cc-menu a:hover { background: rgba(255,255,255,0.1); }
+
+  @keyframes rgbStroke {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  .cc-section { padding: 0 30px 30px; }
+  .cc-section-title {
+    font-weight:800; color:#29e0c9; margin-bottom:15px; font-size:12px;
+    text-transform:uppercase; letter-spacing:1px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .cc-section-title::after {
+    content:''; flex:1; height:1px; background: rgba(41,224,201,0.25);
+  }
+
+  /* ===== BRAND SUBTITLE ===== */
+  .cc-brand-wrap { display:flex; flex-direction:column; gap:2px; }
+  .cc-brand-row { display:flex; align-items:center; gap:12px; }
+  .cc-subtitle {
+    font-size: 10px; font-weight:700; color:#a9b2c3;
+    letter-spacing: 2px; text-transform: uppercase; margin-left: 47px;
+  }
+
+  /* ===== OPERATOR PILLS (FILTER UTAMA) ===== */
+  .cc-op-wrapper {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    margin: 15px 30px 20px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  .cc-op-wrapper::-webkit-scrollbar { display: none; }
+
+  .cc-op-pill {
+    flex: 0 0 auto;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    color: #ffd23f;
+    background: #0b1226;
+    border: 1.5px solid #ffd23f;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-op-pill:active { transform: scale(0.95); }
+  .cc-op-pill.cc-op-active {
+    background: #ffd23f;
+    color: #0b1226;
+  }
+
+  /* ===== AKORDION / CARD KATEGORI DENGAN BACKGROUND GRADIENT FADE DI KIRI ===== */
+  .cc-accordion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 15px;
+  }
+
+  .cc-acc-card {
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #150c22;
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+  }
+
+  /* Overlay gradient: padat di kiri (semi transparan gelap agar teks terbaca), makin ke kanan makin transparan */
+  .cc-acc-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(15, 10, 25, 0.92) 0%, rgba(15, 10, 25, 0.75) 45%, rgba(15, 10, 25, 0.3) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .cc-acc-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a);
+    background-size: 200% 200%;
+    animation: rgbStroke 4s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .cc-acc-header, .cc-acc-body {
+    position: relative;
+    z-index: 2;
+  }
+
+  .cc-acc-header {
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cc-acc-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cc-acc-title {
+    font-weight: 800;
+    font-size: 16px;
+    color: #fff;
+    letter-spacing: -0.3px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  }
+
+  .cc-acc-price-info {
+    font-size: 12px;
+    color: #ffd23f;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  }
+
+  .cc-acc-arrow {
+    width: 32px; height: 32px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    flex-shrink: 0;
+  }
+
+  .cc-acc-card.open .cc-acc-arrow {
+    transform: rotate(180deg);
+  }
+
+  .cc-acc-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.35s ease;
+    background: rgba(13, 15, 22, 0.85);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 0 20px;
+  }
+
+  .cc-acc-card.open .cc-acc-body {
+    max-height: 1500px;
+    padding: 20px;
+  }
+
+  /* List Paket */
+  .cc-paket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cc-paket-card {
+    text-decoration: none;
+    display: block !important;
+    background: rgba(13, 15, 22, 0.95);
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-paket-card:active { transform: scale(0.98); background: rgba(25, 28, 40, 0.95); }
+
+  .cc-paket-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .cc-paket-name {
+    font-weight: 800;
+    font-size: 12px;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .cc-paket-price {
+    font-weight: 800;
+    font-size: 12px;
+    color: #ffd23f;
+    white-space: nowrap;
+    background: rgba(255, 210, 63, 0.1);
+    padding: 3px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 210, 63, 0.25);
+  }
+
+  .cc-paket-sub {
+    font-size: 10px;
+    color: #a9b2c3;
+    line-height: 1.4;
+  }
+
+  .cc-paket-badge {
+    display: inline-block;
+    background: rgba(41, 224, 201, 0.15);
+    color: #29e0c9;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 4px;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    margin-left: 4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  .cc-empty-msg {
+    text-align: center;
+    color: #a9b2c3;
+    padding: 25px;
+    font-size: 12px;
+  }
+
+  /* Footer Section */
+  .cc-footer {
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    padding: 20px 30px 30px;
+  }
+  .cc-footer-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid #ffd23f; background: #0b1226;
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-footer-icon:active { transform: scale(0.92); }
+  .cc-footer-icon svg { width: 22px; height: 22px; fill: #ffd23f; }
+</style>
+</head>
+<body>
+
+<div id="cc-container">
+  <div class="cc-bg"></div>
+  <div class="cc-overlay"></div>
+
+  <!-- NAVBAR -->
+  <div class="cc-nav">
+    <div class="cc-brand-wrap">
+      <div class="cc-brand-row cc-brand">
+        <img class="cc-img" id="menu-trigger" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
+        CO CENTER
+      </div>
+      <div class="cc-subtitle">Cek Paket Kuota</div>
+    </div>
+    <div id="menu" class="cc-menu">
+      <a href="https://cocenterpublic.blogspot.com">Home</a>
+      <a href="https://lynk.id/cocenter">Lynk.id</a>
+      <a href="#about">About Me</a>
+      <a href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12">Bukti Transaksi</a>
+    </div>
+  </div>
+
+  <!-- OPERATOR SELECTOR (PILLS) -->
+  <div class="cc-op-wrapper" id="cc-op-wrapper">
+    <div class="cc-op-pill cc-op-active" data-op="Indosat">Indosat</div>
+    <div class="cc-op-pill" data-op="Axis">Axis</div>
+    <div class="cc-op-pill" data-op="Three">Three</div>
+    <div class="cc-op-pill" data-op="Smartfren">Smartfren</div>
+    <div class="cc-op-pill" data-op="Telkomsel">Telkomsel</div>
+    <div class="cc-op-pill" data-op="XL">XL</div>
+  </div>
+
+  <!-- SECTION AKORDION KATEGORI BERDASARKAN OPERATOR TERPILIH -->
+  <div class="cc-section">
+    <div class="cc-section-title" id="cc-current-op-title">Pilih Kategori: Indosat</div>
+    
+    <div class="cc-accordion-list" id="cc-accordion-container">
+      <!-- Diisi dinamis via JS -->
+    </div>
+  </div>
+
+  <!-- FOOTER SOCIAL -->
+  <div class="cc-footer">
+    <a class="cc-footer-icon" href="https://instagram.com/comersioid" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.25.07 1.63.07 4.81 0 3.19-.01 3.56-.07 4.81-.15 3.22-1.66 4.77-4.92 4.92-1.25.06-1.62.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.25-.07-1.62-.07-4.81 0-3.18.02-3.56.07-4.81.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.35 2.63 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.63 6.97-6.98.06-1.28.08-1.69.08-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.63-6.78-6.97-6.98C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>
+    </a>
+    <a class="cc-footer-icon" href="https://wa.me/6288971071456?text=Halo%20min%2C%20saya%20ingin%20konsultasi" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.48 1.34 5l-1.42 5.19 5.32-1.39a9.9 9.9 0 0 0 4.67 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.15.83.84-3.07-.2-.32a8.22 8.22 0 0 1-1.26-4.35c0-4.55 3.7-8.25 8.27-8.25a8.2 8.2 0 0 1 5.85 2.43 8.19 8.19 0 0 1 2.42 5.83c0 4.55-3.71 8.25-8.27 8.25zm4.53-6.18c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14-.01-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08 0 1.23.89 2.41 1.01 2.58.12.16 1.75 2.67 4.25 3.74.59.26 1.06.41 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Map operator ke file HTML tujuannya masing-masing & link background icon masing-masing provider
+  var OPERATOR_CONFIG = {
+    "Axis": {
+      link: "axis.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdHplLSgP-sBUP5K93-sDWeoCtlDiCEnPmpfQdCoaiGjqQhvGnwgzo2Gb6VHjnZiO8gIXTBZ6JmHgxnxQrbz7RC5X4PHcf_FNLhqQ_oC5nOqj6VtYhrK5AornAqbJk0lsKA7haR7nk9t6Cm3WUAyV9ZCqAMx3wqVD3T3BjmalT7XjBIxtNIt0vnZFJ-6z7/s640/7e2c38576ebeee1b5a5ca5874a11ea58.jpg"
+    },
+    "Three": {
+      link: "three.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAI31ptwdvPNRtv5d0ryxhAHUr01sGbmvu8BhfEPzj7KavNrTpjCimRU888mEz9x86rwrmcraFlWlZgk7CWp0KyzS1VmzO_i3QsrRAtF6ZP11ca613tb4iFZHYHdDxs80xb5kcL2ePLidoTpLV0jTr7Wg8huEmqq56CwS8IPYA2t-r_dYjCnR3pQwm1yq6/s735/b79db84fc52062822cc255c53b09d336.jpg"
+    },
+    "XL": {
+      link: "xl.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEkseO8v9xbUunA54g17nGY6ThyQgezxHOXW6CVPszORbPXnjjyC7AL8MtPxG-Hx2eoF-E2Zp_6k3RazssODlEgtVicJXv8NpIoCdGLBTy9g1QLF51ZcRy1CtNaZtgx-aNVGHzh1BF5gfzcBcJZYSHBgjfE4m38LLO7fC8lqBmWeqNq-HwDiv-8Bi1H8Rk/s340/4dd0bd046fb7de7daa409b6530459481.jpg"
+    },
+    "Telkomsel": {
+      link: "telkomsel.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTDs_yg3loOrpQAn35HgjHhznXU275Y5M6V-8LgBmVDFGDvtwC26o9BWsoIfvPTgKLqUnTBSfpbTjwYFLbS1yqzs71Xc5RArzirCQ-_Cj3KQQvOzoz4EVd82qbSTAogrNsF3ERyiA8RkgkYz8LY9af65IyUC39Y29ZXEq8u2XBKeYdqw9PUcJe-cTx_91l/s600/e8b6516223465d6adfee34777c0e8de0.jpg"
+    },
+    "Indosat": {
+      link: "indosat.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhti7epnkCnwzSD4CbwL3q02IDp_5KptBstXYabK8Y0FRFk8MI-Vr16T22xcQhYEQ9IS0yXQVS5KYJey1LqBsII-YObzrZqO8Fp73g7fX7Rn3y6rm5-NDbygkyrTkCKNowTnBmXjdsC9nNYhUy5SRDh9JaXFvCvTk1LuNQbMYZ0wVawTVzITY7ZPB4eajjM/s736/f4bd2c5f08da049417313b10c6b89332.jpg"
+    },
+    "Smartfren": {
+      link: "smartfren.html",
+      bgImg: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKb_GZI1gUMCOm8EzCo_hnwBDpOqrO4XAIJ00z8j2E8iGANAXcoljHdwOOvePxuvc4_hY2tcQmaddEIXheNw9ScQjfom2EQWsGSpcATtri0Cw_AcRkjMGljToaO8dcA1azYysciiXrEc0xpRpS0cq-Nod2GIIAlNJwIkQvldNWFISqaEgtW6A6T6PZLd-k/s735/8b51dbcadcbe904892c95af6515620dd.jpg"
+    }
+  };
+
+  // Master Data Paket Kuota Lengkap per Operator & Masuk ke 3 Bagan Kategori
+  var ALL_PACKETS = [
+    // === INDOSAT ===
+    { op: "Indosat", name: "Freedom Internet Harian 7GB All Net", price: "Rp10.500", sub: "7GB All Net · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "Indosat", name: "Freedom Internet Harian 9GB All Net", price: "Rp14.000", sub: "9GB All Net · Masa aktif 2 Hari", cat: "hemat" },
+    { op: "Indosat", name: "Freedom Internet Harian 30GB All Net", price: "Rp26.500", sub: "30GB All Net · Masa aktif 3 Hari", cat: "untung" },
+    { op: "Indosat", name: "Freedom Internet Harian 30GB All Net", price: "Rp28.500", sub: "30GB All Net · Masa aktif 5 Hari", cat: "untung" },
+    { op: "Indosat", name: "Freedom Internet Harian 21GB", price: "Rp32.000", sub: "21GB All Net · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Indosat", name: "Freedom Internet Bulanan 150GB", price: "Rp124.000", sub: "150GB All Net + Bonus Nelpon · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
+
+    // === AXIS ===
+    { op: "Axis", name: "Axis Warnet Unlimited 1 Jam", price: "Rp3.600", sub: "Unlimited Paket Internet All Net · 1 Jam", cat: "hemat" },
+    { op: "Axis", name: "Axis Warnet Unlimited 3 Jam", price: "Rp6.000", sub: "Unlimited Paket Internet All Net · 3 Jam", cat: "hemat" },
+    { op: "Axis", name: "Paket Harian Axis 15GB + Lokal", price: "Rp10.500", sub: "15GB Paket Internet All Net + Lokal · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "Axis", name: "Paket Harian Axis 13GB + Lokal", price: "Rp15.000", sub: "13GB Paket Internet All Net + Lokal · Masa aktif 2 Hari", cat: "hemat" },
+    { op: "Axis", name: "Axis Warnet Unlimited 24 Jam", price: "Rp12.500", sub: "Unlimited Paket Internet All Net · 24 Jam", badge: "Popular", cat: "untung" },
+    { op: "Axis", name: "Axis Warnet Unlimited 48 Jam", price: "Rp22.500", sub: "Unlimited Paket Internet All Net · 48 Jam", cat: "untung" },
+    { op: "Axis", name: "Axis Warnet Unlimited 72 Jam", price: "Rp28.000", sub: "Unlimited Paket Internet All Net · 72 Jam", cat: "untung" },
+    { op: "Axis", name: "Paket Harian Axis 17GB + Lokal", price: "Rp21.500", sub: "17GB All Net + Lokal · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
+    { op: "Axis", name: "Paket Harian Axis 17GB + Lokal", price: "Rp29.500", sub: "17GB All Net + Lokal · Masa aktif 5 Hari", cat: "untung" },
+    { op: "Axis", name: "Paket Harian Axis 15GB + Lokal", price: "Rp39.500", sub: "15GB All Net + Lokal · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Axis", name: "Axis AIGO 26GB + Lokal", price: "Rp62.000", sub: "26GB All Net + Lokal · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
+
+    // === THREE ===
+    { op: "Three", name: "Paket Three Happy 10GB", price: "Rp12.000", sub: "10GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "Three", name: "Paket Three Happy 10GB", price: "Rp14.000", sub: "10GB Paket Internet All Net · Masa aktif 2 Hari", cat: "hemat" },
+    { op: "Three", name: "Paket Three Happy 20GB", price: "Rp19.500", sub: "20GB All Net · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
+    { op: "Three", name: "Paket Three Happy 12GB", price: "Rp23.500", sub: "12GB All Net · Masa aktif 5 Hari", cat: "untung" },
+    { op: "Three", name: "Paket Three Happy 25GB", price: "Rp31.500", sub: "25GB All Net · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Three", name: "Paket Three Happy 100GB", price: "Rp48.000", sub: "100GB All Net · Masa aktif 7 Hari", badge: "Popular", cat: "akhirbulan" },
+    { op: "Three", name: "Paket Three Happy 150GB", price: "Rp125.000", sub: "150GB All Nett · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
+
+    // === SMARTFREN ===
+    { op: "Smartfren", name: "Smartfren Nonstop 10GB", price: "Rp11.000", sub: "10GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "Smartfren", name: "Smartfren Nonstop 6GB", price: "Rp11.500", sub: "6GB Paket Internet All Net · Masa aktif 2 Hari", cat: "hemat" },
+    { op: "Smartfren", name: "Smartfren Nonstop 10GB", price: "Rp17.500", sub: "15GB All Net · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
+    { op: "Smartfren", name: "Smartfren Nonstop 5GB", price: "Rp16.000", sub: "5GB All Net · Masa aktif 5 Hari", cat: "untung" },
+    { op: "Smartfren", name: "Smartfren Nonstop 10GB", price: "Rp22.000", sub: "10GB All Net · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Smartfren", name: "Paket Smartfren Unlimited", price: "Rp25.000", sub: "Unlimited dengan FUP 2GB/Hari · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Smartfren", name: "Smartfren Nonstop 40GB", price: "Rp41.000", sub: "100GB All Net · Masa aktif 7 Hari", badge: "Popular", cat: "akhirbulan" },
+    { op: "Smartfren", name: "Paket Smartfren Unlimited", price: "Rp146.000", sub: "Unlimited dengan FUP 5GB/Hari · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
+    { op: "Smartfren", name: "Smartfren Nonstop 150GB", price: "Rp144.000", sub: "150GB All Net · Masa aktif 28 Hari", badge: "Bulanan", cat: "akhirbulan" },
+
+    // === TELKOMSEL === 
+    { op: "Telkomsel", name: "Telkomsel Data 8GB", price: "Rp12.500", sub: "8GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "Telkomsel", name: "Telkomsel Data 2.5GB", price: "Rp14.000", sub: "2,5GB All Net · Masa aktif 5 Hari", cat: "hemat" },
+    { op: "Telkomsel", name: "Telkomsel Data 8GB", price: "Rp30.000", sub: "8GB Paket Internet All Net · Masa aktif 3 Hari", cat: "untung" },
+    { op: "Telkomsel", name: "Telkomsel Data 15GB", price: "Rp52.000", sub: "15GB All Net · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
+    { op: "Telkomsel", name: "Telkomsel Data 3GB", price: "Rp21.000", sub: "3GB All Net · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Telkomsel", name: "Telkomsel Data 5GB", price: "Rp28.000", sub: "5GB All Net · Masa aktif 7 Hari", cat: "untung" },
+    { op: "Telkomsel", name: "Telkomsel Data 10GB", price: "Rp43.500", sub: "10GB All Net · Masa aktif 7 Hari", badge: "Popular", cat: "untung" },
+    { op: "Telkomsel", name: "Telkomsel Data 10GB", price: "Rp53.000", sub: "10GB All Net · Masa aktif 30 Hari", cat: "akhirbulan" },
+    { op: "Telkomsel", name: "Telkomsel Data 15GB", price: "Rp68.000", sub: "15GB All Net · Masa aktif 30 Hari", badge: "Best Value", cat: "akhirbulan" },
+
+    // === XL ===
+    { op: "XL", name: "XL Flex Mini 10GB + Bonus Nelpon", price: "Rp13.000", sub: "10GB Paket Internet All Net + Bonus Nelpon · Masa aktif 1 Hari", cat: "hemat" },
+    { op: "XL", name: "XL Flex Mini 12GB", price: "Rp16.500", sub: "8GB Paket Internet All Net · Masa aktif 3 Hari", cat: "untung" },
+    { op: "XL", name: "XL Flex Mini 20GB + Bonus Nelpon", price: "Rp22.500", sub: "20GB All Net + Bonus Nelpon · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
+    { op: "XL", name: "XL Flex Mini 8GB", price: "Rp21.000", sub: "8GB All Net · Masa aktif 5 Hari", cat: "untung" },
+    { op: "XL", name: "XL Flex Mini 10-14GB + Bonus Nelpon", price: "Rp26.000", sub: "10-14GB All Net + Bonus Nelpon · Masa aktif 7 Hari", cat: "untung" },
+    { op: "XL", name: "XL Flex Mini 40GB + Bonus Nelpon", price: "Rp41.500", sub: "40GB Paket Internet All Net + Bonus Nelpon · Masa aktif 7 Hari", badge: "Popular", cat: "untung" },
+    { op: "XL", name: "XL Flex Mini 30GB + Bonus Nelpon", price: "Rp49.000", sub: "30GB Paket Internet All Net + Bonus Nelpon · Masa aktif 14 Hari", cat: "akhirbulan" },
+    { op: "XL", name: "XL Flex Max 150GB + Bonus Nelpon", price: "Rp143.000", sub: "150GB Paket Internet All Net + Bonus Nelpon · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" }
+  ];
+
+  var currentOperator = "Indosat";
+
+  function renderAccordion() {
+    var container = document.getElementById('cc-accordion-container');
+    var titleEl = document.getElementById('cc-current-op-title');
+    titleEl.innerText = "Pilih Kategori: " + currentOperator;
+
+    var categories = [
+      { id: "hemat", title: "Kuota Hemat", priceRange: "Paket irit & harian" },
+      { id: "untung", title: "Untung Banyak", priceRange: "Porsi besar harga terbaik" },
+      { id: "akhirbulan", title: "Kuota Akhir Bulan", priceRange: "Bulanan & kuota monster" }
+    ];
+
+    var config = OPERATOR_CONFIG[currentOperator] || { link: "#", bgImg: "" };
+    var targetUrl = config.link;
+    var cardBgStyle = config.bgImg ? 'background-image: url(\'' + config.bgImg + '\');' : '';
+
+    var html = '';
+    categories.forEach(function(cat, index) {
+      var catItems = ALL_PACKETS.filter(function(p) {
+        return p.op === currentOperator && p.cat === cat.id;
+      });
+
+      var isOpen = index === 0 ? ' open' : '';
+      html += '<div class="cc-acc-card' + isOpen + '" style="' + cardBgStyle + '">' +
+                '<div class="cc-acc-header">' +
+                  '<div class="cc-acc-info">' +
+                    '<div class="cc-acc-title">' + cat.title + '</div>' +
+                    '<div class="cc-acc-price-info">' + cat.priceRange + '</div>' +
+                  '</div>' +
+                  '<div class="cc-acc-arrow">' +
+                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd23f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="cc-acc-body">' +
+                  '<div class="cc-paket-list">';
+
+      if (catItems.length === 0) {
+        html += '<div class="cc-empty-msg">Belum ada paket untuk kategori ini.</div>';
+      } else {
+        catItems.forEach(function(item) {
+          var badgeHtml = item.badge ? '<span class="cc-paket-badge">' + item.badge + '</span>' : '';
+          html += '<a class="cc-paket-card" href="' + targetUrl + '">' +
+                    '<div class="cc-paket-head">' +
+                      '<span class="cc-paket-name">' + item.name + badgeHtml + '</span>' +
+                      '<span class="cc-paket-price">' + item.price + '</span>' +
+                    '</div>' +
+                    '<div class="cc-paket-sub">' + item.sub + '</div>' +
+                  '</a>';
+        });
+      }
+
+      html +=     '</div>' +
+                '</div>' +
+              '</div>';
+    });
+
+    container.innerHTML = html;
+
+    // Pasang ulang event akordion
+    var cards = container.querySelectorAll('.cc-acc-card');
+    cards.forEach(function(card) {
+      var header = card.querySelector('.cc-acc-header');
+      header.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = card.classList.contains('open');
+        cards.forEach(function(c) { c.classList.remove('open'); });
+        if (!isOpen) {
+          card.classList.add('open');
+        }
+      });
+    });
+  }
+
+  // Interaksi Tombol Operator (Pills)
+  var opPills = document.querySelectorAll('.cc-op-pill');
+  var opWrapper = document.getElementById('cc-op-wrapper');
+
+  opPills.forEach(function(pill) {
+    pill.addEventListener('click', function(e) {
+      e.stopPropagation();
+      opPills.forEach(function(p) { p.classList.remove('cc-op-active'); });
+      pill.classList.add('cc-op-active');
+
+      currentOperator = pill.dataset.op;
+      renderAccordion();
+
+      // Geser center pill aktif di layar kecil
+      var wrapRect = opWrapper.getBoundingClientRect();
+      var pillRect = pill.getBoundingClientRect();
+      var offset = (pillRect.left + pillRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
+      opWrapper.scrollLeft += offset;
+    });
+  });
+
+  // Navbar Menu Toggle
+  var trigger = document.getElementById('menu-trigger');
+  var menu = document.getElementById('menu');
+  var rotation = 0;
+
+  trigger.onclick = function (e) {
+    e.stopPropagation();
+    menu.classList.toggle('active');
+    rotation += 180;
+    trigger.style.setProperty('--rot', rotation + 'deg');
+  };
+
+  document.addEventListener('click', function () {
+    menu.classList.remove('active');
+  });
+
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function (e) { e.stopPropagation(); });
+  });
+
+  // Render awal (Default: Indosat)
+  renderAccordion();
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - XL Flex Internet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  /* PAKSA SEMUA ELEMEN PAKE FONT TECHY */
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+
+  html, body { 
+    margin: 0 !important; padding: 0 !important; height: 100% !important; 
+    overflow: hidden !important; background: #05060a !important; color: #fff; 
+  }
+
+  /* Overlay Penutup UI Blogger dengan ruang untuk sticky button & bottom navbar */
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 140px;
+  }
+
+  /* Background GIF */
+  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
+  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+
+  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
+  .cc-fade-top {
+    position: fixed; top: 0; left: 0; right: 0; height: 35px;
+    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
+    z-index: 90; pointer-events: none;
+  }
+  .cc-fade-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
+    background: linear-gradient(to top, #05060a 0%, transparent 100%);
+    z-index: 90; pointer-events: none;
+  }
+
+  /* Navigasi Presisi (Logo Statis Murni) */
+  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
+  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+  .cc-img { width:35px; height:35px; border-radius:10px; object-fit: cover; }
+  
+  /* Animasi Buat Stroke RGB */
+  @keyframes rgbStroke {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* Bubble Tutorial RGB */
+  .cc-container { padding: 10px 30px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  
+  .cc-tutorial-bubble {
+    border-radius: 18px;
+    border: 2px solid transparent !important;
+    background: linear-gradient(#0d0f16, #0d0f16) padding-box,
+                linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a) border-box !important;
+    background-size: 200% 200% !important;
+    animation: rgbStroke 4s linear infinite;
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .cc-tutorial-img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .cc-tutorial-body { padding: 25px 20px; }
+
+  .cc-section-title {
+    color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
+  }
+
+  /* PAKET LIST CARD */
+  .cc-paket-list { display: flex; flex-direction: column; gap: 12px; margin: 0 0 25px 0; }
+  .cc-paket-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 14px 16px;
+  }
+  .cc-paket-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+  .cc-paket-name { font-size: 13px; font-weight: 800; color: #fff; }
+  .cc-paket-price { font-size: 13px; font-weight: 800; color: #ffd23f; }
+  .cc-paket-sub { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+  .cc-paket-badge {
+    display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+    color: #05060a; background: linear-gradient(90deg, #29e0c9, #7c5cff);
+    padding: 3px 8px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
+  }
+
+  /* TUTORIAL LIST */
+  .cc-tutorial-list {
+    padding-left: 18px; margin: 0 0 25px 0; color: #ffd23f; font-weight: 700;
+  }
+  .cc-tutorial-list li {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; font-weight: 400; margin-bottom: 12px;
+  }
+
+  /* WARNING BOX NOMOR */
+  .cc-warning-box {
+    background: rgba(255,45,106,0.08); border: 1.5px solid rgba(255,45,106,0.35);
+    border-radius: 14px; padding: 14px 16px; margin: 0 0 25px 0;
+  }
+  .cc-warning-title { font-size: 12px; font-weight: 800; color: #ff2d6a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .cc-warning-text { font-size: 12.5px; line-height: 1.7; color: #e2e8f0; }
+  .cc-warning-text b { color: #ff2d6a; }
+
+  /* REFUND LIST */
+  .cc-refund-list {
+    padding-left: 0; margin: 0 0 25px 0; list-style: none;
+  }
+  .cc-refund-list li {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 12px;
+  }
+  .cc-refund-label {
+    color: #ff2d6a; font-weight: 700; display: inline-block; margin-right: 4px;
+  }
+
+  /* CUSTOM TEXT STYLES */
+  .cc-intro-text {
+    font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px;
+  }
+  .cc-highlight-text {
+    color: #ffd23f; font-weight: bold;
+  }
+  .cc-footer-text {
+    font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
+  }
+
+  /* ============ STICKY ORDER BUTTON (Tepat Diatas Pintasan/Bottom Nav) ============ */
+  .cc-sticky-order-wrap {
+    position: fixed;
+    bottom: calc(65px + env(safe-area-inset-bottom, 0px));
+    left: 0;
+    width: 100vw;
+    padding: 10px 20px;
+    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    z-index: 999998;
+    display: flex;
+    justify-content: center;
+  }
+  .cc-sticky-order-btn {
+    width: 100%;
+    max-width: 800px;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #05060a;
+    background: linear-gradient(90deg, #29e0c9, #7c5cff);
+    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    transition: transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-sticky-order-btn:active { transform: scale(0.97); }
+
+  /* ============ BOTTOM FLOATING NAVBAR (Pintasan Bawah) ============ */
+  .cc-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background: rgba(13, 15, 22, 0.75);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 999999;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+  }
+  .cc-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: #a9b2c3;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-bottom-item svg {
+    width: 22px;
+    height: 22px;
+    fill: #a9b2c3;
+    transition: fill 0.2s ease, transform 0.2s ease;
+  }
+  .cc-bottom-item:active {
+    transform: scale(0.92);
+  }
+  .cc-bottom-item:hover, .cc-bottom-item.active {
+    color: #ffd23f;
+  }
+  .cc-bottom-item:hover svg, .cc-bottom-item.active svg {
+    fill: #ffd23f;
+  }
+
+  /* ============ MODAL POPUP ULTRA SMOOTH (0.5s) ============ */
+  .cc-modal-backdrop {
+    position: fixed; inset: 0; z-index: 1000000;
+    background: rgba(2,3,6,0); backdrop-filter: blur(0px);
+    display: flex; align-items: flex-end; justify-content: center;
+    visibility: hidden; pointer-events: none;
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                visibility 0.4s linear;
+  }
+  .cc-modal-backdrop.active {
+    visibility: visible; pointer-events: auto;
+    background: rgba(2,3,6,0.78); backdrop-filter: blur(6px);
+  }
+
+  @media (min-width: 640px) {
+    .cc-modal-backdrop { align-items: center; }
+  }
+
+  .cc-modal {
+    width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto;
+    background: #0d0f16;
+    border: 2px solid transparent;
+    background-image: linear-gradient(#0d0f16, #0d0f16), linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 200% 200%;
+    animation: rgbStroke 4s linear infinite;
+    border-radius: 22px 22px 0 0;
+    padding: 24px 22px 30px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+    
+    transform: translateY(60px) scale(0.96);
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  }
+  @media (min-width: 640px) {
+    .cc-modal { 
+      border-radius: 22px; 
+      transform: translateY(20px) scale(0.96);
+    }
+  }
+  .cc-modal-backdrop.active .cc-modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .cc-modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
+  .cc-modal-title { font-size: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-modal-close {
+    width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 16px; line-height: 1;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .cc-modal-item {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    background: rgba(255,255,255,0.04); padding: 12px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-modal-item img { width: 54px; height: 54px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+  .cc-modal-item-name { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .cc-modal-item-sub { font-size: 11px; color: #94a3b8; }
+  .cc-modal-item-price { font-size: 12px; font-weight: 800; color: #29e0c9; margin-top: 4px; }
+
+  .cc-field-label {
+    font-size: 12px; font-weight: 800; color: #29e0c9; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px; display: block;
+  }
+
+  /* Select paket */
+  .cc-select-wrap { margin-bottom: 20px; position: relative; }
+  select.cc-input {
+    width: 100%; padding: 13px 14px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
+    color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    outline: none; appearance: none; -webkit-appearance: none;
+  }
+  select.cc-input option { background: #0d0f16; color: #fff; }
+  select.cc-input:focus { border-color: #29e0c9; }
+  .cc-select-arrow {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    pointer-events: none; color: #94a3b8; font-size: 12px;
+  }
+
+  /* Qty stepper */
+  .cc-qty-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .cc-stepper { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 6px 8px; }
+  .cc-stepper button {
+    width: 32px; height: 32px; border-radius: 8px; border: none; cursor: pointer;
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 16px; font-weight: 800;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cc-stepper button:active { background: rgba(255,255,255,0.18); }
+  .cc-stepper span { min-width: 22px; text-align: center; font-size: 15px; font-weight: 800; color: #fff; }
+
+  /* Field input umum */
+  .cc-input-wrap { margin-bottom: 20px; }
+  .cc-input {
+    width: 100%; padding: 13px 14px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
+    color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    outline: none;
+  }
+  .cc-input::placeholder { color: #5b6472; }
+  .cc-input:focus { border-color: #29e0c9; }
+  .cc-input-hint { font-size: 10px; color: #94a3b8; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+  .cc-input-hint.warn { color: #ff2d6a; font-weight: 700; }
+  .cc-input-hint.success { color: #29e0c9; font-weight: 700; }
+
+  /* SVG Icon Helper */
+  .svg-icon { width: 14px; height: 14px; flex-shrink: 0; fill: currentColor; }
+
+  /* Voucher/Check Action Row */
+  .cc-voucher-row { display: flex; gap: 8px; }
+  .cc-voucher-btn {
+    padding: 0 16px; border-radius: 12px; border: 1px solid rgba(41,224,201,0.3);
+    background: rgba(41,224,201,0.1); color: #29e0c9; font-family: 'JetBrains Mono', monospace;
+    font-weight: 800; font-size: 12px; cursor: pointer; transition: background 0.15s ease;
+    white-space: nowrap;
+  }
+  .cc-voucher-btn:active { background: rgba(41,224,201,0.25); }
+
+  .cc-total-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 4px 0 20px; padding: 14px 16px; border-radius: 14px;
+    background: rgba(41,224,201,0.08); border: 1px solid rgba(41,224,201,0.2);
+  }
+  .cc-total-label { font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-total-value { font-size: 18px; font-weight: 800; color: #29e0c9; }
+
+  /* Payment options */
+  .cc-pay-options { display: flex; gap: 10px; margin-bottom: 20px; }
+  .cc-pay-option {
+    flex: 1; padding: 14px 10px; border-radius: 14px; cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+    text-align: center; transition: all 0.15s ease;
+  }
+  .cc-pay-option.selected {
+    border-color: #29e0c9; background: rgba(41,224,201,0.1);
+    box-shadow: 0 0 0 1px rgba(41,224,201,0.3);
+  }
+  .cc-pay-option-label { font-size: 12px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+  .cc-pay-option-sub { font-size: 10px; color: #94a3b8; margin-top: 3px; }
+
+  .cc-modal-footer-note {
+    font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 18px;
+    background: rgba(255,45,106,0.06); border: 1px solid rgba(255,45,106,0.15);
+    padding: 10px 12px; border-radius: 10px;
+  }
+
+  .cc-confirm-btn {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #fff; background: #25D366;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .cc-confirm-btn:active { transform: scale(0.97); }
+  .cc-confirm-btn svg { width: 18px; height: 18px; }
+  .cc-confirm-btn:disabled {
+    opacity: 0.4; cursor: not-allowed; box-shadow: none;
+  }
+
+  /* Checkbox S&K */
+  .cc-tnc-row {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 14px; border-radius: 12px; cursor: pointer;
+  }
+  .cc-tnc-checkbox {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+    border-radius: 6px; border: 2px solid rgba(255,255,255,0.25);
+    background-color: transparent; cursor: pointer; position: relative;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    background-repeat: no-repeat; background-position: center; background-size: 12px 12px;
+    transition: all 0.15s ease;
+  }
+  .cc-tnc-checkbox:checked {
+    background-color: #29e0c9; border-color: #29e0c9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2305060a' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+  .cc-tnc-text { font-size: 12px; line-height: 1.6; color: #cbd5e1; }
+  .cc-tnc-text b { color: #fff; }
+</style>
+</head>
+<body>
+
+<div id="cc-container">
+  <div class="cc-bg"></div>
+  <div class="cc-overlay"></div>
+
+  <div class="cc-fade-top"></div>
+  <div class="cc-fade-bottom"></div>
+
+  <div class="cc-nav">
+    <div class="cc-brand">
+      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
+      CO CENTER
+    </div>
+  </div>
+
+  <div class="cc-container">
+    <div class="cc-tutorial-bubble">
+
+      <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8LT8PhUrFGHVoViFs-t9wOS9PqMtueET_kbtD2uwPxPW2GIy0m8zqmGq19faul9sPBkTZ25rubVBwy4l09c5bk2eiFuUwXChV6r88QvlX504YxmRP-a8Faui5Ap8TNjyQggIf4vR4k3XHWWZKqDhShlvlESPN-NIIy3tZ4OuXF-lpqpJBH6s8QdKTgYsG/s1600/4dd0bd046fb7de7daa409b6530459481.jpg" alt="XL Flex Internet">
+
+      <div class="cc-tutorial-body">
+
+        <h2 class="cc-section-title">📶 XL FLEX INTERNET & DATA 📶</h2>
+        <div class="cc-intro-text">
+          <strong>PAKET DATA ALL NETWORK XL RESMI</strong><br><br>
+          Kuota super ngebut, jaringan terluas, langsung masuk ke nomor XL kamu tanpa ribet. Tersedia pilihan fleksibel sesuai kebutuhan harian hingga bulanan.<br><br>
+          <span class="cc-highlight-text">⚡ Berlaku All Net & Jaringan Nasional XL Axiata</span>
+        </div>
+
+        <h2 class="cc-section-title">📦 PILIHAN PAKET XL FLEX</h2>
+        <div class="cc-paket-list">
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 10GB + Bonus Nelpon</span>
+              <span class="cc-paket-price">Rp13.000</span>
+            </div>
+            <div class="cc-paket-sub">10GB Paket Internet All Net + Bonus Nelpon · Masa aktif 1 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 12GB</span>
+              <span class="cc-paket-price">Rp16.500</span>
+            </div>
+            <div class="cc-paket-sub">8GB Paket Internet All Net · Masa aktif 3 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 20GB + Bonus Nelpon <span class="cc-paket-badge">Hemat</span></span>
+              <span class="cc-paket-price">Rp22.500</span>
+            </div>
+            <div class="cc-paket-sub">20GB All Net + Bonus Nelpon · Masa aktif 3 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 8GB</span>
+              <span class="cc-paket-price">Rp21.000</span>
+            </div>
+            <div class="cc-paket-sub">8GB All Net · Masa aktif 5 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 10-14GB + Bonus Nelpon</span>
+              <span class="cc-paket-price">Rp26.000</span>
+            </div>
+            <div class="cc-paket-sub">10-14GB All Net + Bonus Nelpon · Masa aktif 7 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 40GB + Bonus Nelpon <span class="cc-paket-badge">Popular</span></span>
+              <span class="cc-paket-price">Rp41.500</span>
+            </div>
+            <div class="cc-paket-sub">40GB Paket Internet All Net + Bonus Nelpon · Masa aktif 7 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Mini 30GB + Bonus Nelpon</span>
+              <span class="cc-paket-price">Rp49.000</span>
+            </div>
+            <div class="cc-paket-sub">30GB Paket Internet All Net + Bonus Nelpon · Masa aktif 14 Hari</div>
+          </div>
+
+          <div class="cc-paket-card">
+            <div class="cc-paket-head">
+              <span class="cc-paket-name">XL Flex Max 150GB + Bonus Nelpon <span class="cc-paket-badge">Best Value</span></span>
+              <span class="cc-paket-price">Rp143.000</span>
+            </div>
+            <div class="cc-paket-sub">150GB Paket Internet All Net + Bonus Nelpon · Masa aktif 28 Hari</div>
+          </div>
+
+        </div>
+
+        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+        <ol class="cc-tutorial-list">
+          <li>Paket / Layanan dikirim langsung ke nomor XL yang kamu input, pastikan nomor aktif.</li>
+          <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
+          <li>Estimasi proses pengiriman: 5 Menit - 1 Jam (kondisional).</li>
+          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+        </ol>
+
+        <div class="cc-warning-box">
+          <div class="cc-warning-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+            Perhatian Nomor Tujuan
+          </div>
+          <div class="cc-warning-text">
+            Cek ulang nomor XL kamu <b>sebelum</b> kirim order. Kuota dikirim otomatis sesuai nomor yang diinput di form, <b>bukan tanggung jawab Admin</b> kalau nomor salah ketik/keliru.<br><br>
+            <b>Kesalahan input nomor BUKAN alasan yang bisa diajukan untuk klaim refund atau garansi.</b> Jadi pastikan nomor yang kamu masukin udah bener sebelum konfirmasi ke Admin. Salah input = tanggung jawab pembeli sepenuhnya.
+          </div>
+        </div>
+
+        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+        <ul class="cc-refund-list">
+          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
+          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
+          <li><span class="cc-refund-label">Pengecualian:</span> ❌ Kesalahan input nomor tujuan TIDAK termasuk dalam cakupan garansi/refund.</li>
+          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+        </ul>
+
+        <div class="cc-footer-text">
+          Terima kasih telah membaca rules.<br>Cek nomor baik-baik, Be smart buyers, guys! 🚀
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="cc-sticky-order-wrap">
+    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+  </div>
+
+  <div class="cc-bottom-nav">
+    <a class="cc-bottom-item" href="menu.html">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Menu
+    </a>
+    <a class="cc-bottom-item" href="https://lynk.id/cocenter" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Lynk.id
+    </a>
+    <a class="cc-bottom-item" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      Transaksi
+    </a>
+    <a class="cc-bottom-item" href="menu.html#about">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      About Me
+    </a>
+  </div>
+
+</div>
+
+<div class="cc-modal-backdrop" id="order-modal-backdrop">
+  <div class="cc-modal">
+    <div class="cc-modal-header">
+      <div class="cc-modal-title">Form Order XL Flex</div>
+      <button class="cc-modal-close" id="close-order-modal">&times;</button>
+    </div>
+
+    <div class="cc-modal-item">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8LT8PhUrFGHVoViFs-t9wOS9PqMtueET_kbtD2uwPxPW2GIy0m8zqmGq19faul9sPBkTZ25rubVBwy4l09c5bk2eiFuUwXChV6r88QvlX504YxmRP-a8Faui5Ap8TNjyQggIf4vR4k3XHWWZKqDhShlvlESPN-NIIy3tZ4OuXF-lpqpJBH6s8QdKTgYsG/s1600/4dd0bd046fb7de7daa409b6530459481.jpg" alt="XL Flex Paket">
+      <div>
+        <div class="cc-modal-item-name" id="modal-product-title">XL Flex Internet</div>
+        <div class="cc-modal-item-sub" id="modal-item-sub">10GB + Bonus Nelpon · 1 Hari</div>
+        <div class="cc-modal-item-price" id="modal-item-price">Rp13.000 / slot</div>
+      </div>
+    </div>
+
+    <label class="cc-field-label">Pilih Paket</label>
+    <div class="cc-select-wrap">
+      <select class="cc-input" id="paket-select">
+        <option value="13000|10GB + Bonus Nelpon · 1 Hari">XL Flex Mini 10GB + Bonus Nelpon - 1 Hari (Rp13.000)</option>
+        <option value="16500|12GB (8GB All Net) · 3 Hari">XL Flex Mini 12GB - 3 Hari (Rp16.500)</option>
+        <option value="22500|20GB + Bonus Nelpon · 3 Hari">XL Flex Mini 20GB + Bonus Nelpon - 3 Hari (Rp22.500)</option>
+        <option value="21000|8GB All Net · 5 Hari">XL Flex Mini 8GB - 5 Hari (Rp21.000)</option>
+        <option value="26000|10-14GB + Bonus Nelpon · 7 Hari">XL Flex Mini 10-14GB + Bonus Nelpon - 7 Hari (Rp26.000)</option>
+        <option value="41500|40GB + Bonus Nelpon · 7 Hari">XL Flex Mini 40GB + Bonus Nelpon - 7 Hari (Rp41.500)</option>
+        <option value="49000|30GB + Bonus Nelpon · 14 Hari">XL Flex Mini 30GB + Bonus Nelpon - 14 Hari (Rp49.000)</option>
+        <option value="143000|150GB + Bonus Nelpon · 28 Hari">XL Flex Max 150GB + Bonus Nelpon - 28 Hari (Rp143.000)</option>
+      </select>
+      <span class="cc-select-arrow">▼</span>
+    </div>
+
+    <label class="cc-field-label">Jumlah Slot</label>
+    <div class="cc-qty-row">
+      <div class="cc-stepper">
+        <button id="qty-minus" type="button">&minus;</button>
+        <span id="qty-value">1</span>
+        <button id="qty-plus" type="button">+</button>
+      </div>
+    </div>
+
+    <div id="voucher-section-wrap">
+      <label class="cc-field-label">Kode Voucher Diskon</label>
+      <div class="cc-input-wrap">
+        <div class="cc-voucher-row">
+          <input type="text" class="cc-input" id="voucher-code" placeholder="masukkan kode voucher">
+          <button type="button" class="cc-voucher-btn" id="apply-voucher">Pakai</button>
+        </div>
+        <div class="cc-input-hint" id="voucher-hint">Masukkan kode promo jika ada.</div>
+      </div>
+
+      <div class="cc-total-row">
+        <span class="cc-total-label">Total Harga</span>
+        <span class="cc-total-value" id="total-price">Rp13.000</span>
+      </div>
+    </div>
+
+    <label class="cc-field-label">Nomor Telepon XL Tujuan</label>
+    <div class="cc-input-wrap">
+      <input type="tel" class="cc-input" id="user-phone" placeholder="contoh: 0817xxxxxxxx">
+      <div class="cc-input-hint warn">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        Wajib cek ulang nomor sebelum konfirmasi! Salah input nomor = TIDAK bisa refund.
+      </div>
+    </div>
+
+    <div id="payment-section-wrap">
+      <label class="cc-field-label">Metode Pembayaran</label>
+      <div class="cc-pay-options">
+        <div class="cc-pay-option selected" data-method="QRIS">
+          <div class="cc-pay-option-label">QRIS</div>
+          <div class="cc-pay-option-sub">Semua e-wallet & bank</div>
+        </div>
+        <div class="cc-pay-option" data-method="GoPay">
+          <div class="cc-pay-option-label">GoPay</div>
+          <div class="cc-pay-option-sub">Transfer langsung</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cc-modal-footer-note">
+      Setelah klik konfirmasi, kamu akan diarahkan ke WhatsApp Admin dengan detail pesanan yang sudah terisi otomatis.
+    </div>
+
+    <label class="cc-tnc-row" for="tnc-checkbox">
+      <input type="checkbox" class="cc-tnc-checkbox" id="tnc-checkbox">
+      <span class="cc-tnc-text">Saya sudah membaca dan <b>setuju</b> dengan Rules, Syarat, serta Ketentuan Klaim Garansi XL Flex Co Center, termasuk bahwa <b>kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund.</b></span>
+    </label>
+
+    <button class="cc-confirm-btn" id="confirm-order" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.39c1.45.79 3.08 1.21 4.76 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.78 14.09c-.24.68-1.4 1.31-1.94 1.39-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.89-1.25-4.77-4.15-4.92-4.34-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .55.01.18.01.42-.07.65.5.24.58.81 2.01.88 2.15.07.15.11.32.02.51-.09.19-.14.31-.27.48-.14.17-.29.38-.41.51-.14.15-.28.31-.12.6.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.25 1.38.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.68.79 1.97.93.29.14.48.22.55.34.07.12.07.71-.17 1.39z"/></svg>
+      Konfirmasi ke WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+  // ============ MODAL LOGIC ============
+  const modalBackdrop = document.getElementById('order-modal-backdrop');
+  const openStickyBtn = document.getElementById('open-order-modal-sticky');
+  const closeBtn = document.getElementById('close-order-modal');
+
+  openStickyBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modalBackdrop.classList.add('active');
+  });
+
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modalBackdrop.classList.remove('active');
+  });
+  modalBackdrop.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop) modalBackdrop.classList.remove('active');
+  });
+  modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
+
+  // Elemen Form
+  const modalProductTitle = document.getElementById('modal-product-title');
+  const modalItemSub = document.getElementById('modal-item-sub');
+  const modalItemPrice = document.getElementById('modal-item-price');
+  
+  const paketSelect = document.getElementById('paket-select');
+  let pricePerSlot = 13000;
+  let qty = 1;
+  let activeVoucher = null;
+
+  const qtyValueEl = document.getElementById('qty-value');
+  const totalPriceEl = document.getElementById('total-price');
+
+  function formatRupiah(num) {
+    return 'Rp' + num.toLocaleString('id-ID');
+  }
+
+  function updateTotal() {
+    let subtotal = qty * pricePerSlot;
+
+    if (activeVoucher) {
+      if (subtotal < 5000) {
+        voucherHint.textContent = '❌ Gagal: Total harga kurang dari nominal minimum voucher!';
+        voucherHint.className = 'cc-input-hint warn';
+        activeVoucher = null;
+      } else {
+        subtotal -= 5000;
+        voucherHint.textContent = '✔️ Voucher berhasil diterapkan! Potongan Rp5.000';
+        voucherHint.className = 'cc-input-hint success';
+      }
+    }
+    totalPriceEl.textContent = formatRupiah(subtotal);
+  }
+
+  function updatePaketInfo() {
+    const [price, sub] = paketSelect.value.split('|');
+    pricePerSlot = parseInt(price, 10);
+    modalItemSub.textContent = sub;
+    modalItemPrice.textContent = formatRupiah(pricePerSlot) + ' / slot';
+    updateTotal();
+  }
+
+  paketSelect.addEventListener('change', updatePaketInfo);
+  updatePaketInfo();
+
+  // Qty stepper
+  document.getElementById('qty-minus').addEventListener('click', () => {
+    if (qty > 1) { qty--; qtyValueEl.textContent = qty; updateTotal(); }
+  });
+  document.getElementById('qty-plus').addEventListener('click', () => {
+    if (qty < 99) { qty++; qtyValueEl.textContent = qty; updateTotal(); }
+  });
+
+  // Voucher Diskon Logic
+  const voucherInput = document.getElementById('voucher-code');
+  const voucherBtn = document.getElementById('apply-voucher');
+  const voucherHint = document.getElementById('voucher-hint');
+
+  voucherBtn.addEventListener('click', () => {
+    const code = voucherInput.value.trim().toUpperCase();
+    if (!code) {
+      voucherHint.textContent = '⚠️ Masukkan kode voucher terlebih dahulu.';
+      voucherHint.className = 'cc-input-hint warn';
+      activeVoucher = null;
+      updateTotal();
+      return;
+    }
+
+    if (code === 'COCENTER' || code === 'XL') {
+      activeVoucher = code;
+    } else {
+      voucherHint.textContent = `❌ Voucher "${code}" tidak valid atau kedaluwarsa!`;
+      voucherHint.className = 'cc-input-hint warn';
+      activeVoucher = null;
+      updateTotal();
+      return;
+    }
+    updateTotal();
+  });
+
+  // Payment method selection
+  let selectedMethod = 'QRIS';
+  const payOptions = document.querySelectorAll('.cc-pay-option');
+  payOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      payOptions.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedMethod = opt.getAttribute('data-method');
+    });
+  });
+
+  // Checkbox S&K -> enable/disable tombol konfirmasi
+  const tncCheckbox = document.getElementById('tnc-checkbox');
+  const confirmBtn = document.getElementById('confirm-order');
+  tncCheckbox.addEventListener('change', () => {
+    confirmBtn.disabled = !tncCheckbox.checked;
+  });
+
+  // Format tanggal real-time (Indonesia)
+  function getFormattedDate() {
+    const now = new Date();
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${dayName}, ${date} ${month} ${year} - ${hours}:${minutes} WIB`;
+  }
+
+  // Confirm order -> generate WA message
+  document.getElementById('confirm-order').addEventListener('click', () => {
+    if (!tncCheckbox.checked) return;
+
+    const tanggal = getFormattedDate();
+    const waNumber = '6288971071456';
+    const phoneInput = document.getElementById('user-phone').value.trim();
+    const phoneLine = phoneInput ? phoneInput : '(belum diisi)';
+
+    const [, subInfo] = paketSelect.value.split('|');
+    const itemName = `XL Flex (${subInfo})`;
+
+    let finalSubtotal = qty * pricePerSlot;
+    let voucherText = 'Tidak pakai';
+    if (activeVoucher) {
+      finalSubtotal -= 5000;
+      voucherText = `${activeVoucher} (Potongan Rp5.000)`;
+    }
+    const totalHargaText = formatRupiah(finalSubtotal);
+
+    const message =
+`Jenis Layanan : Paket Data XL Flex
+Nama Item : ${itemName}
+Jumlah Slot : ${qty}
+Kode Voucher : ${voucherText}
+Total Harga : ${totalHargaText}
+Nomor Telepon XL Tujuan : ${phoneLine}
+Tanggal Pemesanan : ${tanggal}
+Metode Pembayaran : ${selectedMethod}
+Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund`;
+
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+  });
+</script>
+
+</body>
+</html>

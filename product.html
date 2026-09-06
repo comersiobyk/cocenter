@@ -253,18 +253,6 @@ href="style.css">
     border-bottom: 1px solid rgba(255, 209, 102, 0.2);
   }
 
-  .product-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .product-logo-img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-  }
-
   .product-title {
     margin: 0;
     font-family: 'FiraCondBold', sans-serif;
@@ -294,13 +282,6 @@ href="style.css">
     font-size: 0.85rem;
     color: #fff;
     font-family: 'FiraCondBold', sans-serif;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .nominal-badge:hover {
-    background: var(--emas-terang);
-    color: #000;
   }
 
   /* TABLE LISTING PRODUK CUSTOM */
@@ -394,7 +375,7 @@ href="style.css">
     font-size: 1.3rem;
   }
 
-  input, select{
+  input{
     width: 100%;
     height: 50px;
     background: #111;
@@ -405,11 +386,6 @@ href="style.css">
     box-sizing: border-box;
     margin-top: 12px;
     font-family: 'FiraCondBook', sans-serif;
-  }
-
-  select option {
-    background: #111;
-    color: white;
   }
 
   .popupButtonGroup{
@@ -469,6 +445,7 @@ href="style.css">
 <div id="overlay" class="overlay" onclick="toggleNavbar()"></div>
 
 <div class="content-wrap">
+    <!-- HEADER BOX -->
     <div class="headerBox">
         <div class="headerLeft">
             <img src="icon.png" class="mainLogo" id="rotatingLogo" onclick="handleNavbarTrigger()" title="Buka Menu Navbar">
@@ -483,83 +460,61 @@ href="style.css">
     <!-- PRODUCT LIST CONTAINER -->
     <div class="product-container">
         
-        <!-- 1. PULSA -->
+        <!-- 1. KELOMPOK DEFAULT (Pulsa, DANA, GoPay, OVO, SeaBank) -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="icon.png" class="product-logo-img" alt="Pulsa">
-                    <h3 class="product-title">Pulsa</h3>
-                </div>
+                <h3 class="product-title">📱 Pulsa</h3>
             </div>
             <div class="product-body">
-                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Klik nominal untuk langsung masukkan ke utang:</p>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Opsi Nominal Tersedia:</p>
                 <div class="nominal-grid" id="grid-Pulsa"></div>
             </div>
         </div>
 
-        <!-- 2. DANA -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="DANA.png" class="product-logo-img" alt="DANA">
-                    <h3 class="product-title">DANA</h3>
-                </div>
+                <h3 class="product-title">💸 DANA</h3>
             </div>
             <div class="product-body">
-                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Klik nominal untuk langsung masukkan ke utang:</p>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Opsi Nominal Tersedia:</p>
                 <div class="nominal-grid" id="grid-DANA"></div>
             </div>
         </div>
 
-        <!-- 3. GOPAY -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="GoPay.png" class="product-logo-img" alt="GoPay">
-                    <h3 class="product-title">GoPay</h3>
-                </div>
+                <h3 class="product-title">🟢 GoPay</h3>
             </div>
             <div class="product-body">
-                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Klik nominal untuk langsung masukkan ke utang:</p>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Opsi Nominal Tersedia:</p>
                 <div class="nominal-grid" id="grid-GoPay"></div>
             </div>
         </div>
 
-        <!-- 4. OVO -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="ShopeePay.png" class="product-logo-img" alt="OVO">
-                    <h3 class="product-title">OVO</h3>
-                </div>
+                <h3 class="product-title">🟣 OVO</h3>
             </div>
             <div class="product-body">
-                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Klik nominal untuk langsung masukkan ke utang:</p>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Opsi Nominal Tersedia:</p>
                 <div class="nominal-grid" id="grid-OVO"></div>
             </div>
         </div>
 
-        <!-- 5. SEABANK -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="SeaBank.png" class="product-logo-img" alt="SeaBank">
-                    <h3 class="product-title">SeaBank</h3>
-                </div>
+                <h3 class="product-title">🌊 SeaBank</h3>
             </div>
             <div class="product-body">
-                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Klik nominal untuk langsung masukkan ke utang:</p>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 8px 0;">Opsi Nominal Tersedia:</p>
                 <div class="nominal-grid" id="grid-SeaBank"></div>
             </div>
         </div>
 
-        <!-- 6. KELOMPOK CUSTOM -->
+        <!-- 2. KELOMPOK CUSTOM (Listing Sendiri / Tambahan) -->
         <div class="product-card">
             <div class="product-header">
-                <div class="product-title-wrap">
-                    <img src="nama.png" class="product-logo-img" alt="Lainnya">
-                    <h3 class="product-title">Produk / Layanan Lainnya</h3>
-                </div>
+                <h3 class="product-title">📦 Produk / Layanan Lainnya</h3>
             </div>
             <div class="product-body">
                 <div class="table-responsive">
@@ -594,24 +549,6 @@ href="style.css">
         <div class="popupButtonGroup">
             <button class="cancelButton" onclick="closePopup()">Cancel</button>
             <button class="addButton" onclick="saveCustomProduct()">Simpan</button>
-        </div>
-    </div>
-</div>
-
-<!-- POPUP PILIH CUSTOMER SAAT KLIK PRODUK (TERHUBUNG KE DEBT.HTML) -->
-<div id="selectCustomerPopup" class="popupBox">
-    <div class="popupContent">
-        <h2>PILIH CUSTOMER</h2>
-        <p id="selectedProductInfo" style="text-align:center; color:#aaa; font-size:0.85rem; margin-top:-5px; margin-bottom:10px;"></p>
-        
-        <label style="font-size:0.85rem; color:var(--emas-terang); font-family:'FiraCondBold', sans-serif;">Masukkan ke Customer:</label>
-        <select id="targetCustomerDropdown">
-            <!-- Diisi via JS -->
-        </select>
-
-        <div class="popupButtonGroup">
-            <button class="cancelButton" onclick="closeSelectCustomerPopup()">Cancel</button>
-            <button class="addButton" onclick="confirmAddProductToDebt()">Tambahkan ke Utang</button>
         </div>
     </div>
 </div>
@@ -665,33 +602,25 @@ function handleNavbarTrigger(){
 }
 
 /* =========================
-   RENDER DEFAULT NOMINALS (20rb s.d 300rb) & INTERAKSI KE DEBT.HTML
+   RENDER DEFAULT NOMINALS (20rb s.d 300rb)
 ========================= */
-let selectedProductTemp = { nama: "", harga: 0 };
-
 function renderDefaultNominals(){
-    const categories = [
-        { key: "Pulsa", label: "Pulsa" },
-        { key: "DANA", label: "DANA" },
-        { key: "GoPay", label: "GoPay" },
-        { key: "OVO", label: "OVO" },
-        { key: "SeaBank", label: "SeaBank" }
-    ];
+    const defaultCategories = ["Pulsa", "DANA", "GoPay", "OVO", "SeaBank"];
     
+    // Generate kelipatan nominal dari 20.000 s.d 300.000
+    // Contoh kenaikan: 20rb, 25rb, 30rb, 40rb, 50rb, 100rb, dst atau kelipatan tetap
     const nominals = [
-        20000, 25000, 30000, 35000, 40000, 45000, 50000, 
-        60000, 70000, 75000, 80000, 90000, 100000, 
-        125000, 150000, 175000, 200000, 225000, 250000, 275000, 300000
+        20000, 25000, 30000, 40000, 50000, 
+        75000, 100000, 150000, 200000, 250000, 300000
     ];
 
-    categories.forEach(cat => {
-        const gridContainer = document.getElementById(`grid-${cat.key}`);
+    defaultCategories.forEach(cat => {
+        const gridContainer = document.getElementById(`grid-${cat}`);
         if(!gridContainer) return;
         
         let html = "";
         nominals.forEach(nom => {
-            const productName = `${cat.label} Rp ${nom.toLocaleString("id-ID")}`;
-            html += `<div class="nominal-badge" onclick="prepareAddProductToDebt('${productName}', ${nom})">Rp ${nom.toLocaleString("id-ID")}</div>`;
+            html += `<div class="nominal-badge">Rp ${nom.toLocaleString("id-ID")}</div>`;
         });
         gridContainer.innerHTML = html;
     });
@@ -714,7 +643,7 @@ function renderCustomProducts(){
     customProducts.forEach((prod, index) => {
         tbody.innerHTML += `
             <tr>
-                <td style="cursor:pointer; color:var(--emas-terang);" onclick="prepareAddProductToDebt('${prod.nama}', ${prod.harga})" title="Klik untuk masukkan ke utang customer">${prod.nama}</td>
+                <td>${prod.nama}</td>
                 <td style="color: var(--emas-terang); font-family: 'FiraCondBold', sans-serif;">Rp ${prod.harga.toLocaleString("id-ID")}</td>
                 <td>
                     <button type="button" onclick="deleteCustomProduct(${index})" style="background:#ff3b3b; color:white; border:none; border-radius:8px; padding:5px 10px; cursor:pointer; font-size:11px; font-family:'FiraCondBold', sans-serif;">
@@ -761,66 +690,6 @@ function deleteCustomProduct(index){
     customProducts.splice(index, 1);
     localStorage.setItem("customProducts", JSON.stringify(customProducts));
     renderCustomProducts();
-}
-
-/* =========================
-   INTEGRASI KE DEBT.HTML (PILIH PRODUK LANGSUNG MASUK KE UTANG)
-========================= */
-function prepareAddProductToDebt(nama, harga){
-    selectedProductTemp = { nama: nama, harga: harga };
-    
-    const customers = JSON.parse(localStorage.getItem("customers")) || [];
-    const select = document.getElementById("targetCustomerDropdown");
-    select.innerHTML = "";
-
-    if(customers.length === 0){
-        alert("Belum ada customer terdaftar! Tambahkan customer terlebih dahulu di menu Customer.");
-        return;
-    }
-
-    customers.forEach(cust => {
-        const opt = document.createElement("option");
-        opt.value = cust.id;
-        opt.text = `${cust.id} - ${cust.name}`;
-        select.appendChild(opt);
-    });
-
-    document.getElementById("selectedProductInfo").innerText = `Produk: ${nama} (Rp ${harga.toLocaleString("id-ID")})`;
-    document.getElementById("selectCustomerPopup").classList.add("active");
-}
-
-function closeSelectCustomerPopup(){
-    document.getElementById("selectCustomerPopup").classList.remove("active");
-}
-
-function confirmAddProductToDebt(){
-    const select = document.getElementById("targetCustomerDropdown");
-    const chosenCustId = select.value;
-
-    if(!chosenCustId) {
-        alert("Pilih customer terlebih dahulu!");
-        return;
-    }
-
-    let debts = JSON.parse(localStorage.getItem("debts")) || {};
-    if(!debts[chosenCustId]){
-        debts[chosenCustId] = [];
-    }
-
-    debts[chosenCustId].push({
-        produk: selectedProductTemp.nama,
-        harga: selectedProductTemp.harga,
-        dibayar: 0,
-        tip: 0,
-        excluded: false,
-        isLogged: false,
-        waktu: new Date().toLocaleString("id-ID")
-    });
-
-    localStorage.setItem("debts", JSON.stringify(debts));
-    closeSelectCustomerPopup();
-    
-    alert(`Berhasil menambahkan "${selectedProductTemp.nama}" ke Utang Customer (${chosenCustId})!`);
 }
 </script>
 
