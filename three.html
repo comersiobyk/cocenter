@@ -21,7 +21,7 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Overlay Penutup UI Blogger dengan ruang untuk sticky button & bottom navbar */
+  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -32,22 +32,25 @@
   .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
-  .cc-fade-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 35px;
-    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
+  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-nav { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 15px 30px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    z-index: 100; 
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .cc-fade-bottom {
-    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
-    background: linear-gradient(to top, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
-  }
-
-  /* Navigasi Presisi (Logo Statis Murni) */
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
-  .cc-img { width:35px; height:35px; border-radius:10px; object-fit: cover; }
+  .cc-img { 
+    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
+  }
   
   /* Animasi Buat Stroke RGB */
   @keyframes rgbStroke {
@@ -56,7 +59,7 @@
   }
 
   /* Bubble Tutorial RGB */
-  .cc-container { padding: 10px 30px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -67,6 +70,7 @@
     animation: rgbStroke 4s linear infinite;
     overflow: hidden; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
   }
 
   .cc-tutorial-img {
@@ -78,6 +82,44 @@
   }
 
   .cc-tutorial-body { padding: 25px 20px; }
+
+  /* ===== 3 TOMBOL TAB ===== */
+  .cc-tab-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-tab-btn {
+    padding: 12px 6px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-tab-btn.active {
+    background: linear-gradient(135deg, #29e0c9, #1fb3a1);
+    color: #05060a;
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.3);
+  }
+  .cc-tab-btn:active { transform: scale(0.97); }
+
+  /* Tab Content Panels */
+  .cc-tab-pane { display: none; }
+  .cc-tab-pane.active { display: block; }
 
   .cc-section-title {
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
@@ -91,7 +133,6 @@
   }
   .cc-paket-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
   .cc-paket-name { font-size: 13px; font-weight: 800; color: #fff; }
-  .cc-paket-price { font-size: 13px; font-weight: 800; color: #ffd23f; }
   .cc-paket-sub { font-size: 12px; color: #94a3b8; line-height: 1.5; }
   .cc-paket-badge {
     display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
@@ -112,7 +153,7 @@
     background: rgba(255,45,106,0.08); border: 1.5px solid rgba(255,45,106,0.35);
     border-radius: 14px; padding: 14px 16px; margin: 0 0 25px 0;
   }
-  .cc-warning-title { font-size: 12px; font-weight: 800; color: #ff2d6a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .cc-warning-title { font-size: 12px; font-weight: 800; color: #ff2d6a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
   .cc-warning-text { font-size: 12.5px; line-height: 1.7; color: #e2e8f0; }
   .cc-warning-text b { color: #ff2d6a; }
 
@@ -138,45 +179,78 @@
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BUTTON (Tepat Diatas Pintasan/Bottom Nav) ============ */
+  /* ============ STICKY ORDER BAR ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
     left: 0;
     width: 100vw;
-    padding: 10px 20px;
-    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    padding: 10px 16px;
+    background: linear-gradient(to top, #05060a 90%, transparent 100%);
     z-index: 999998;
     display: flex;
     justify-content: center;
   }
-  .cc-sticky-order-btn {
+  .cc-sticky-box {
     width: 100%;
     max-width: 800px;
-    padding: 14px;
-    border-radius: 14px;
+    background: #0d0f16;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  }
+  .cc-sticky-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cc-sticky-product-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cc-sticky-product-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .cc-sticky-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-sticky-order-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #05060a;
     background: linear-gradient(90deg, #29e0c9, #7c5cff);
-    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.35);
     transition: transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR (Pintasan Bawah) ============ */
+  /* ============ BOTTOM FLOATING NAVBAR ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(13, 15, 22, 0.75);
+    background: rgba(13, 15, 22, 0.85);
     backdrop-filter: blur(15px);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
@@ -286,19 +360,49 @@
     letter-spacing: 0.5px; margin-bottom: 10px; display: block;
   }
 
-  /* Select paket */
-  .cc-select-wrap { margin-bottom: 20px; position: relative; }
-  select.cc-input {
-    width: 100%; padding: 13px 14px; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
-    color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-    outline: none; appearance: none; -webkit-appearance: none;
+  /* ===== CARD BATU-BAT (GRID PILIHAN PAKET) DI DALAM MODAL ===== */
+  .cc-paket-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
   }
-  select.cc-input option { background: #0d0f16; color: #fff; }
-  select.cc-input:focus { border-color: #29e0c9; }
-  .cc-select-arrow {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: #94a3b8; font-size: 12px;
+  .cc-paket-option-card {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 12px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .cc-paket-option-card * {
+    pointer-events: none !important; /* Mencegah elemen anak memblokir tap */
+  }
+  .cc-paket-option-card.selected {
+    border-color: #29e0c9;
+    background: rgba(41,224,201,0.1);
+    box-shadow: 0 0 0 1px rgba(41,224,201,0.3);
+  }
+  .cc-paket-option-card.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: rgba(255,45,106,0.3);
+  }
+  .cc-paket-option-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+  }
+  .cc-paket-option-price {
+    font-size: 11px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-paket-option-card.disabled .cc-paket-option-price {
+    color: #ff2d6a;
   }
 
   /* Qty stepper */
@@ -312,7 +416,7 @@
   .cc-stepper button:active { background: rgba(255,255,255,0.18); }
   .cc-stepper span { min-width: 22px; text-align: center; font-size: 15px; font-weight: 800; color: #fff; }
 
-  /* Field nomor telepon & voucher */
+  /* Field input umum */
   .cc-input-wrap { margin-bottom: 20px; }
   .cc-input {
     width: 100%; padding: 13px 14px; border-radius: 12px;
@@ -322,16 +426,20 @@
   }
   .cc-input::placeholder { color: #5b6472; }
   .cc-input:focus { border-color: #29e0c9; }
-  .cc-input-hint { font-size: 10px; color: #94a3b8; margin-top: 6px; }
+  .cc-input-hint { font-size: 10px; color: #94a3b8; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
   .cc-input-hint.warn { color: #ff2d6a; font-weight: 700; }
   .cc-input-hint.success { color: #29e0c9; font-weight: 700; }
 
-  /* Voucher Input Flex Row */
+  /* SVG Icon Helper */
+  .svg-icon { width: 14px; height: 14px; flex-shrink: 0; fill: currentColor; }
+
+  /* Voucher/Check Action Row */
   .cc-voucher-row { display: flex; gap: 8px; }
   .cc-voucher-btn {
     padding: 0 16px; border-radius: 12px; border: 1px solid rgba(41,224,201,0.3);
     background: rgba(41,224,201,0.1); color: #29e0c9; font-family: 'JetBrains Mono', monospace;
     font-weight: 800; font-size: 12px; cursor: pointer; transition: background 0.15s ease;
+    white-space: nowrap;
   }
   .cc-voucher-btn:active { background: rgba(41,224,201,0.25); }
 
@@ -349,6 +457,9 @@
     flex: 1; padding: 14px 10px; border-radius: 14px; cursor: pointer;
     border: 2px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
     text-align: center; transition: all 0.15s ease;
+  }
+  .cc-pay-option * {
+    pointer-events: none !important;
   }
   .cc-pay-option.selected {
     border-color: #29e0c9; background: rgba(41,224,201,0.1);
@@ -406,117 +517,119 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <div class="cc-fade-top"></div>
-  <div class="cc-fade-bottom"></div>
-
   <div class="cc-nav">
     <div class="cc-brand">
-      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
+      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
       CO CENTER
     </div>
   </div>
 
   <div class="cc-container">
     <div class="cc-tutorial-bubble">
-
       <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiotGRfoDw1M_MAbVXEkmA4gjs78zn2vul793sS69jMrR3AkV84Mo6VQ99URSKYjiFAYMHSNvBv8XoWYzC2pWnogfCUqcvpIUg93UmCRiRXGD4Zt7zNIIeOdTtUW_hWoxOO5n4UEQPGcKN8vSIirAYd65ikCZ7VHvuJo4ZfFjVqCTkknYln4F6kktCkriy7/s1600/b79db84fc52062822cc255c53b09d336.jpg" alt="Paket Three Happy Resmi">
-
+      
       <div class="cc-tutorial-body">
-
-        <h2 class="cc-section-title">📶 HAPPY INTERNET THREE (3) 📶</h2>
-        <div class="cc-intro-text">
-          <strong>PAKET DATA ALL NETWORK & HAPPY THREE RESMI</strong><br><br>
-          Kuota besar, jaringan stabil, langsung masuk ke nomor kamu tanpa ribet. Pilihan lengkap mulai dari harian sampai bulanan sesuai kebutuhan kamu.<br><br>
-          <span class="cc-highlight-text">⚡ Berlaku All Net & Jaringan Nasional Three</span>
+        
+        <div class="cc-tab-buttons">
+          <button class="cc-tab-btn active" data-tab="tab-deskripsi">Deskripsi & Benefit</button>
+          <button class="cc-tab-btn" data-tab="tab-cara">Cara Order</button>
+          <button class="cc-tab-btn" data-tab="tab-garansi">Garansi</button>
         </div>
 
-        <h2 class="cc-section-title">📦 PILIHAN PAKET THREE</h2>
-        <div class="cc-paket-list">
-
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 10GB</span>
-              <span class="cc-paket-price">Rp12.000</span>
-            </div>
-            <div class="cc-paket-sub">10GB Paket Internet All Net · Masa aktif 1 Hari</div>
+        <div class="cc-tab-pane active" id="tab-deskripsi">
+          <h2 class="cc-section-title">📶 HAPPY INTERNET THREE (3) 📶</h2>
+          <div class="cc-intro-text">
+            <strong>PAKET DATA ALL NETWORK & HAPPY THREE RESMI</strong><br><br>
+            Kuota besar, jaringan stabil, langsung masuk ke nomor kamu tanpa ribet. Pilihan lengkap mulai dari harian sampai bulanan sesuai kebutuhan kamu.<br><br>
+            <span class="cc-highlight-text">⚡ Berlaku All Net & Jaringan Nasional Three</span>
           </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 10GB</span>
-              <span class="cc-paket-price">Rp14.000</span>
+          <h2 class="cc-section-title">📦 PILIHAN PAKET THREE</h2>
+          <div class="cc-paket-list">
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 10GB</span>
+              </div>
+              <div class="cc-paket-sub">10GB Paket Internet All Net · Masa aktif 1 Hari</div>
             </div>
-            <div class="cc-paket-sub">10GB Paket Internet All Net · Masa aktif 2 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 20GB <span class="cc-paket-badge">Hemat</span></span>
-              <span class="cc-paket-price">Rp19.500</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 10GB</span>
+              </div>
+              <div class="cc-paket-sub">10GB Paket Internet All Net · Masa aktif 2 Hari</div>
             </div>
-            <div class="cc-paket-sub">20GB All Net · Masa aktif 3 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 12GB</span>
-              <span class="cc-paket-price">Rp23.500</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 20GB <span class="cc-paket-badge">Hemat</span></span>
+              </div>
+              <div class="cc-paket-sub">20GB All Net · Masa aktif 3 Hari</div>
             </div>
-            <div class="cc-paket-sub">12GB All Net · Masa aktif 5 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 25GB</span>
-              <span class="cc-paket-price">Rp31.500</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 12GB</span>
+              </div>
+              <div class="cc-paket-sub">12GB All Net · Masa aktif 5 Hari</div>
             </div>
-            <div class="cc-paket-sub">25GB All Net · Masa aktif 7 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 100GB <span class="cc-paket-badge">Popular</span></span>
-              <span class="cc-paket-price">Rp48.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 25GB</span>
+              </div>
+              <div class="cc-paket-sub">25GB All Net · Masa aktif 7 Hari</div>
             </div>
-            <div class="cc-paket-sub">100GB All Net · Masa aktif 7 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Paket Three Happy 150GB <span class="cc-paket-badge">Best Value</span></span>
-              <span class="cc-paket-price">Rp125.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 100GB <span class="cc-paket-badge">Popular</span></span>
+              </div>
+              <div class="cc-paket-sub">100GB All Net · Masa aktif 7 Hari</div>
             </div>
-            <div class="cc-paket-sub">150GB All Nett · Masa aktif 28 Hari</div>
-          </div>
 
-        </div>
-
-        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
-        <ol class="cc-tutorial-list">
-          <li>Paket dikirim langsung ke nomor Three yang kamu input, pastikan nomor aktif dan bisa menerima kuota.</li>
-          <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
-          <li>Estimasi proses pengiriman kuota: 5 Menit - 1 Jam (kondisional).</li>
-          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
-        </ol>
-
-        <div class="cc-warning-box">
-          <div class="cc-warning-title">⚠️ Perhatian Nomor Tujuan</div>
-          <div class="cc-warning-text">
-            Cek ulang nomor Three kamu <b>sebelum</b> kirim order. Kuota dikirim otomatis sesuai nomor yang diinput di form, <b>bukan tanggung jawab Admin</b> kalau nomor salah ketik/keliru.<br><br>
-            <b>Kesalahan input nomor BUKAN alasan yang bisa diajukan untuk klaim refund atau garansi.</b> Jadi pastikan nomor yang kamu masukin udah bener sebelum konfirmasi ke Admin. Salah input = tanggung jawab pembeli sepenuhnya.
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Paket Three Happy 150GB <span class="cc-paket-badge">Best Value</span></span>
+              </div>
+              <div class="cc-paket-sub">150GB All Nett · Masa aktif 28 Hari</div>
+            </div>
           </div>
         </div>
 
-        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
-        <ul class="cc-refund-list">
-          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
-          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
-          <li><span class="cc-refund-label">Pengecualian:</span> ❌ Kesalahan input nomor tujuan TIDAK termasuk dalam cakupan garansi/refund.</li>
-          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
-        </ul>
+        <div class="cc-tab-pane" id="tab-cara">
+          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <ol class="cc-tutorial-list">
+            <li>Paket dikirim langsung ke nomor Three yang kamu input, pastikan nomor aktif dan bisa menerima kuota.</li>
+            <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
+            <li>Estimasi proses pengiriman kuota: 5 Menit - 1 Jam (kondisional).</li>
+            <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+          </ol>
+        </div>
 
-        <div class="cc-footer-text">
-          Terima kasih telah membaca rules.<br>Cek nomor baik-baik, Be smart buyers, guys! 🚀
+        <div class="cc-tab-pane" id="tab-garansi">
+          <div class="cc-warning-box">
+            <div class="cc-warning-title">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+              Perhatian Nomor Tujuan
+            </div>
+            <div class="cc-warning-text">
+              Cek ulang nomor Three kamu <b>sebelum</b> kirim order. Kuota dikirim otomatis sesuai nomor yang diinput di form, <b>bukan tanggung jawab Admin</b> kalau nomor salah ketik/keliru.<br><br>
+              <b>Kesalahan input nomor BUKAN alasan yang bisa diajukan untuk klaim refund atau garansi.</b> Jadi pastikan nomor yang kamu masukin udah bener sebelum konfirmasi ke Admin. Salah input = tanggung jawab pembeli sepenuhnya.
+            </div>
+          </div>
+
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <ul class="cc-refund-list">
+            <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
+            <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
+            <li><span class="cc-refund-label">Pengecualian:</span> ❌ Kesalahan input nomor tujuan TIDAK termasuk dalam cakupan garansi/refund.</li>
+            <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+          </ul>
+
+          <div class="cc-footer-text">
+            Terima kasih telah membaca rules.<br>Cek nomor baik-baik, Be smart buyers, guys! 🚀
+          </div>
         </div>
 
       </div>
@@ -524,7 +637,16 @@
   </div>
 
   <div class="cc-sticky-order-wrap">
-    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+    <div class="cc-sticky-box">
+      <div class="cc-sticky-product-info">
+        <img class="cc-sticky-product-logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiotGRfoDw1M_MAbVXEkmA4gjs78zn2vul793sS69jMrR3AkV84Mo6VQ99URSKYjiFAYMHSNvBv8XoWYzC2pWnogfCUqcvpIUg93UmCRiRXGD4Zt7zNIIeOdTtUW_hWoxOO5n4UEQPGcKN8vSIirAYd65ikCZ7VHvuJo4ZfFjVqCTkknYln4F6kktCkriy7/s1600/b79db84fc52062822cc255c53b09d336.jpg" alt="Logo">
+        <div>
+          <div class="cc-sticky-product-name">Happy Internet Three</div>
+          <div class="cc-sticky-product-price" id="sticky-price-display">Pilih Paket yang Tersedia</div>
+        </div>
+      </div>
+      <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order</button>
+    </div>
   </div>
 
   <div class="cc-bottom-nav">
@@ -558,64 +680,115 @@
     <div class="cc-modal-item">
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiotGRfoDw1M_MAbVXEkmA4gjs78zn2vul793sS69jMrR3AkV84Mo6VQ99URSKYjiFAYMHSNvBv8XoWYzC2pWnogfCUqcvpIUg93UmCRiRXGD4Zt7zNIIeOdTtUW_hWoxOO5n4UEQPGcKN8vSIirAYd65ikCZ7VHvuJo4ZfFjVqCTkknYln4F6kktCkriy7/s1600/b79db84fc52062822cc255c53b09d336.jpg" alt="Three Paket">
       <div>
-        <div class="cc-modal-item-name">Happy Internet Three</div>
-        <div class="cc-modal-item-sub" id="modal-item-sub">10GB · 1 Hari</div>
-        <div class="cc-modal-item-price" id="modal-item-price">Rp12.000 / slot</div>
+        <div class="cc-modal-item-name" id="modal-product-title">Happy Internet Three</div>
+        <div class="cc-modal-item-sub" id="modal-item-sub">Silahkan Pilih Paket</div>
+        <div class="cc-modal-item-price" id="modal-item-price">Pilih varian di bawah</div>
       </div>
     </div>
 
-    <label class="cc-field-label">Pilih Paket</label>
-    <div class="cc-select-wrap">
-      <select class="cc-input" id="paket-select">
-        <option value="12000|10GB · 1 Hari">Happy 10GB - 1 Hari (Rp12.000)</option>
-        <option value="14000|10GB · 2 Hari">Happy 10GB - 2 Hari (Rp14.000)</option>
-        <option value="19500|20GB · 3 Hari">Happy 20GB - 3 Hari (Rp19.500)</option>
-        <option value="23500|12GB · 5 Hari">Happy 12GB - 5 Hari (Rp23.500)</option>
-        <option value="31500|25GB · 7 Hari">Happy 25GB - 7 Hari (Rp31.500)</option>
-        <option value="48000|100GB · 7 Hari">Happy 100GB - 7 Hari (Rp48.000)</option>
-        <option value="125000|150GB (26GB+Lokal) · 28 Hari">Happy 150GB - 28 Hari / Bulanan (Rp125.000)</option>
-      </select>
-      <span class="cc-select-arrow">▼</span>
-    </div>
-
-    <label class="cc-field-label">Jumlah Slot</label>
-    <div class="cc-qty-row">
-      <div class="cc-stepper">
-        <button id="qty-minus" type="button">&minus;</button>
-        <span id="qty-value">1</span>
-        <button id="qty-plus" type="button">+</button>
+    <label class="cc-field-label">Pilih Jenis Layanan</label>
+    <div class="cc-paket-options-grid" id="service-type-grid">
+      <div class="cc-paket-option-card selected" data-service="paket">
+        <div class="cc-paket-option-name">📦 Paket Data</div>
+        <div class="cc-paket-option-price">Pilih Varian</div>
+      </div>
+      <div class="cc-paket-option-card disabled" data-service="request">
+        <div class="cc-paket-option-name">🔍 Quota Request</div>
+        <div class="cc-paket-option-price">Tidak Tersedia</div>
       </div>
     </div>
 
-    <label class="cc-field-label">Kode Voucher Diskon</label>
-    <div class="cc-input-wrap">
-      <div class="cc-voucher-row">
-        <input type="text" class="cc-input" id="voucher-code" placeholder="masukkan kode voucher">
-        <button type="button" class="cc-voucher-btn" id="apply-voucher">Pakai</button>
+    <div id="paket-section-wrap">
+      <label class="cc-field-label">Pilih Paket</label>
+      <div class="cc-paket-options-grid" id="paket-options-grid">
+        <div class="cc-paket-option-card" data-price="12000" data-sub="10GB · 1 Hari">
+          <div class="cc-paket-option-name">Happy 10GB (1H)</div>
+          <div class="cc-paket-option-price">Rp12.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="14000" data-sub="10GB · 2 Hari">
+          <div class="cc-paket-option-name">Happy 10GB (2H)</div>
+          <div class="cc-paket-option-price">Rp14.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="19500" data-sub="20GB · 3 Hari">
+          <div class="cc-paket-option-name">Happy 20GB (3H)</div>
+          <div class="cc-paket-option-price">Rp19.500</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="23500" data-sub="12GB · 5 Hari">
+          <div class="cc-paket-option-name">Happy 12GB (5H)</div>
+          <div class="cc-paket-option-price">Rp23.500</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="31500" data-sub="25GB · 7 Hari">
+          <div class="cc-paket-option-name">Happy 25GB (7H)</div>
+          <div class="cc-paket-option-price">Rp31.500</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="48000" data-sub="100GB · 7 Hari">
+          <div class="cc-paket-option-name">Happy 100GB (7H)</div>
+          <div class="cc-paket-option-price">Rp48.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="125000" data-sub="150GB (26GB+Lokal) · 28 Hari">
+          <div class="cc-paket-option-name">Happy 150GB (28H)</div>
+          <div class="cc-paket-option-price">Rp125.000</div>
+        </div>
       </div>
-      <div class="cc-input-hint" id="voucher-hint">Masukkan kode promo jika ada.</div>
+
+      <label class="cc-field-label">Jumlah Slot</label>
+      <div class="cc-qty-row">
+        <div class="cc-stepper">
+          <button id="qty-minus" type="button">&minus;</button>
+          <span id="qty-value">1</span>
+          <button id="qty-plus" type="button">+</button>
+        </div>
+      </div>
     </div>
 
-    <div class="cc-total-row">
-      <span class="cc-total-label">Total Harga</span>
-      <span class="cc-total-value" id="total-price">Rp12.000</span>
+    <div id="request-section-wrap" style="display: none;">
+      <div class="cc-warning-box" style="margin: 0 0 20px 0;">
+        <div class="cc-warning-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          Layanan Tidak Tersedia
+        </div>
+        <div class="cc-warning-text">
+          Maaf, fitur <b>Quota Request</b> saat ini sedang tidak tersedia atau ditutup. Silakan pilih dan gunakan varian <b>Paket Data</b> yang sudah disediakan di atas.
+        </div>
+      </div>
+    </div>
+
+    <div id="voucher-section-wrap">
+      <label class="cc-field-label">Kode Voucher Diskon</label>
+      <div class="cc-input-wrap">
+        <div class="cc-voucher-row">
+          <input type="text" class="cc-input" id="voucher-code" placeholder="masukkan kode voucher">
+          <button type="button" class="cc-voucher-btn" id="apply-voucher">Pakai</button>
+        </div>
+        <div class="cc-input-hint" id="voucher-hint">Masukkan kode promo jika ada.</div>
+      </div>
+
+      <div class="cc-total-row" id="total-price-row">
+        <span class="cc-total-label">Total Harga</span>
+        <span class="cc-total-value" id="total-price">Rp0</span>
+      </div>
     </div>
 
     <label class="cc-field-label">Nomor Telepon Three Tujuan</label>
     <div class="cc-input-wrap">
       <input type="tel" class="cc-input" id="user-phone" placeholder="contoh: 0896xxxxxxxx">
-      <div class="cc-input-hint warn">⚠️ Wajib cek ulang nomor sebelum konfirmasi! Salah input nomor = TIDAK bisa refund.</div>
+      <div class="cc-input-hint warn">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        Wajib cek ulang nomor sebelum konfirmasi! Salah input nomor = TIDAK bisa refund.
+      </div>
     </div>
 
-    <label class="cc-field-label">Metode Pembayaran</label>
-    <div class="cc-pay-options">
-      <div class="cc-pay-option selected" data-method="QRIS">
-        <div class="cc-pay-option-label">QRIS</div>
-        <div class="cc-pay-option-sub">Semua e-wallet & bank</div>
-      </div>
-      <div class="cc-pay-option" data-method="GoPay">
-        <div class="cc-pay-option-label">GoPay</div>
-        <div class="cc-pay-option-sub">Transfer langsung</div>
+    <div id="payment-section-wrap">
+      <label class="cc-field-label">Metode Pembayaran</label>
+      <div class="cc-pay-options">
+        <div class="cc-pay-option selected" data-method="QRIS">
+          <div class="cc-pay-option-label">QRIS</div>
+          <div class="cc-pay-option-sub">Semua e-wallet & bank</div>
+        </div>
+        <div class="cc-pay-option" data-method="GoPay">
+          <div class="cc-pay-option-label">GoPay</div>
+          <div class="cc-pay-option-sub">Transfer langsung</div>
+        </div>
       </div>
     </div>
 
@@ -636,7 +809,26 @@
 </div>
 
 <script>
-  // ============ MODAL LOGIC ============
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= TAB TOGGLE LOGIC =================
+  const tabBtns = document.querySelectorAll('.cc-tab-btn');
+  const tabPanes = document.querySelectorAll('.cc-tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -655,13 +847,30 @@
   });
   modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
 
-  // Pilih paket -> update harga per slot & info item
-  const paketSelect = document.getElementById('paket-select');
+  // Elemen Form
+  const modalProductTitle = document.getElementById('modal-product-title');
   const modalItemSub = document.getElementById('modal-item-sub');
   const modalItemPrice = document.getElementById('modal-item-price');
-  let pricePerSlot = 12000;
+  const stickyPriceDisplay = document.getElementById('sticky-price-display');
+  
+  const serviceCards = document.querySelectorAll('#service-type-grid .cc-paket-option-card');
+  const paketSectionWrap = document.getElementById('paket-section-wrap');
+  const requestSectionWrap = document.getElementById('request-section-wrap');
+  const voucherSectionWrap = document.getElementById('voucher-section-wrap');
+  const totalPriceRow = document.getElementById('total-price-row');
+  const paymentSectionWrap = document.getElementById('payment-section-wrap');
+  
+  const paketOptionCards = document.querySelectorAll('#paket-options-grid .cc-paket-option-card');
+  const userPhoneInput = document.getElementById('user-phone');
+  const tncCheckbox = document.getElementById('tnc-checkbox');
+  const confirmBtn = document.getElementById('confirm-order');
+  
+  let currentServiceType = 'paket';
+  let pricePerSlot = 0;
+  let selectedSubInfo = null;
   let qty = 1;
   let activeVoucher = null;
+
   const qtyValueEl = document.getElementById('qty-value');
   const totalPriceEl = document.getElementById('total-price');
 
@@ -670,7 +879,13 @@
   }
 
   function updateTotal() {
+    if (currentServiceType === 'request') return;
+    if (!pricePerSlot) {
+      totalPriceEl.textContent = 'Rp0';
+      return;
+    }
     let subtotal = qty * pricePerSlot;
+
     if (activeVoucher) {
       if (subtotal < 5000) {
         voucherHint.textContent = '❌ Gagal: Total harga kurang dari nominal minimum voucher!';
@@ -685,15 +900,87 @@
     totalPriceEl.textContent = formatRupiah(subtotal);
   }
 
-  function updatePaketInfo() {
-    const [price, sub] = paketSelect.value.split('|');
-    pricePerSlot = parseInt(price, 10);
-    modalItemSub.textContent = sub;
-    modalItemPrice.textContent = formatRupiah(pricePerSlot) + ' / slot';
-    updateTotal();
+  function updateDisplay() {
+    if (currentServiceType === 'paket') {
+      paketSectionWrap.style.display = 'block';
+      requestSectionWrap.style.display = 'none';
+      voucherSectionWrap.style.display = 'block';
+      totalPriceRow.style.display = 'flex';
+      paymentSectionWrap.style.display = 'block';
+      modalProductTitle.textContent = 'Happy Internet Three';
+
+      if (!selectedSubInfo) {
+        modalItemSub.textContent = 'Silahkan Pilih Paket';
+        modalItemPrice.textContent = 'Pilih varian di bawah';
+        stickyPriceDisplay.textContent = 'Pilih Paket yang Tersedia';
+      } else {
+        modalItemSub.textContent = selectedSubInfo;
+        modalItemPrice.textContent = formatRupiah(pricePerSlot) + ' / slot';
+        stickyPriceDisplay.textContent = selectedSubInfo;
+      }
+    } else {
+      paketSectionWrap.style.display = 'none';
+      requestSectionWrap.style.display = 'block';
+      voucherSectionWrap.style.display = 'none';
+      totalPriceRow.style.display = 'none';
+      paymentSectionWrap.style.display = 'none';
+      modalProductTitle.textContent = 'Quota Request Three';
+
+      modalItemSub.textContent = 'Tidak Tersedia';
+      modalItemPrice.textContent = 'Layanan ditutup';
+      stickyPriceDisplay.textContent = 'Tidak Tersedia';
+    }
+    updateValidation();
   }
-  paketSelect.addEventListener('change', updatePaketInfo);
-  updatePaketInfo();
+
+  function updateValidation() {
+    const tncChecked = tncCheckbox.checked;
+    const phoneVal = userPhoneInput.value.trim();
+
+    if (currentServiceType === 'paket') {
+      confirmBtn.disabled = !(tncChecked && phoneVal !== '' && selectedSubInfo !== null);
+    } else {
+      confirmBtn.disabled = true;
+    }
+  }
+
+  // Pilih Jenis Layanan
+  serviceCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const type = card.getAttribute('data-service');
+      if (type === 'request') {
+        serviceCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        currentServiceType = 'request';
+        updateDisplay();
+        return;
+      }
+
+      serviceCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      currentServiceType = type;
+      updateDisplay();
+    });
+  });
+
+  // Pilih Paket Kartu
+  paketOptionCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      paketOptionCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      pricePerSlot = parseInt(card.getAttribute('data-price'), 10);
+      selectedSubInfo = card.getAttribute('data-sub');
+      updateDisplay();
+      updateTotal();
+    });
+  });
+
+  userPhoneInput.addEventListener('input', updateValidation);
+  tncCheckbox.addEventListener('change', updateValidation);
+
+  updateDisplay();
 
   // Qty stepper
   document.getElementById('qty-minus').addEventListener('click', () => {
@@ -703,12 +990,17 @@
     if (qty < 99) { qty++; qtyValueEl.textContent = qty; updateTotal(); }
   });
 
-  // Voucher Logic
+  // Voucher Diskon Logic
   const voucherInput = document.getElementById('voucher-code');
   const voucherBtn = document.getElementById('apply-voucher');
   const voucherHint = document.getElementById('voucher-hint');
 
   voucherBtn.addEventListener('click', () => {
+    if (!selectedSubInfo) {
+      voucherHint.textContent = '⚠️ Pilih paket terlebih dahulu!';
+      voucherHint.className = 'cc-input-hint warn';
+      return;
+    }
     const code = voucherInput.value.trim().toUpperCase();
     if (!code) {
       voucherHint.textContent = '⚠️ Masukkan kode voucher terlebih dahulu.';
@@ -734,21 +1026,14 @@
   let selectedMethod = 'QRIS';
   const payOptions = document.querySelectorAll('.cc-pay-option');
   payOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
       payOptions.forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
       selectedMethod = opt.getAttribute('data-method');
     });
   });
 
-  // Checkbox S&K -> enable/disable tombol konfirmasi
-  const tncCheckbox = document.getElementById('tnc-checkbox');
-  const confirmBtn = document.getElementById('confirm-order');
-  tncCheckbox.addEventListener('change', () => {
-    confirmBtn.disabled = !tncCheckbox.checked;
-  });
-
-  // Format tanggal real-time (Indonesia)
   function getFormattedDate() {
     const now = new Date();
     const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -763,30 +1048,29 @@
   }
 
   // Confirm order -> generate WA message
-  document.getElementById('confirm-order').addEventListener('click', () => {
-    if (!tncCheckbox.checked) return;
+  confirmBtn.addEventListener('click', () => {
+    if (confirmBtn.disabled || currentServiceType !== 'paket') return;
 
-    const [, subInfo] = paketSelect.value.split('|');
-    const itemName = `Happy Internet Three (${subInfo})`;
     const tanggal = getFormattedDate();
     const waNumber = '6288971071456';
-    
+    const phoneInput = userPhoneInput.value.trim();
+
+    const itemName = `Happy Internet Three (${selectedSubInfo})`;
     let finalSubtotal = qty * pricePerSlot;
     let voucherText = 'Tidak pakai';
     if (activeVoucher) {
       finalSubtotal -= 5000;
       voucherText = `${activeVoucher} (Potongan Rp5.000)`;
     }
-    const totalHarga = formatRupiah(finalSubtotal);
-    const phoneInput = document.getElementById('user-phone').value.trim();
-    const phoneLine = phoneInput ? phoneInput : '(belum diisi)';
+    const totalHargaText = formatRupiah(finalSubtotal);
 
     const message =
-`Nama Item : ${itemName}
+`Jenis Layanan : Paket Data Internet
+Nama Item : ${itemName}
 Jumlah Slot : ${qty}
 Kode Voucher : ${voucherText}
-Total Harga : ${totalHarga}
-Nomor Telepon Three Tujuan : ${phoneLine}
+Total Harga : ${totalHargaText}
+Nomor Telepon Three Tujuan : ${phoneInput}
 Tanggal Pemesanan : ${tanggal}
 Metode Pembayaran : ${selectedMethod}
 Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund`;
@@ -794,6 +1078,8 @@ Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujua
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
   });
+
+});
 </script>
 
 </body>

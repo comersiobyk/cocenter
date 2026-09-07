@@ -21,7 +21,7 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Overlay Penutup UI Blogger dengan ruang untuk sticky button & bottom navbar */
+  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -32,22 +32,25 @@
   .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
-  .cc-fade-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 35px;
-    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
+  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-nav { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 15px 30px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    z-index: 100; 
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .cc-fade-bottom {
-    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
-    background: linear-gradient(to top, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
-  }
-
-  /* Navigasi Presisi (Logo Statis Murni) */
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
-  .cc-img { width:35px; height:35px; border-radius:10px; object-fit: cover; }
+  .cc-img { 
+    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
+  }
   
   /* Animasi Buat Stroke RGB */
   @keyframes rgbStroke {
@@ -56,7 +59,7 @@
   }
 
   /* Bubble Tutorial RGB */
-  .cc-container { padding: 10px 30px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -67,6 +70,7 @@
     animation: rgbStroke 4s linear infinite;
     overflow: hidden; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
   }
 
   .cc-tutorial-img {
@@ -78,6 +82,44 @@
   }
 
   .cc-tutorial-body { padding: 25px 20px; }
+
+  /* ===== 3 TOMBOL TAB ===== */
+  .cc-tab-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-tab-btn {
+    padding: 12px 6px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-tab-btn.active {
+    background: linear-gradient(135deg, #29e0c9, #1fb3a1);
+    color: #05060a;
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.3);
+  }
+  .cc-tab-btn:active { transform: scale(0.97); }
+
+  /* Tab Content Panels */
+  .cc-tab-pane { display: none; }
+  .cc-tab-pane.active { display: block; }
 
   .cc-section-title {
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
@@ -91,7 +133,6 @@
   }
   .cc-paket-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
   .cc-paket-name { font-size: 13px; font-weight: 800; color: #fff; }
-  .cc-paket-price { font-size: 13px; font-weight: 800; color: #ffd23f; }
   .cc-paket-sub { font-size: 12px; color: #94a3b8; line-height: 1.5; }
   .cc-paket-badge {
     display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
@@ -138,45 +179,78 @@
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BUTTON (Tepat Diatas Pintasan/Bottom Nav) ============ */
+  /* ============ STICKY ORDER BAR ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
     left: 0;
     width: 100vw;
-    padding: 10px 20px;
-    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    padding: 10px 16px;
+    background: linear-gradient(to top, #05060a 90%, transparent 100%);
     z-index: 999998;
     display: flex;
     justify-content: center;
   }
-  .cc-sticky-order-btn {
+  .cc-sticky-box {
     width: 100%;
     max-width: 800px;
-    padding: 14px;
-    border-radius: 14px;
+    background: #0d0f16;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  }
+  .cc-sticky-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cc-sticky-product-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cc-sticky-product-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .cc-sticky-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-sticky-order-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #05060a;
     background: linear-gradient(90deg, #29e0c9, #7c5cff);
-    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.35);
     transition: transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR (Pintasan Bawah) ============ */
+  /* ============ BOTTOM FLOATING NAVBAR ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(13, 15, 22, 0.75);
+    background: rgba(13, 15, 22, 0.85);
     backdrop-filter: blur(15px);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
@@ -286,19 +360,38 @@
     letter-spacing: 0.5px; margin-bottom: 10px; display: block;
   }
 
-  /* Select paket */
-  .cc-select-wrap { margin-bottom: 20px; position: relative; }
-  select.cc-input {
-    width: 100%; padding: 13px 14px; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
-    color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
-    outline: none; appearance: none; -webkit-appearance: none;
+  /* ===== CARD BATU-BAT (GRID PILIHAN PAKET/LAYANAN) DI DALAM MODAL ===== */
+  .cc-paket-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
   }
-  select.cc-input option { background: #0d0f16; color: #fff; }
-  select.cc-input:focus { border-color: #29e0c9; }
-  .cc-select-arrow {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    pointer-events: none; color: #94a3b8; font-size: 12px;
+  .cc-paket-option-card {
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 12px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .cc-paket-option-card.selected {
+    border-color: #29e0c9;
+    background: rgba(41,224,201,0.1);
+    box-shadow: 0 0 0 1px rgba(41,224,201,0.3);
+  }
+  .cc-paket-option-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+  }
+  .cc-paket-option-price {
+    font-size: 11px;
+    font-weight: 800;
+    color: #29e0c9;
   }
 
   /* Qty stepper */
@@ -410,144 +503,133 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <div class="cc-fade-top"></div>
-  <div class="cc-fade-bottom"></div>
-
   <div class="cc-nav">
     <div class="cc-brand">
-      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
+      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
       CO CENTER
     </div>
   </div>
 
   <div class="cc-container">
     <div class="cc-tutorial-bubble">
-
       <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhg4GM697Z1EZr8ZnSvam1xA_8o8WZOYoqN2y2muYdz2uZ_uFxEuGrNAJ0V_yqcVzuQlyK90UeQTxAxJDtBFNl9IT8hOb8AxXIvLnVM8rAwD99RJkl52Hj2TeCmqqwQe8etytiei0uVe4lWUFn0vZXjfwrsvymaCB76NusuYt9NOPe_s_TLpDCwV7xtvdiu/s1600/e8b6516223465d6adfee34777c0e8de0.jpg" alt="Telkomsel Internet Resmi">
-
+      
       <div class="cc-tutorial-body">
-
-        <h2 class="cc-section-title">📶 TELKOMSEL INTERNET & DATA 📶</h2>
-        <div class="cc-intro-text">
-          <strong>PAKET DATA ALL NETWORK TELKOMSEL RESMI</strong><br><br>
-          Kuota super ngebut, jaringan terluas, langsung masuk ke nomor Telkomsel kamu tanpa ribet. Tersedia pilihan harian hingga bulanan sesuai kebutuhan.<br><br>
-          <span class="cc-highlight-text">⚡ Berlaku All Net & Jaringan Nasional Telkomsel</span>
+        
+        <div class="cc-tab-buttons">
+          <button class="cc-tab-btn active" data-tab="tab-deskripsi">Deskripsi & Benefit</button>
+          <button class="cc-tab-btn" data-tab="tab-cara">Cara Order</button>
+          <button class="cc-tab-btn" data-tab="tab-garansi">Garansi</button>
         </div>
 
-        <h2 class="cc-section-title">📦 PILIHAN PAKET TELKOMSEL</h2>
-        <div class="cc-paket-list">
+        <div class="cc-tab-pane active" id="tab-deskripsi">
+          <h2 class="cc-section-title">📶 TELKOMSEL INTERNET & DATA 📶</h2>
+          <div class="cc-intro-text">
+            <strong>PAKET DATA ALL NETWORK TELKOMSEL RESMI</strong><br><br>
+            Kuota super ngebut, jaringan terluas, langsung masuk ke nomor Telkomsel kamu tanpa ribet. Tersedia pilihan harian hingga bulanan sesuai kebutuhan.<br><br>
+            <span class="cc-highlight-text">⚡ Berlaku All Net & Jaringan Nasional Telkomsel</span>
+          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Cek Paket Lainnya</span>
-              <span class="cc-paket-price">Kondisional</span>
+          <h2 class="cc-section-title">📦 PILIHAN PAKET TELKOMSEL</h2>
+          <div class="cc-paket-list">
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 8GB</span>
+              </div>
+              <div class="cc-paket-sub">8GB Paket Internet All Net · Masa aktif 1 Hari</div>
             </div>
-            <div class="cc-paket-sub">Layanan pengecekan ketersediaan atau opsi paket internet lainnya</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 8GB</span>
-              <span class="cc-paket-price">Rp12.500</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 8GB</span>
+              </div>
+              <div class="cc-paket-sub">8GB Paket Internet All Net · Masa aktif 3 Hari</div>
             </div>
-            <div class="cc-paket-sub">8GB Paket Internet All Net · Masa aktif 1 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 8GB</span>
-              <span class="cc-paket-price">Rp30.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 15GB <span class="cc-paket-badge">Hemat</span></span>
+              </div>
+              <div class="cc-paket-sub">15GB All Net · Masa aktif 3 Hari</div>
             </div>
-            <div class="cc-paket-sub">8GB Paket Internet All Net · Masa aktif 3 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 15GB <span class="cc-paket-badge">Hemat</span></span>
-              <span class="cc-paket-price">Rp52.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 2.5GB</span>
+              </div>
+              <div class="cc-paket-sub">2,5GB All Net · Masa aktif 5 Hari</div>
             </div>
-            <div class="cc-paket-sub">15GB All Net · Masa aktif 3 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 2.5GB</span>
-              <span class="cc-paket-price">Rp14.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 3GB</span>
+              </div>
+              <div class="cc-paket-sub">3GB All Net · Masa aktif 7 Hari</div>
             </div>
-            <div class="cc-paket-sub">2,5GB All Net · Masa aktif 5 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 3GB</span>
-              <span class="cc-paket-price">Rp21.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 5GB</span>
+              </div>
+              <div class="cc-paket-sub">5GB All Net · Masa aktif 7 Hari</div>
             </div>
-            <div class="cc-paket-sub">3GB All Net · Masa aktif 7 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 5GB</span>
-              <span class="cc-paket-price">Rp28.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 10GB <span class="cc-paket-badge">Popular</span></span>
+              </div>
+              <div class="cc-paket-sub">10GB All Net · Masa aktif 7 Hari</div>
             </div>
-            <div class="cc-paket-sub">5GB All Net · Masa aktif 7 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 10GB <span class="cc-paket-badge">Popular</span></span>
-              <span class="cc-paket-price">Rp43.500</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 10GB</span>
+              </div>
+              <div class="cc-paket-sub">10GB All Net · Masa aktif 30 Hari</div>
             </div>
-            <div class="cc-paket-sub">10GB All Net · Masa aktif 7 Hari</div>
-          </div>
 
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 10GB</span>
-              <span class="cc-paket-price">Rp53.000</span>
+            <div class="cc-paket-card">
+              <div class="cc-paket-head">
+                <span class="cc-paket-name">Telkomsel Data 15GB <span class="cc-paket-badge">Best Value</span></span>
+              </div>
+              <div class="cc-paket-sub">15GB All Net · Masa aktif 30 Hari</div>
             </div>
-            <div class="cc-paket-sub">10GB All Net · Masa aktif 30 Hari</div>
-          </div>
-
-          <div class="cc-paket-card">
-            <div class="cc-paket-head">
-              <span class="cc-paket-name">Telkomsel Data 15GB <span class="cc-paket-badge">Best Value</span></span>
-              <span class="cc-paket-price">Rp68.000</span>
-            </div>
-            <div class="cc-paket-sub">15GB All Net · Masa aktif 30 Hari</div>
-          </div>
-
-        </div>
-
-        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
-        <ol class="cc-tutorial-list">
-          <li>Paket / Layanan dikirim langsung ke nomor Telkomsel yang kamu input, pastikan nomor aktif.</li>
-          <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
-          <li>Estimasi proses pengiriman: 5 Menit - 1 Jam (kondisional).</li>
-          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
-        </ol>
-
-        <div class="cc-warning-box">
-          <div class="cc-warning-title">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-            Perhatian Nomor Tujuan
-          </div>
-          <div class="cc-warning-text">
-            Cek ulang nomor Telkomsel kamu <b>sebelum</b> kirim order. Kuota dikirim otomatis sesuai nomor yang diinput di form, <b>bukan tanggung jawab Admin</b> kalau nomor salah ketik/keliru.<br><br>
-            <b>Kesalahan input nomor BUKAN alasan yang bisa diajukan untuk klaim refund atau garansi.</b> Jadi pastikan nomor yang kamu masukin udah bener sebelum konfirmasi ke Admin. Salah input = tanggung jawab pembeli sepenuhnya.
           </div>
         </div>
 
-        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
-        <ul class="cc-refund-list">
-          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
-          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
-          <li><span class="cc-refund-label">Pengecualian:</span> ❌ Kesalahan input nomor tujuan TIDAK termasuk dalam cakupan garansi/refund.</li>
-          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
-        </ul>
+        <div class="cc-tab-pane" id="tab-cara">
+          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <ol class="cc-tutorial-list">
+            <li>Paket / Layanan dikirim langsung ke nomor Telkomsel yang kamu input, pastikan nomor aktif.</li>
+            <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
+            <li>Estimasi proses pengiriman: 5 Menit - 1 Jam (kondisional).</li>
+            <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+          </ol>
+        </div>
 
-        <div class="cc-footer-text">
-          Terima kasih telah membaca rules.<br>Cek nomor baik-baik, Be smart buyers, guys! 🚀
+        <div class="cc-tab-pane" id="tab-garansi">
+          <div class="cc-warning-box">
+            <div class="cc-warning-title">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+              Perhatian Nomor Tujuan
+            </div>
+            <div class="cc-warning-text">
+              Cek ulang nomor Telkomsel kamu <b>sebelum</b> kirim order. Kuota dikirim otomatis sesuai nomor yang diinput di form, <b>bukan tanggung jawab Admin</b> kalau nomor salah ketik/keliru.<br><br>
+              <b>Kesalahan input nomor BUKAN alasan yang bisa diajukan untuk klaim refund atau garansi.</b> Jadi pastikan nomor yang kamu masukin udah bener sebelum konfirmasi ke Admin. Salah input = tanggung jawab pembeli sepenuhnya.
+            </div>
+          </div>
+
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <ul class="cc-refund-list">
+            <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
+            <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
+            <li><span class="cc-refund-label">Pengecualian:</span> ❌ Kesalahan input nomor tujuan TIDAK termasuk dalam cakupan garansi/refund.</li>
+            <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+          </ul>
+
+          <div class="cc-footer-text">
+            Terima kasih telah membaca rules.<br>Cek nomor baik-baik, Be smart buyers, guys! 🚀
+          </div>
         </div>
 
       </div>
@@ -555,7 +637,16 @@
   </div>
 
   <div class="cc-sticky-order-wrap">
-    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+    <div class="cc-sticky-box">
+      <div class="cc-sticky-product-info">
+        <img class="cc-sticky-product-logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhg4GM697Z1EZr8ZnSvam1xA_8o8WZOYoqN2y2muYdz2uZ_uFxEuGrNAJ0V_yqcVzuQlyK90UeQTxAxJDtBFNl9IT8hOb8AxXIvLnVM8rAwD99RJkl52Hj2TeCmqqwQe8etytiei0uVe4lWUFn0vZXjfwrsvymaCB76NusuYt9NOPe_s_TLpDCwV7xtvdiu/s1600/e8b6516223465d6adfee34777c0e8de0.jpg" alt="Logo">
+        <div>
+          <div class="cc-sticky-product-name">Telkomsel Internet</div>
+          <div class="cc-sticky-product-price" id="sticky-price-display">Pilih Paket yang Tersedia</div>
+        </div>
+      </div>
+      <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order</button>
+    </div>
   </div>
 
   <div class="cc-bottom-nav">
@@ -590,35 +681,62 @@
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhg4GM697Z1EZr8ZnSvam1xA_8o8WZOYoqN2y2muYdz2uZ_uFxEuGrNAJ0V_yqcVzuQlyK90UeQTxAxJDtBFNl9IT8hOb8AxXIvLnVM8rAwD99RJkl52Hj2TeCmqqwQe8etytiei0uVe4lWUFn0vZXjfwrsvymaCB76NusuYt9NOPe_s_TLpDCwV7xtvdiu/s1600/e8b6516223465d6adfee34777c0e8de0.jpg" alt="Telkomsel Paket">
       <div>
         <div class="cc-modal-item-name" id="modal-product-title">Telkomsel Internet</div>
-        <div class="cc-modal-item-sub" id="modal-item-sub">8GB · 1 Hari</div>
-        <div class="cc-modal-item-price" id="modal-item-price">Rp12.500 / slot</div>
+        <div class="cc-modal-item-sub" id="modal-item-sub">Silahkan Pilih Jenis Layanan</div>
+        <div class="cc-modal-item-price" id="modal-item-price">Pilih layanan di bawah</div>
       </div>
     </div>
 
     <label class="cc-field-label">Pilih Jenis Layanan</label>
-    <div class="cc-select-wrap">
-      <select class="cc-input" id="service-type-select">
-        <option value="paket">📦 Paket Data Internet Telkomsel</option>
-        <option value="cek_lainnya">🔍 Cek Paket Lainnya</option>
-      </select>
-      <span class="cc-select-arrow">▼</span>
+    <div class="cc-paket-options-grid" id="service-type-grid">
+      <div class="cc-paket-option-card selected" data-service="paket">
+        <div class="cc-paket-option-name">📦 Paket Data</div>
+        <div class="cc-paket-option-price">Pilih Varian</div>
+      </div>
+      <div class="cc-paket-option-card" data-service="request">
+        <div class="cc-paket-option-name">🔍 Quota Request</div>
+        <div class="cc-paket-option-price">Cek Stok/Custom</div>
+      </div>
     </div>
 
     <div id="paket-section-wrap">
       <label class="cc-field-label">Pilih Paket</label>
-      <div class="cc-select-wrap">
-        <select class="cc-input" id="paket-select">
-          <option value="12500|8GB · 1 Hari">Telkomsel Data 8GB - 1 Hari (Rp12.500)</option>
-          <option value="30000|8GB · 3 Hari">Telkomsel Data 8GB - 3 Hari (Rp30.000)</option>
-          <option value="52000|15GB · 3 Hari">Telkomsel Data 15GB - 3 Hari (Rp52.000)</option>
-          <option value="14000|2.5GB · 5 Hari">Telkomsel Data 2,5GB - 5 Hari (Rp14.000)</option>
-          <option value="21000|3GB · 7 Hari">Telkomsel Data 3GB - 7 Hari (Rp21.000)</option>
-          <option value="28000|5GB · 7 Hari">Telkomsel Data 5GB - 7 Hari (Rp28.000)</option>
-          <option value="43500|10GB · 7 Hari">Telkomsel Data 10GB - 7 Hari (Rp43.500)</option>
-          <option value="53000|10GB · 30 Hari">Telkomsel Data 10GB - 30 Hari (Rp53.000)</option>
-          <option value="68000|15GB · 30 Hari">Telkomsel Data 15GB - 30 Hari (Rp68.000)</option>
-        </select>
-        <span class="cc-select-arrow">▼</span>
+      <div class="cc-paket-options-grid" id="paket-options-grid">
+        <div class="cc-paket-option-card" data-price="12500" data-sub="8GB · 1 Hari">
+          <div class="cc-paket-option-name">8GB - 1 Hari</div>
+          <div class="cc-paket-option-price">Rp12.500</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="30000" data-sub="8GB · 3 Hari">
+          <div class="cc-paket-option-name">8GB - 3 Hari</div>
+          <div class="cc-paket-option-price">Rp30.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="52000" data-sub="15GB · 3 Hari">
+          <div class="cc-paket-option-name">15GB - 3 Hari</div>
+          <div class="cc-paket-option-price">Rp52.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="14000" data-sub="2.5GB · 5 Hari">
+          <div class="cc-paket-option-name">2,5GB - 5 Hari</div>
+          <div class="cc-paket-option-price">Rp14.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="21000" data-sub="3GB · 7 Hari">
+          <div class="cc-paket-option-name">3GB - 7 Hari</div>
+          <div class="cc-paket-option-price">Rp21.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="28000" data-sub="5GB · 7 Hari">
+          <div class="cc-paket-option-name">5GB - 7 Hari</div>
+          <div class="cc-paket-option-price">Rp28.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="43500" data-sub="10GB · 7 Hari">
+          <div class="cc-paket-option-name">10GB - 7 Hari</div>
+          <div class="cc-paket-option-price">Rp43.500</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="53000" data-sub="10GB · 30 Hari">
+          <div class="cc-paket-option-name">10GB - 30 Hari</div>
+          <div class="cc-paket-option-price">Rp53.000</div>
+        </div>
+        <div class="cc-paket-option-card" data-price="68000" data-sub="15GB · 30 Hari">
+          <div class="cc-paket-option-name">15GB - 30 Hari</div>
+          <div class="cc-paket-option-price">Rp68.000</div>
+        </div>
       </div>
 
       <label class="cc-field-label">Jumlah Slot</label>
@@ -631,16 +749,13 @@
       </div>
     </div>
 
-    <div id="cek-lainnya-section-wrap" style="display: none;">
-      <label class="cc-field-label">Cek Paket Lainnya (Nama / Detail Paket)</label>
+    <div id="request-section-wrap" style="display: none;">
+      <label class="cc-field-label">Tulis Permintaan Quota / Paket</label>
       <div class="cc-input-wrap">
-        <div class="cc-voucher-row">
-          <input type="text" class="cc-input" id="cek-lainnya-input" placeholder="ketik nama/detail paket yg mau dicek">
-          <button type="button" class="cc-voucher-btn" id="check-lainnya-btn">Cek</button>
-        </div>
-        <div class="cc-input-hint" id="cek-lainnya-hint">
+        <input type="text" class="cc-input" id="request-input" placeholder="contoh: Telkomsel Combo Sakti / Paket Lain">
+        <div class="cc-input-hint warn" style="color: #ffd23f !important;">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-          Masukkan nama atau detail paket lainnya yang ingin dicek.
+          Alert: Quota Request mungkin butuh waktu sedikit lama dibanding Paket Data yang tersedia.
         </div>
       </div>
     </div>
@@ -655,9 +770,9 @@
         <div class="cc-input-hint" id="voucher-hint">Masukkan kode promo jika ada.</div>
       </div>
 
-      <div class="cc-total-row">
+      <div class="cc-total-row" id="total-price-row">
         <span class="cc-total-label">Total Harga</span>
-        <span class="cc-total-value" id="total-price">Rp12.500</span>
+        <span class="cc-total-value" id="total-price">Rp0</span>
       </div>
     </div>
 
@@ -701,7 +816,26 @@
 </div>
 
 <script>
-  // ============ MODAL LOGIC ============
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= TAB TOGGLE LOGIC =================
+  const tabBtns = document.querySelectorAll('.cc-tab-btn');
+  const tabPanes = document.querySelectorAll('.cc-tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -721,21 +855,28 @@
   modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
 
   // Elemen Form
-  const serviceTypeSelect = document.getElementById('service-type-select');
-  const paketSectionWrap = document.getElementById('paket-section-wrap');
-  const cekLainnyaSectionWrap = document.getElementById('cek-lainnya-section-wrap');
-  const voucherSectionWrap = document.getElementById('voucher-section-wrap');
-  
   const modalProductTitle = document.getElementById('modal-product-title');
   const modalItemSub = document.getElementById('modal-item-sub');
   const modalItemPrice = document.getElementById('modal-item-price');
+  const stickyPriceDisplay = document.getElementById('sticky-price-display');
   
-  const paketSelect = document.getElementById('paket-select');
-  let pricePerSlot = 12500;
+  const serviceCards = document.querySelectorAll('#service-type-grid .cc-paket-option-card');
+  const paketSectionWrap = document.getElementById('paket-section-wrap');
+  const requestSectionWrap = document.getElementById('request-section-wrap');
+  const voucherSectionWrap = document.getElementById('voucher-section-wrap');
+  const totalPriceRow = document.getElementById('total-price-row');
+  
+  const paketOptionCards = document.querySelectorAll('#paket-options-grid .cc-paket-option-card');
+  const requestInput = document.getElementById('request-input');
+  const userPhoneInput = document.getElementById('user-phone');
+  const tncCheckbox = document.getElementById('tnc-checkbox');
+  const confirmBtn = document.getElementById('confirm-order');
+  
+  let currentServiceType = 'paket';
+  let pricePerSlot = 0;
+  let selectedSubInfo = null;
   let qty = 1;
-  let currentMode = 'paket'; // 'paket' atau 'cek_lainnya'
   let activeVoucher = null;
-  let verifiedLainnyaVal = null;
 
   const qtyValueEl = document.getElementById('qty-value');
   const totalPriceEl = document.getElementById('total-price');
@@ -745,6 +886,11 @@
   }
 
   function updateTotal() {
+    if (currentServiceType === 'request') return;
+    if (!pricePerSlot) {
+      totalPriceEl.textContent = 'Rp0';
+      return;
+    }
     let subtotal = qty * pricePerSlot;
 
     if (activeVoucher) {
@@ -761,35 +907,78 @@
     totalPriceEl.textContent = formatRupiah(subtotal);
   }
 
-  function updatePaketInfo() {
-    const [price, sub] = paketSelect.value.split('|');
-    pricePerSlot = parseInt(price, 10);
-    modalItemSub.textContent = sub;
-    modalItemPrice.textContent = formatRupiah(pricePerSlot) + ' / slot';
-    updateTotal();
-  }
-
-  // Switch Jenis Layanan (Paket vs Cek Paket Lainnya)
-  serviceTypeSelect.addEventListener('change', () => {
-    currentMode = serviceTypeSelect.value;
-    if (currentMode === 'paket') {
+  function updateDisplay() {
+    if (currentServiceType === 'paket') {
       paketSectionWrap.style.display = 'block';
-      cekLainnyaSectionWrap.style.display = 'none';
+      requestSectionWrap.style.display = 'none';
       voucherSectionWrap.style.display = 'block';
+      totalPriceRow.style.display = 'flex';
       modalProductTitle.textContent = 'Telkomsel Internet';
-      updatePaketInfo();
+
+      if (!selectedSubInfo) {
+        modalItemSub.textContent = 'Silahkan Pilih Paket';
+        modalItemPrice.textContent = 'Pilih varian di bawah';
+        stickyPriceDisplay.textContent = 'Pilih Paket yang Tersedia';
+      } else {
+        modalItemSub.textContent = selectedSubInfo;
+        modalItemPrice.textContent = formatRupiah(pricePerSlot) + ' / slot';
+        stickyPriceDisplay.textContent = selectedSubInfo;
+      }
     } else {
       paketSectionWrap.style.display = 'none';
-      cekLainnyaSectionWrap.style.display = 'block';
+      requestSectionWrap.style.display = 'block';
       voucherSectionWrap.style.display = 'none';
-      modalProductTitle.textContent = 'Cek Paket Lainnya';
-      modalItemSub.textContent = verifiedLainnyaVal ? `Cek: ${verifiedLainnyaVal}` : 'Belum diisi';
-      modalItemPrice.textContent = 'Kondisional';
+      totalPriceRow.style.display = 'none';
+      modalProductTitle.textContent = 'Quota Request Telkomsel';
+
+      modalItemSub.textContent = 'Quota Request (Custom/Cek Ketersediaan)';
+      modalItemPrice.textContent = 'Harga dikonfirmasi Admin via WA';
+      stickyPriceDisplay.textContent = 'Quota Request';
     }
+    updateValidation();
+  }
+
+  function updateValidation() {
+    const tncChecked = tncCheckbox.checked;
+    const phoneVal = userPhoneInput.value.trim();
+
+    if (currentServiceType === 'paket') {
+      confirmBtn.disabled = !(tncChecked && phoneVal !== '' && selectedSubInfo !== null);
+    } else {
+      const reqVal = requestInput.value.trim();
+      confirmBtn.disabled = !(tncChecked && phoneVal !== '' && reqVal !== '');
+    }
+  }
+
+  // Pilih Jenis Layanan
+  serviceCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      serviceCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      currentServiceType = card.getAttribute('data-service');
+      updateDisplay();
+    });
   });
 
-  paketSelect.addEventListener('change', updatePaketInfo);
-  updatePaketInfo();
+  // Pilih Paket Kartu
+  paketOptionCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      paketOptionCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      pricePerSlot = parseInt(card.getAttribute('data-price'), 10);
+      selectedSubInfo = card.getAttribute('data-sub');
+      updateDisplay();
+      updateTotal();
+    });
+  });
+
+  requestInput.addEventListener('input', updateValidation);
+  userPhoneInput.addEventListener('input', updateValidation);
+  tncCheckbox.addEventListener('change', updateValidation);
+
+  updateDisplay();
 
   // Qty stepper
   document.getElementById('qty-minus').addEventListener('click', () => {
@@ -799,32 +988,17 @@
     if (qty < 99) { qty++; qtyValueEl.textContent = qty; updateTotal(); }
   });
 
-  // Cek Paket Lainnya Logic (Buyer yang input sendiri)
-  const cekLainnyaInput = document.getElementById('cek-lainnya-input');
-  const cekLainnyaBtn = document.getElementById('check-lainnya-btn');
-  const cekLainnyaHint = document.getElementById('cek-lainnya-hint');
-
-  cekLainnyaBtn.addEventListener('click', () => {
-    const val = cekLainnyaInput.value.trim();
-    if (!val) {
-      cekLainnyaHint.innerHTML = `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg> Masukkan nama atau detail paket terlebih dahulu.`;
-      cekLainnyaHint.className = 'cc-input-hint warn';
-      verifiedLainnyaVal = null;
-      return;
-    }
-
-    verifiedLainnyaVal = val;
-    cekLainnyaHint.innerHTML = `✔️ Paket "${val}" siap dikirim!`;
-    cekLainnyaHint.className = 'cc-input-hint success';
-    modalItemSub.textContent = `Cek: ${val}`;
-  });
-
   // Voucher Diskon Logic
   const voucherInput = document.getElementById('voucher-code');
   const voucherBtn = document.getElementById('apply-voucher');
   const voucherHint = document.getElementById('voucher-hint');
 
   voucherBtn.addEventListener('click', () => {
+    if (!selectedSubInfo) {
+      voucherHint.textContent = '⚠️ Pilih paket terlebih dahulu!';
+      voucherHint.className = 'cc-input-hint warn';
+      return;
+    }
     const code = voucherInput.value.trim().toUpperCase();
     if (!code) {
       voucherHint.textContent = '⚠️ Masukkan kode voucher terlebih dahulu.';
@@ -850,21 +1024,14 @@
   let selectedMethod = 'QRIS';
   const payOptions = document.querySelectorAll('.cc-pay-option');
   payOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
       payOptions.forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
       selectedMethod = opt.getAttribute('data-method');
     });
   });
 
-  // Checkbox S&K -> enable/disable tombol konfirmasi
-  const tncCheckbox = document.getElementById('tnc-checkbox');
-  const confirmBtn = document.getElementById('confirm-order');
-  tncCheckbox.addEventListener('change', () => {
-    confirmBtn.disabled = !tncCheckbox.checked;
-  });
-
-  // Format tanggal real-time (Indonesia)
   function getFormattedDate() {
     const now = new Date();
     const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -879,20 +1046,17 @@
   }
 
   // Confirm order -> generate WA message
-  document.getElementById('confirm-order').addEventListener('click', () => {
-    if (!tncCheckbox.checked) return;
+  confirmBtn.addEventListener('click', () => {
+    if (confirmBtn.disabled) return;
 
     const tanggal = getFormattedDate();
     const waNumber = '6288971071456';
-    const phoneInput = document.getElementById('user-phone').value.trim();
-    const phoneLine = phoneInput ? phoneInput : '(belum diisi)';
+    const phoneInput = userPhoneInput.value.trim();
 
     let message = '';
 
-    if (currentMode === 'paket') {
-      const [, subInfo] = paketSelect.value.split('|');
-      const itemName = `Telkomsel Internet (${subInfo})`;
-
+    if (currentServiceType === 'paket') {
+      const itemName = `Telkomsel Internet (${selectedSubInfo})`;
       let finalSubtotal = qty * pricePerSlot;
       let voucherText = 'Tidak pakai';
       if (activeVoucher) {
@@ -907,16 +1071,16 @@ Nama Item : ${itemName}
 Jumlah Slot : ${qty}
 Kode Voucher : ${voucherText}
 Total Harga : ${totalHargaText}
-Nomor Telepon Telkomsel Tujuan : ${phoneLine}
+Nomor Telepon Telkomsel Tujuan : ${phoneInput}
 Tanggal Pemesanan : ${tanggal}
 Metode Pembayaran : ${selectedMethod}
 Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund`;
     } else {
-      const cekLainnyaValLine = verifiedLainnyaVal ? verifiedLainnyaVal : (cekLainnyaInput.value.trim() || '(belum diinput)');
+      const reqText = requestInput.value.trim();
       message =
-`Jenis Layanan : Cek Paket Lainnya
-Paket yang Ditanyakan : ${cekLainnyaValLine}
-Nomor Telepon Telkomsel Tujuan : ${phoneLine}
+`Jenis Layanan : Quota Request (Cek Ketersediaan/Custom)
+Request Paket : ${reqText}
+Nomor Telepon Telkomsel Tujuan : ${phoneInput}
 Tanggal Pemesanan : ${tanggal}
 Metode Pembayaran : ${selectedMethod}
 Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund`;
@@ -925,6 +1089,8 @@ Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujua
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
   });
+
+});
 </script>
 
 </body>

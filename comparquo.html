@@ -24,17 +24,38 @@
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding-bottom: 50px;
+    padding-bottom: 120px;
   }
 
   .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; }
-  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+  /* ============ NAVIGASI BRAND (FIXED, DARI KODE 1) ============ */
+  .cc-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 100;
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .cc-brand-wrap { display:flex; flex-direction:column; gap:2px; }
+  .cc-brand-row { display:flex; align-items:center; gap:12px; }
+  .cc-brand { font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+  .cc-subtitle {
+    font-size: 10px; font-weight:700; color:#a9b2c3;
+    letter-spacing: 2px; text-transform: uppercase; margin-left: 47px;
+  }
 
   .cc-img {
     width:35px; height:35px; border-radius:10px; cursor:pointer;
+    object-fit: cover;
     transition: transform 0.5s ease;
     transform: rotate(var(--rot, 0deg));
   }
@@ -75,20 +96,13 @@
     content:''; flex:1; height:1px; background: rgba(41,224,201,0.25);
   }
 
-  /* ===== BRAND SUBTITLE ===== */
-  .cc-brand-wrap { display:flex; flex-direction:column; gap:2px; }
-  .cc-brand-row { display:flex; align-items:center; gap:12px; }
-  .cc-subtitle {
-    font-size: 10px; font-weight:700; color:#a9b2c3;
-    letter-spacing: 2px; text-transform: uppercase; margin-left: 47px;
-  }
-
   /* ===== OPERATOR PILLS (FILTER UTAMA) ===== */
   .cc-op-wrapper {
     display: flex;
     overflow-x: auto;
     gap: 12px;
     margin: 15px 30px 20px;
+    margin-top: 95px;
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -118,7 +132,7 @@
     color: #0b1226;
   }
 
-  /* ===== AKORDION / CARD KATEGORI DENGAN BACKGROUND GRADIENT FADE DI KIRI ===== */
+  /* ===== AKORDION / CARD KATEGORI ===== */
   .cc-accordion-list {
     display: flex;
     flex-direction: column;
@@ -130,9 +144,6 @@
     border-radius: 20px;
     overflow: hidden;
     background-color: #150c22;
-    background-size: cover;
-    background-position: left center;
-    background-repeat: no-repeat;
     border: 2px solid transparent;
     background-clip: padding-box;
     position: relative;
@@ -140,11 +151,22 @@
     transition: transform 0.2s ease;
   }
 
-  /* Overlay gradient: padat di kiri (semi transparan gelap agar teks terbaca), makin ke kanan makin transparan */
+  .cc-acc-bgimg {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 84px;
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   .cc-acc-card::after {
     content: '';
     position: absolute;
-    inset: 0;
+    top: 0; left: 0; right: 0;
+    height: 84px;
     background: linear-gradient(90deg, rgba(15, 10, 25, 0.92) 0%, rgba(15, 10, 25, 0.75) 45%, rgba(15, 10, 25, 0.3) 100%);
     z-index: 1;
     pointer-events: none;
@@ -300,21 +322,50 @@
     font-size: 12px;
   }
 
-  /* Footer Section */
-  .cc-footer {
-    display: flex; align-items: center; justify-content: center; gap: 20px;
-    padding: 20px 30px 30px;
+  /* ============ BOTTOM FLOATING NAVBAR (DARI KODE 1) ============ */
+  .cc-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background: rgba(13, 15, 22, 0.85);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 999999;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
   }
-  .cc-footer-icon {
-    width: 48px; height: 48px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    border: 1.5px solid #ffd23f; background: #0b1226;
-    text-decoration: none; cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  .cc-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: #a9b2c3;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
     -webkit-tap-highlight-color: transparent;
   }
-  .cc-footer-icon:active { transform: scale(0.92); }
-  .cc-footer-icon svg { width: 22px; height: 22px; fill: #ffd23f; }
+  .cc-bottom-item svg {
+    width: 22px;
+    height: 22px;
+    fill: #a9b2c3;
+    transition: fill 0.2s ease, transform 0.2s ease;
+  }
+  .cc-bottom-item:active {
+    transform: scale(0.92);
+  }
+  .cc-bottom-item:hover, .cc-bottom-item.active {
+    color: #ffd23f;
+  }
+  .cc-bottom-item:hover svg, .cc-bottom-item.active svg {
+    fill: #ffd23f;
+  }
 </style>
 </head>
 <body>
@@ -323,7 +374,7 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (dari kode 1, brand tetap bisa klik untuk toggle menu dropdown) -->
   <div class="cc-nav">
     <div class="cc-brand-wrap">
       <div class="cc-brand-row cc-brand">
@@ -352,20 +403,28 @@
 
   <!-- SECTION AKORDION KATEGORI BERDASARKAN OPERATOR TERPILIH -->
   <div class="cc-section">
-    <div class="cc-section-title" id="cc-current-op-title">Pilih Kategori: Indosat</div>
-    
     <div class="cc-accordion-list" id="cc-accordion-container">
       <!-- Diisi dinamis via JS -->
     </div>
   </div>
 
-  <!-- FOOTER SOCIAL -->
-  <div class="cc-footer">
-    <a class="cc-footer-icon" href="https://instagram.com/comersioid" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.25.07 1.63.07 4.81 0 3.19-.01 3.56-.07 4.81-.15 3.22-1.66 4.77-4.92 4.92-1.25.06-1.62.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.25-.07-1.62-.07-4.81 0-3.18.02-3.56.07-4.81.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.35 2.63 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.63 6.97-6.98.06-1.28.08-1.69.08-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.63-6.78-6.97-6.98C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.4-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg>
+  <!-- BOTTOM NAV (FAB, dari kode 1) -->
+  <div class="cc-bottom-nav">
+    <a class="cc-bottom-item active" href="menu.html">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Menu
     </a>
-    <a class="cc-footer-icon" href="https://wa.me/6288971071456?text=Halo%20min%2C%20saya%20ingin%20konsultasi" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.48 1.34 5l-1.42 5.19 5.32-1.39a9.9 9.9 0 0 0 4.67 1.19h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.15.83.84-3.07-.2-.32a8.22 8.22 0 0 1-1.26-4.35c0-4.55 3.7-8.25 8.27-8.25a8.2 8.2 0 0 1 5.85 2.43 8.19 8.19 0 0 1 2.42 5.83c0 4.55-3.71 8.25-8.27 8.25zm4.53-6.18c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14-.01-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08 0 1.23.89 2.41 1.01 2.58.12.16 1.75 2.67 4.25 3.74.59.26 1.06.41 1.42.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+    <a class="cc-bottom-item" href="https://lynk.id/cocenter" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Lynk.id
+    </a>
+    <a class="cc-bottom-item" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      Transaksi
+    </a>
+    <a class="cc-bottom-item" href="menu.html#about">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      About Me
     </a>
   </div>
 
@@ -374,7 +433,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Map operator ke file HTML tujuannya masing-masing & link background icon masing-masing provider
+  // Map operator ke file HTML tujuannya masing-masing
   var OPERATOR_CONFIG = {
     "Axis": {
       link: "axis.html",
@@ -410,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Indosat", name: "Freedom Internet Harian 30GB All Net", price: "Rp26.500", sub: "30GB All Net · Masa aktif 3 Hari", cat: "untung" },
     { op: "Indosat", name: "Freedom Internet Harian 30GB All Net", price: "Rp28.500", sub: "30GB All Net · Masa aktif 5 Hari", cat: "untung" },
     { op: "Indosat", name: "Freedom Internet Harian 21GB", price: "Rp32.000", sub: "21GB All Net · Masa aktif 7 Hari", cat: "untung" },
-    { op: "Indosat", name: "Freedom Internet Bulanan 150GB", price: "Rp124.000", sub: "150GB All Net + Bonus Nelpon · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
+    { op: "Indosat", name: "Freedom Internet Bulanan 150GB", price: "Rp130.000", sub: "150GB All Net + Bonus Nelpon · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
 
     // === AXIS ===
     { op: "Axis", name: "Axis Warnet Unlimited 1 Jam", price: "Rp3.600", sub: "Unlimited Paket Internet All Net · 1 Jam", cat: "hemat" },
@@ -471,8 +530,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderAccordion() {
     var container = document.getElementById('cc-accordion-container');
-    var titleEl = document.getElementById('cc-current-op-title');
-    titleEl.innerText = "Pilih Kategori: " + currentOperator;
 
     var categories = [
       { id: "hemat", title: "Kuota Hemat", priceRange: "Paket irit & harian" },
@@ -482,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var config = OPERATOR_CONFIG[currentOperator] || { link: "#", bgImg: "" };
     var targetUrl = config.link;
-    var cardBgStyle = config.bgImg ? 'background-image: url(\'' + config.bgImg + '\');' : '';
+    var bgImgHtml = config.bgImg ? '<div class="cc-acc-bgimg" style="background-image: url(\'' + config.bgImg + '\');"></div>' : '';
 
     var html = '';
     categories.forEach(function(cat, index) {
@@ -491,7 +548,8 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       var isOpen = index === 0 ? ' open' : '';
-      html += '<div class="cc-acc-card' + isOpen + '" style="' + cardBgStyle + '">' +
+      html += '<div class="cc-acc-card' + isOpen + '">' +
+                bgImgHtml +
                 '<div class="cc-acc-header">' +
                   '<div class="cc-acc-info">' +
                     '<div class="cc-acc-title">' + cat.title + '</div>' +
@@ -526,7 +584,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     container.innerHTML = html;
 
-    // Pasang ulang event akordion
     var cards = container.querySelectorAll('.cc-acc-card');
     cards.forEach(function(card) {
       var header = card.querySelector('.cc-acc-header');
@@ -541,7 +598,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Interaksi Tombol Operator (Pills)
   var opPills = document.querySelectorAll('.cc-op-pill');
   var opWrapper = document.getElementById('cc-op-wrapper');
 
@@ -554,7 +610,6 @@ document.addEventListener('DOMContentLoaded', function () {
       currentOperator = pill.dataset.op;
       renderAccordion();
 
-      // Geser center pill aktif di layar kecil
       var wrapRect = opWrapper.getBoundingClientRect();
       var pillRect = pill.getBoundingClientRect();
       var offset = (pillRect.left + pillRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
@@ -582,7 +637,6 @@ document.addEventListener('DOMContentLoaded', function () {
     link.addEventListener('click', function (e) { e.stopPropagation(); });
   });
 
-  // Render awal (Default: Indosat)
   renderAccordion();
 
 });

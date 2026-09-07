@@ -9,70 +9,99 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&amp;display=swap" rel="stylesheet">
   <style type="text/css">
     * { box-sizing: border-box !important; margin: 0; padding: 0; font-family: 'JetBrains Mono', monospace !important; }
-    html, body { width: 100% !important; min-height: 100vh !important; background-color: #05060a !important; background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') !important; background-repeat: no-repeat !important; background-position: center center !important; background-size: cover !important; background-attachment: fixed !important; color: #fff !important; overflow-x: hidden !important; }
+    html, body { width: 100% !important; height: 100vh !important; background-color: #05060a !important; background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') !important; background-repeat: no-repeat !important; background-position: center center !important; background-size: cover !important; background-attachment: fixed !important; color: #fff !important; overflow: hidden !important; position: fixed; }
     a { color: inherit; }
     img { max-width: 100%; }
+
     .cc-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(3,4,8,.82); z-index: 0; pointer-events: none; }
-    .cc-wrapper { position: relative; z-index: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 20px 16px 50px; }
-    .cc-nav { position: relative; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; margin-bottom: 24px; z-index: 999; }
-    .cc-brand-group { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .cc-brand-logo { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; border-radius: 10px; flex-shrink: 0; }
-    .cc-brand-img { display: block; width: 34px; height: 34px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(255,255,255,.20); background: transparent !important; transform: rotate(0deg); transition: transform .5s cubic-bezier(.4,0,.2,1); }
-    .cc-brand-img.spin-half { transform: rotate(180deg); }
-    .cc-brand-img.spin-full { transform: rotate(360deg); }
-    .cc-brand-text { color: #fff; font-size: 18px; font-weight: 800; text-decoration: none; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
-    .cc-menu-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 42px; height: 42px; padding: 10px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; cursor: pointer; transition: transform .2s ease; -webkit-tap-highlight-color: transparent; }
-    .cc-menu-btn:active { transform: scale(.95); }
-    .cc-menu-btn span { display: block; width: 18px; height: 2px; background: #fff; border-radius: 2px; }
-    .cc-menu { position: absolute; top: calc(100% + 10px); right: 0; z-index: 1000; display: none; width: 220px; padding: 10px; background: rgba(12,14,20,.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.15); border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,.60); pointer-events: auto; }
-    .cc-menu.active { display: block; animation: ccFadeIn .2s ease; }
-    @keyframes ccFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-    .cc-menu a { display: block; padding: 11px 14px; color: #f5f7fa; font-size: 13px; font-weight: 700; text-decoration: none; border-radius: 10px; transition: background .2s ease, color .2s ease; }
-    .cc-menu a:hover { color: #29e0c9; background: rgba(255,255,255,.10); }
-    .cc-hero { padding: 30px 10px 20px; }
-    .cc-title { margin-bottom: 16px; color: #fff; font-size: clamp(36px,8vw,60px); font-weight: 800; line-height: 1.1; letter-spacing: -1px; }
-    .cc-tagline { max-width: 680px; margin-bottom: 32px; color: #a9b2c3; font-size: 15px; line-height: 1.6; }
-    .cc-btn-row { display: flex; flex-wrap: wrap; gap: 14px; }
-    .cc-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 28px; overflow: hidden; isolation: isolate; color: #f5f7fa; background: #121420; border: 0; border-radius: 999px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .15s ease; }
-    .cc-btn:active { transform: scale(.96); }
-    .cc-btn-fill { position: absolute; inset: 2px; z-index: -1; background: #121420; border-radius: 999px; }
-    .cc-btn-label { position: relative; z-index: 2; }
+
     :root { --rgb1: #ff2d6a; --rgb2: #ffd23f; --rgb3: #29e0c9; --rgb4: #7c5cff; --rgb5: #ff2d6a; }
-    .cc-btn::before { content: ''; position: absolute; inset: 0; z-index: -2; padding: 2px; background: conic-gradient( from var(--angle,0deg), var(--rgb1), var(--rgb2), var(--rgb3), var(--rgb4), var(--rgb5) ); border-radius: 999px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .75; animation: ccAngle 4s linear infinite; }
+    @keyframes rgbStroke { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     @property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
     @keyframes ccAngle { to { --angle: 360deg; } }
-    
-    /* WELCOME POPUP ALERT STYLE */
-    .cc-popup-overlay { position: fixed; inset: 0; z-index: 1000000; background: rgba(3,4,8,.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 30px; opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; }
-    .cc-popup-overlay.cc-popup-show { opacity: 1; visibility: visible; }
-    .cc-popup-box { max-width: 360px; width: 100%; border-radius: 18px; padding: 2px; background: linear-gradient(90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a); background-size: 200% 200%; animation: rgbStroke 4s linear infinite; }
-    .cc-popup-inner { background: #0d0f16; border-radius: 16px; padding: 26px 22px; text-align: left; position: relative; }
-    .cc-popup-title { font-weight: 800; font-size: 15px; color: #29e0c9; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-    .cc-popup-text { font-size: 12px; color: #d5dae3; line-height: 1.6; }
-    .cc-popup-x { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: #fff; font-size: 16px; font-weight: 700; line-height: 1; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    .cc-popup-x:active { background: rgba(255,255,255,.2); }
 
-    .bubble-box { width: 100%; margin-bottom: 20px; padding: 20px 22px; background: linear-gradient(#0d0f16,#0d0f16) padding-box, linear-gradient( 90deg, #ff2d6a, #ffd23f, #29e0c9, #7c5cff, #ff2d6a ) border-box !important; background-size: 200% 200% !important; border: 2px solid transparent !important; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.50); animation: rgbStroke 4s linear infinite; }
-    @keyframes rgbStroke { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-    h1.post-title, h2.post-title, h3.post-title, .post-title a { display: block !important; margin: 0 !important; color: #fff !important; font-size: 20px !important; font-weight: 800 !important; line-height: 1.4 !important; text-decoration: none !important; }
-    .post-body { color: #e2e8f0 !important; font-size: 14px !important; line-height: 1.65 !important; }
-    .post-body p { margin-bottom: 12px !important; }
-    .post-body strong { display: inline !important; color: #fff !important; font-weight: 700 !important; }
-    .post-body img { display: block !important; max-width: 100% !important; height: auto !important; margin: 14px 0 !important; border-radius: 12px !important; box-shadow: 0 4px 15px rgba(0,0,0,.30); }
-    .post-body a { color: #29e0c9 !important; }
+    /* ===== SLIDER ===== */
+    .cc-slider-viewport {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .cc-slider-track {
+      display: flex;
+      width: 200vw;
+      height: 100%;
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+      transform: translateX(0);
+    }
+    .cc-slider-track.at-slide-2 { transform: translateX(-100vw); }
+
+    .cc-slide {
+      width: 100vw;
+      height: 100%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .cc-slide-title { font-size: clamp(38px,10vw,64px); font-weight: 800; letter-spacing: -1px; color: #fff; margin-bottom: 14px; }
+    .cc-slide-sub { max-width: 480px; color: #a9b2c3; font-size: 14px; line-height: 1.6; margin-bottom: 28px; }
+
+    /* swipe hint on slide 1 */
+    .cc-swipe-hint { display: flex; align-items: center; gap: 8px; color: #ffd23f; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; opacity: .9; }
+    .cc-swipe-hint svg { width: 18px; height: 18px; fill: #ffd23f; animation: ccSwipeMove 1.4s ease-in-out infinite; }
+    @keyframes ccSwipeMove { 0%,100% { transform: translateX(0); opacity: .5; } 50% { transform: translateX(8px); opacity: 1; } }
+
+    /* masuk button on slide 2 */
+    .cc-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 15px 34px; overflow: hidden; isolation: isolate; color: #f5f7fa; background: #121420; border: 0; border-radius: 999px; font-size: 15px; font-weight: 800; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .15s ease; letter-spacing: .5px; }
+    .cc-btn:active { transform: scale(.96); }
+    .cc-btn-fill { position: absolute; inset: 2px; z-index: -1; background: #121420; border-radius: 999px; }
+    .cc-btn-label { position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; }
+    .cc-btn::before { content: ''; position: absolute; inset: 0; z-index: -2; padding: 2px; background: conic-gradient( from var(--angle,0deg), var(--rgb1), var(--rgb2), var(--rgb3), var(--rgb4), var(--rgb5) ); border-radius: 999px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .85; animation: ccAngle 4s linear infinite; }
+
+    /* ===== DOTS ===== */
+    .cc-dots { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; gap: 8px; }
+    .cc-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); transition: background .25s ease, width .25s ease; }
+    .cc-dot.active { background: #ffd23f; width: 20px; border-radius: 5px; }
+
+    /* ===== NAV ARROW BUTTONS ===== */
+    .cc-nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity .3s ease, transform .2s ease, background .2s ease, visibility .3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .cc-nav-arrow.show { opacity: 1; visibility: visible; }
+    .cc-nav-arrow:active { transform: translateY(-50%) scale(.9); background: rgba(255,255,255,.15); }
+    .cc-nav-arrow svg { width: 20px; height: 20px; stroke: #ffd23f; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .cc-arrow-right { right: 18px; }
+    .cc-arrow-left { left: 18px; }
+
     @media screen and (max-width: 600px) {
-      .cc-wrapper { padding: 12px 12px 40px; }
-      .cc-nav { margin-bottom: 16px; padding: 10px 12px; }
-      .cc-brand-text { font-size: 16px; }
-      .cc-menu { right: 0; width: min(220px, calc(100vw - 24px)); }
-      .cc-hero { padding: 24px 6px 18px; }
-      .cc-title { font-size: clamp(34px,12vw,52px); }
-      .cc-tagline { font-size: 13px; }
-      .cc-btn-row { gap: 10px; }
-      .cc-btn { min-height: 44px; padding: 12px 20px; font-size: 12px; }
-      .bubble-box { padding: 17px 16px; border-radius: 15px; }
-      h1.post-title, h2.post-title, h3.post-title, .post-title a { font-size: 18px !important; }
-      .post-body { font-size: 13px !important; }
+      .cc-slide { padding: 30px 18px; }
+      .cc-slide-title { font-size: clamp(32px,13vw,48px); }
+      .cc-slide-sub { font-size: 13px; }
+      .cc-nav-arrow { width: 40px; height: 40px; }
     }
   </style>
 </head>
@@ -80,135 +109,155 @@
 <body>
   <div class="cc-overlay"></div>
 
-  <div class="cc-popup-overlay" id="cc-welcome-popup">
-    <div class="cc-popup-box">
-      <div class="cc-popup-inner">
-        <span class="cc-popup-x" id="cc-popup-close">&times;</span>
-        <div class="cc-popup-title">
-          <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-          Selamat Datang di Co Center
-        </div>
-        <div class="cc-popup-text">
-          Platform membership eksklusif. Nikmati berbagai kemudahan akses layanan premium dan update kuota terbaik langsung dari ekosistem Co Center! 🚀
+  <div class="cc-slider-viewport" id="cc-viewport">
+    <div class="cc-slider-track" id="cc-track">
+
+      <!-- SLIDE 1: GREETING -->
+      <div class="cc-slide">
+        <div class="cc-slide-title">Halo! 👋</div>
+        <p class="cc-slide-sub">
+          Selamat datang di <strong style="color:#fff;">Co Center</strong> — platform membership eksklusif buat akses layanan premium & paket kuota terbaik.
+        </p>
+        <div class="cc-swipe-hint">
+          Geser untuk lanjut
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </div>
+
+      <!-- SLIDE 2: MASUK -->
+      <div class="cc-slide">
+        <div class="cc-slide-title">Siap Masuk?</div>
+        <p class="cc-slide-sub">
+          Klik tombol di bawah buat lanjut ke menu utama dan lihat semua paket kuota dan Membership App yang tersedia.
+        </p>
+        <a class="cc-btn" href="menu.html">
+          <span class="cc-btn-fill"></span>
+          <span class="cc-btn-label">Masuk</span>
+        </a>
+      </div>
+
     </div>
   </div>
 
-  <div class="cc-wrapper">
+  <!-- DOTS -->
+  <div class="cc-dots">
+    <div class="cc-dot active" id="cc-dot-0"></div>
+    <div class="cc-dot" id="cc-dot-1"></div>
+  </div>
 
-    <div class="cc-nav">
-      <div class="cc-brand-group">
-        <span class="cc-brand-logo" id="btn-logo">
-          <img class="cc-brand-img" id="logo-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
-        </span>
-        <span class="cc-brand-text" id="btn-text">CO CENTER</span>
-      </div>
-      <div class="cc-menu-btn" id="btn-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="cc-menu" id="cc-dropdown">
-        <a href="index.html">🏠 Home</a>
-        <a href="menu.html">📋 Menu</a>
-        <a href="https://lynk.id/cocenter" rel="noopener" target="_blank">🔗 Lynk.id</a>
-        <a href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" rel="noopener" target="_blank">🧾 Bukti Transaksi</a>
-        <a href="#about">👤 About Me</a>
-      </div>
-    </div>
-
-    <div class="cc-hero">
-      <h1 class="cc-title">Co Center</h1>
-      <p class="cc-tagline">
-        Platform membership eksklusif. Dapatkan akses ke layanan premium dan nikmati pengalaman tanpa batas di dalam ekosistem Co Center.
-      </p>
-      <div class="cc-btn-row">
-        <a class="cc-btn" href="menu.html">
-          <span class="cc-btn-fill"></span>
-          <span class="cc-btn-label">Menu</span>
-        </a>
-        <a class="cc-btn" href="https://lynk.id/cocenter" rel="noopener" target="_blank">
-          <span class="cc-btn-fill"></span>
-          <span class="cc-btn-label">Lynk.id</span>
-        </a>
-        <a class="cc-btn" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" rel="noopener" target="_blank">
-          <span class="cc-btn-fill"></span>
-          <span class="cc-btn-label">Bukti Transaksi</span>
-        </a>
-        <a class="cc-btn" href="#about">
-          <span class="cc-btn-fill"></span>
-          <span class="cc-btn-label">About Me</span>
-        </a>
-      </div>
-    </div>
-
+  <!-- ARROW BUTTONS -->
+  <div class="cc-nav-arrow cc-arrow-right show" id="cc-arrow-right">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </div>
+  <div class="cc-nav-arrow cc-arrow-left" id="cc-arrow-left">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
   </div>
 
   <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-      // WELCOME POPUP LOGIC (Muncul pas first buka web)
-      var popupOverlay = document.getElementById('cc-welcome-popup');
-      var popupClose = document.getElementById('cc-popup-close');
+    document.addEventListener('DOMContentLoaded', function () {
+      var track = document.getElementById('cc-track');
+      var viewport = document.getElementById('cc-viewport');
+      var arrowRight = document.getElementById('cc-arrow-right');
+      var arrowLeft = document.getElementById('cc-arrow-left');
+      var dots = [document.getElementById('cc-dot-0'), document.getElementById('cc-dot-1')];
 
-      if (popupOverlay) {
-        popupOverlay.classList.add('cc-popup-show');
-      }
+      var currentSlide = 0;
+      var totalSlides = 2;
 
-      if (popupClose && popupOverlay) {
-        popupClose.addEventListener('click', function(e) {
-          e.stopPropagation();
-          popupOverlay.classList.remove('cc-popup-show');
+      function goToSlide(index) {
+        if (index < 0) index = 0;
+        if (index > totalSlides - 1) index = totalSlides - 1;
+        currentSlide = index;
+
+        track.classList.toggle('at-slide-2', currentSlide === 1);
+
+        dots.forEach(function (d, i) {
+          d.classList.toggle('active', i === currentSlide);
         });
+
+        arrowRight.classList.toggle('show', currentSlide < totalSlides - 1);
+        arrowLeft.classList.toggle('show', currentSlide > 0);
       }
 
-      if (popupOverlay) {
-        popupOverlay.addEventListener('click', function(e) {
-          if (e.target === popupOverlay) {
-            popupOverlay.classList.remove('cc-popup-show');
-          }
-        });
+      arrowRight.addEventListener('click', function (e) {
+        e.stopPropagation();
+        goToSlide(currentSlide + 1);
+      });
+
+      arrowLeft.addEventListener('click', function (e) {
+        e.stopPropagation();
+        goToSlide(currentSlide - 1);
+      });
+
+      // ===== SWIPE (touch) =====
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchEndX = 0;
+      var touchEndY = 0;
+      var isSwiping = false;
+
+      viewport.addEventListener('touchstart', function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+        isSwiping = true;
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', function (e) {
+        if (!isSwiping) return;
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipeGesture();
+        isSwiping = false;
+      }, { passive: true });
+
+      function handleSwipeGesture() {
+        var deltaX = touchEndX - touchStartX;
+        var deltaY = touchEndY - touchStartY;
+        var minSwipeDistance = 50;
+
+        // pastikan gesture horizontal, bukan scroll vertikal
+        if (Math.abs(deltaX) < minSwipeDistance) return;
+        if (Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+        if (deltaX < 0) {
+          // swipe ke kiri -> next slide
+          goToSlide(currentSlide + 1);
+        } else {
+          // swipe ke kanan -> prev slide
+          goToSlide(currentSlide - 1);
+        }
       }
 
-      var btnText = document.getElementById('btn-text');
-      var btnMenu = document.getElementById('btn-menu');
-      var btnLogo = document.getElementById('btn-logo');
-      var logoImg = document.getElementById('logo-img');
-      var dropdown = document.getElementById('cc-dropdown');
+      // ===== SWIPE (mouse drag, buat desktop) =====
+      var mouseStartX = 0;
+      var mouseEndX = 0;
+      var isDragging = false;
 
-      function toggleMenu(event) {
-        event.stopPropagation();
-        dropdown.classList.toggle('active');
-      }
+      viewport.addEventListener('mousedown', function (e) {
+        mouseStartX = e.screenX;
+        isDragging = true;
+      });
 
-      if (btnText) btnText.addEventListener('click', toggleMenu);
-      if (btnMenu) btnMenu.addEventListener('click', toggleMenu);
-
-      var logoClickCount = 0;
-      if (btnLogo && logoImg) {
-        btnLogo.addEventListener('click', function (event) {
-          event.stopPropagation();
-          logoClickCount++;
-          if (logoClickCount % 2 === 1) {
-            logoImg.classList.remove('spin-full');
-            void logoImg.offsetWidth;
-            logoImg.classList.add('spin-half');
-          } else {
-            logoImg.classList.remove('spin-half');
-            void logoImg.offsetWidth;
-            logoImg.classList.add('spin-full');
-            window.setTimeout(function () {
-              logoImg.classList.remove('spin-full');
-            }, 520);
-          }
-        });
-      }
-
-      document.addEventListener('click', function (event) {
-        if (dropdown && dropdown.classList.contains('active')) {
-          dropdown.classList.remove('active');
+      viewport.addEventListener('mouseup', function (e) {
+        if (!isDragging) return;
+        mouseEndX = e.screenX;
+        isDragging = false;
+        var deltaX = mouseEndX - mouseStartX;
+        if (Math.abs(deltaX) < 50) return;
+        if (deltaX < 0) {
+          goToSlide(currentSlide + 1);
+        } else {
+          goToSlide(currentSlide - 1);
         }
       });
+
+      // ===== KEYBOARD ARROW (opsional, enak buat testing desktop) =====
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+        if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+      });
+
+      goToSlide(0);
     });
   </script>
 </body>

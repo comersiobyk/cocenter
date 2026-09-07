@@ -21,7 +21,7 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Container Utama dengan padding bawah agar tidak tertutup sticky & bottom navbar */
+  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -32,20 +32,21 @@
   .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
-  .cc-fade-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 35px;
-    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
+  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-nav { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 15px 30px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    z-index: 100; 
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .cc-fade-bottom {
-    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
-    background: linear-gradient(to top, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
-  }
-
-  /* Navigasi Presisi */
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
   .cc-img { 
     width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
@@ -58,7 +59,7 @@
   }
 
   /* Bubble Tutorial RGB */
-  .cc-container { padding: 10px 30px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -69,6 +70,7 @@
     animation: rgbStroke 4s linear infinite;
     overflow: hidden; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
   }
 
   .cc-tutorial-img {
@@ -81,6 +83,44 @@
 
   .cc-tutorial-body { padding: 25px 20px; }
 
+  /* ===== 3 TOMBOL TAB (DESKRIPSI & BENEFIT JADI SATU, CARA ORDER, GARANSI) ===== */
+  .cc-tab-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-tab-btn {
+    padding: 12px 6px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-tab-btn.active {
+    background: linear-gradient(135deg, #29e0c9, #1fb3a1);
+    color: #05060a;
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.3);
+  }
+  .cc-tab-btn:active { transform: scale(0.97); }
+
+  /* Tab Content Panels */
+  .cc-tab-pane { display: none; }
+  .cc-tab-pane.active { display: block; }
+
   .cc-section-title {
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
   }
@@ -92,15 +132,6 @@
   .cc-benefit-list li {
     font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 8px;
   }
-
-  /* HARGA */
-  .cc-price-highlight {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px; padding: 16px; text-align: center; margin: 0 0 25px 0;
-  }
-  .cc-price-highlight .dur { font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
-  .cc-price-highlight .val { font-size: 22px; font-weight: 800; color: #29e0c9; margin: 6px 0 2px; }
-  .cc-price-highlight .per { font-size: 10px; color: #94a3b8; }
 
   /* TUTORIAL LIST */
   .cc-tutorial-list {
@@ -125,52 +156,82 @@
   .cc-intro-text {
     font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px;
   }
-  .cc-highlight-text {
-    color: #ffd23f; font-weight: bold;
-  }
   .cc-footer-text {
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BUTTON ============ */
+  /* ============ STICKY ORDER BUTTON DENGAN INFO PRODUK & HARGA ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
     left: 0;
     width: 100vw;
-    padding: 10px 20px;
-    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    padding: 10px 16px;
+    background: linear-gradient(to top, #05060a 90%, transparent 100%);
     z-index: 999998;
     display: flex;
     justify-content: center;
   }
-  .cc-sticky-order-btn {
+  .cc-sticky-box {
     width: 100%;
     max-width: 800px;
-    padding: 14px;
-    border-radius: 14px;
+    background: #0d0f16;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  }
+  .cc-sticky-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cc-sticky-product-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cc-sticky-product-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .cc-sticky-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-sticky-order-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #05060a;
     background: linear-gradient(90deg, #29e0c9, #7c5cff);
-    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.35);
     transition: transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR ============ */
+  /* ============ BOTTOM FLOATING NAVBAR (PINTASAN ASLI) ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(13, 15, 22, 0.75);
+    background: rgba(13, 15, 22, 0.85);
     backdrop-filter: blur(15px);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
@@ -376,9 +437,7 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <div class="cc-fade-top"></div>
-  <div class="cc-fade-bottom"></div>
-
+  <!-- Header Brand (Statis / Fixed) -->
   <div class="cc-nav">
     <div class="cc-brand">
       <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
@@ -388,65 +447,86 @@
 
   <div class="cc-container">
     <div class="cc-tutorial-bubble">
-      
-      <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhMEOk2z-I_J_NqvPwa6rI6Xf4_cTkne5IkzCSBUbq1Uaahpc64ZgN7StSN6mOqSkOjw5xOsiTD6AR1lDIhQvSMLecvfuZAhjFK0Gj6ZYNT81tZCIt_uvZtK3SUcb5YhoreyicA7X7nWHz5_rx8hqmQCURPd32MDzukPDfCSvLkExV2FVfb5A0rw2DngfLB/s893/64bc46f9bd44b3d44f498746fb8ee058.jpg" alt="Paket Sultan All In One">
+      <!-- Gambar Preview -->
+      <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhMEOk2z-I_J_NqvPwa6rI6Xf4_cTkne5IkzCSBUbq1Uaahpc64ZgN7StSN6mOqSkOjw5xOsiTD6AR1lDIhQvSMLecvfuZAhjFK0Gj6ZYNT81tZCIt_uvZtK3SUcb5YhoreyicA7X7nWHz5_rx8hqmQCURPd32MDzukPDfCSvLkExV2FVfb5A0rw2DngfLB/s893/64bc46f9bd44b3d44f498746fb8ee058.jpg" alt="Paket Sultan All-In-One">
       
       <div class="cc-tutorial-body">
         
-        <h2 class="cc-section-title">🔥 PAKET SULTAN ALL-IN-ONE 🔥</h2>
-        <div class="cc-intro-text">
-          <strong>YOUTUBE PREMIUM + GOOGLE AI PLUS (2TB)</strong><br><br>
-          Nikmati kombinasi hiburan tanpa batas dan fitur produktivitas AI kelas atas langsung di AKUN UTAMA kamu! Gak perlu ganti akun, gak perlu pusing ribet setup.
+        <!-- 3 TAB TOMBOL: DESKRIPSI & BENEFIT (DIGABUNG), CARA ORDER, GARANSI -->
+        <div class="cc-tab-buttons">
+          <button class="cc-tab-btn active" data-tab="tab-deskripsi">Deskripsi & Benefit</button>
+          <button class="cc-tab-btn" data-tab="tab-cara">Cara Order</button>
+          <button class="cc-tab-btn" data-tab="tab-garansi">Garansi</button>
         </div>
 
-        <h2 class="cc-section-title">💰 Harga Paket</h2>
-        <div class="cc-price-highlight">
-          <div class="dur">Paket Sultan AIO (1 Bulan)</div>
-          <div class="val">Rp30.000</div>
-          <div class="per">per bulan / slot</div>
+        <!-- TAB 1: DESKRIPSI & BENEFIT DIGABUNG -->
+        <div class="cc-tab-pane active" id="tab-deskripsi">
+          <h2 class="cc-section-title">🔥 PAKET SULTAN ALL-IN-ONE 🔥</h2>
+          <div class="cc-intro-text">
+            <strong>YOUTUBE PREMIUM + GOOGLE AI PLUS (2TB)</strong><br><br>
+            Nikmati kombinasi hiburan tanpa batas dan fitur produktivitas AI kelas atas langsung di AKUN UTAMA kamu! Gak perlu ganti akun, gak perlu pusing ribet setup.<br><br>
+            Berikut adalah detail lengkap produk dan benefit Paket Sultan Co Center:
+          </div>
+
+          <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
+          <ul class="cc-benefit-list">
+            <li><strong>YouTube Premium:</strong> Streaming video bebas iklan & tanpa jeda.</li>
+            <li><strong>Google Gemini Advanced Plus:</strong> Akses model AI tertinggi dari Google.</li>
+            <li><strong>YouTube Music Premium:</strong> Bebas putar musik tanpa iklan.</li>
+            <li><strong>YouTube Kids Premium:</strong> Hiburan anak yang aman dan bersih.</li>
+            <li><strong>Google Storage 2TB:</strong> Kapasitas raksasa untuk Drive & Photos.</li>
+            <li><strong>Google Flow & Flow Music:</strong> Produktivitas dan kreasi audio tanpa batas.</li>
+            <li><strong>Pencarian Google (Mode AI):</strong> Pengalaman searching lebih canggih.</li>
+            <li><strong>Gemini X Gmail & Workspace:</strong> Bantu auto-draft & rangkum email otomatis.</li>
+            <li><strong>Gemini Notebook / NotebookLM:</strong> Asisten riset & dokumen pribadi.</li>
+          </ul>
         </div>
 
-        <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
-        <ul class="cc-benefit-list">
-          <li><strong>YouTube Premium:</strong> Streaming video bebas iklan & tanpa jeda.</li>
-          <li><strong>Google Gemini Advanced Plus:</strong> Akses model AI tertinggi dari Google.</li>
-          <li><strong>YouTube Music Premium:</strong> Bebas putar musik tanpa iklan.</li>
-          <li><strong>YouTube Kids Premium:</strong> Hiburan anak yang aman dan bersih.</li>
-          <li><strong>Google Storage 2TB:</strong> Kapasitas raksasa untuk Drive & Photos.</li>
-          <li><strong>Google Flow & Flow Music:</strong> Produktivitas dan kreasi audio tanpa batas.</li>
-          <li><strong>Pencarian Google (Mode AI):</strong> Pengalaman searching lebih canggih.</li>
-          <li><strong>Gemini X Gmail & Workspace:</strong> Bantu auto-draft & rangkum email otomatis.</li>
-          <li><strong>Gemini Notebook / NotebookLM:</strong> Asisten riset & dokumen pribadi.</li>
-        </ul>
+        <!-- TAB 2: CARA ORDER -->
+        <div class="cc-tab-pane" id="tab-cara">
+          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <ol class="cc-tutorial-list">
+            <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
+            <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
+            <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
+            <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+            <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
+          </ol>
+        </div>
 
-        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
-        <ol class="cc-tutorial-list">
-          <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
-          <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
-          <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
-          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
-          <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
-        </ol>
+        <!-- TAB 3: GARANSI & S&K -->
+        <div class="cc-tab-pane" id="tab-garansi">
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <ul class="cc-refund-list">
+            <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti Invitation berhasil.</li>
+            <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin atau hubungi nomor yang tertera pada link setelah pembayaran berhasil.</li>
+            <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+          </ul>
 
-        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
-        <ul class="cc-refund-list">
-          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti Invitation berhasil.</li>
-          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin atau hubungi nomor yang tertera pada link setelah pembayaran berhasil.</li>
-          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
-        </ul>
-
-        <div class="cc-footer-text">
-          Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Sultan! 🚀
+          <div class="cc-footer-text">
+            Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Sultan! 🚀
+          </div>
         </div>
 
       </div>
     </div>
   </div>
 
+  <!-- STICKY ORDER BAR (DENGAN NAMA PRODUK, LOGO, HARGA & TOMBOL ORDER) -->
   <div class="cc-sticky-order-wrap">
-    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+    <div class="cc-sticky-box">
+      <div class="cc-sticky-product-info">
+        <img class="cc-sticky-product-logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhMEOk2z-I_J_NqvPwa6rI6Xf4_cTkne5IkzCSBUbq1Uaahpc64ZgN7StSN6mOqSkOjw5xOsiTD6AR1lDIhQvSMLecvfuZAhjFK0Gj6ZYNT81tZCIt_uvZtK3SUcb5YhoreyicA7X7nWHz5_rx8hqmQCURPd32MDzukPDfCSvLkExV2FVfb5A0rw2DngfLB/s893/64bc46f9bd44b3d44f498746fb8ee058.jpg" alt="Logo">
+        <div>
+          <div class="cc-sticky-product-name">Paket Sultan AIO (27-30 Hr)</div>
+          <div class="cc-sticky-product-price">Rp30.000</div>
+        </div>
+      </div>
+      <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order</button>
+    </div>
   </div>
 
+  <!-- Bottom Navigation (Pintasan Asli Dikembalikan Sesuai Request) -->
   <div class="cc-bottom-nav">
     <a class="cc-bottom-item" href="menu.html">
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
@@ -468,6 +548,7 @@
 
 </div>
 
+<!-- Modal Order Form -->
 <div class="cc-modal-backdrop" id="order-modal-backdrop">
   <div class="cc-modal">
     <div class="cc-modal-header">
@@ -480,7 +561,7 @@
       <div>
         <div class="cc-modal-item-name">Paket Sultan All-In-One</div>
         <div class="cc-modal-item-sub">YT Premium + Google AI Plus 2TB · 27-30 Hari</div>
-        <div class="cc-modal-item-price">Rp30.000 / slot</div>
+        <div class="cc-modal-item-price">Rp30.000 / bulan</div>
       </div>
     </div>
 
@@ -533,7 +614,26 @@
 </div>
 
 <script>
-  // ============ MODAL LOGIC ============
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= TAB TOGGLE LOGIC =================
+  const tabBtns = document.querySelectorAll('.cc-tab-btn');
+  const tabPanes = document.querySelectorAll('.cc-tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -627,6 +727,8 @@ Setuju Rules & Ketentuan : Ya, saya menyetujui Rules, Syarat, dan Ketentuan Klai
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
   });
+
+});
 </script>
 
 </body>

@@ -21,7 +21,7 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Overlay Penutup UI Blogger dengan ruang untuk sticky button & bottom navbar */
+  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -32,22 +32,25 @@
   .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrJ7viyfUnWk4BlLj6TFd93Ze_T9XE8oaOmYhTuOD_16gftj2q1EabwmjJIiRBePxe2fMSJJyqrukZWwOUMXsoxGZ4lMqU-SjmrfQIcpmROt1YuoyTJNP1OFcouAhvcgsCHx_SsuoVrzq4tQFC8uCA8UgbBxI5HJ_VgOGPiEFUXVbHc75Swbe6kOPIzWpk/s1600/VID_20260812_133547_096%20%281%29.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
-  .cc-fade-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 35px;
-    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
+  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-nav { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 15px 30px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    z-index: 100; 
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .cc-fade-bottom {
-    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
-    background: linear-gradient(to top, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
-  }
-
-  /* Navigasi Presisi (Logo Statis Murni) */
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
-  .cc-img { width:35px; height:35px; border-radius:10px; object-fit: cover; }
+  .cc-img { 
+    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
+  }
   
   /* Animasi Buat Stroke RGB */
   @keyframes rgbStroke {
@@ -56,7 +59,7 @@
   }
 
   /* Bubble Tutorial RGB */
-  .cc-container { padding: 10px 30px 30px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -67,6 +70,7 @@
     animation: rgbStroke 4s linear infinite;
     overflow: hidden; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
   }
 
   .cc-tutorial-img {
@@ -79,6 +83,44 @@
 
   .cc-tutorial-body { padding: 25px 20px; }
 
+  /* ===== 3 TOMBOL TAB (DESKRIPSI & BENEFIT JADI SATU, CARA ORDER, GARANSI) ===== */
+  .cc-tab-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-tab-btn {
+    padding: 12px 6px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-tab-btn.active {
+    background: linear-gradient(135deg, #29e0c9, #1fb3a1);
+    color: #05060a;
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.3);
+  }
+  .cc-tab-btn:active { transform: scale(0.97); }
+
+  /* Tab Content Panels */
+  .cc-tab-pane { display: none; }
+  .cc-tab-pane.active { display: block; }
+
   .cc-section-title {
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
   }
@@ -90,15 +132,6 @@
   .cc-benefit-list li {
     font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 8px;
   }
-
-  /* HARGA */
-  .cc-price-highlight {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px; padding: 16px; text-align: center; margin: 0 0 25px 0;
-  }
-  .cc-price-highlight .dur { font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
-  .cc-price-highlight .val { font-size: 22px; font-weight: 800; color: #29e0c9; margin: 6px 0 2px; }
-  .cc-price-highlight .per { font-size: 10px; color: #94a3b8; }
 
   /* TUTORIAL LIST */
   .cc-tutorial-list {
@@ -127,45 +160,78 @@
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BUTTON (Tepat Diatas Pintasan/Bottom Nav) ============ */
+  /* ============ STICKY ORDER BUTTON DENGAN INFO PRODUK & HARGA ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
     left: 0;
     width: 100vw;
-    padding: 10px 20px;
-    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    padding: 10px 16px;
+    background: linear-gradient(to top, #05060a 90%, transparent 100%);
     z-index: 999998;
     display: flex;
     justify-content: center;
   }
-  .cc-sticky-order-btn {
+  .cc-sticky-box {
     width: 100%;
     max-width: 800px;
-    padding: 14px;
-    border-radius: 14px;
+    background: #0d0f16;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  }
+  .cc-sticky-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cc-sticky-product-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cc-sticky-product-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .cc-sticky-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-sticky-order-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #05060a;
     background: linear-gradient(90deg, #29e0c9, #7c5cff);
-    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.35);
     transition: transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR (Pintasan Bawah) ============ */
+  /* ============ BOTTOM FLOATING NAVBAR (PINTASAN ASLI) ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(13, 15, 22, 0.75);
+    background: rgba(13, 15, 22, 0.85);
     backdrop-filter: blur(15px);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
@@ -371,64 +437,65 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <div class="cc-fade-top"></div>
-  <div class="cc-fade-bottom"></div>
-
   <div class="cc-nav">
     <div class="cc-brand">
-      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
+      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
       CO CENTER
     </div>
   </div>
 
   <div class="cc-container">
     <div class="cc-tutorial-bubble">
-      
       <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEDhNxt6JfeHejFcjZ-_DolI_FJxu7CxX5aZOt9J7US9BynqQu0tLXMKa7C7eDArAdwu4qg7pe3_7z65jeDJgiqjC1V4OA5oNdOA1GAgCR0n6VkbSzf7ky_CcTHtcTDG_KAZAWV58fu-WZ1RjEEVUNGZ_V4ZFci4SsrsrtV1a2N-66icJLSw3WmO2BraY5/s736/cab06b1685840c68cb1ea9edbfef6694.jpg" alt="Spotify Premium">
       
       <div class="cc-tutorial-body">
         
-        <h2 class="cc-section-title">🔥 SPOTIFY PREMIUM 🔥</h2>
-        <div class="cc-intro-text">
-          Spotify Premium memberikan pengalaman mendengarkan musik dan podcast terbaik secara maksimal tanpa gangguan sama sekali.<br><br>
-          Berikut adalah detail lengkap benefit yang akan didapatkan dengan Spotify Premium:
+        <div class="cc-tab-buttons">
+          <button class="cc-tab-btn active" data-tab="tab-deskripsi">Deskripsi & Benefit</button>
+          <button class="cc-tab-btn" data-tab="tab-cara">Cara Order</button>
+          <button class="cc-tab-btn" data-tab="tab-garansi">Garansi</button>
         </div>
 
-        <h2 class="cc-section-title">💰 Harga Paket</h2>
-        <div class="cc-price-highlight">
-          <div class="dur">Spotify Premium (1 Bulan)</div>
-          <div class="val">Rp15.000</div>
-          <div class="per">per bulan / slot</div>
+        <div class="cc-tab-pane active" id="tab-deskripsi">
+          <h2 class="cc-section-title">🔥 SPOTIFY PREMIUM 🔥</h2>
+          <div class="cc-intro-text">
+            Spotify Premium memberikan pengalaman mendengarkan musik dan podcast terbaik secara maksimal tanpa gangguan sama sekali.<br><br>
+            Berikut adalah detail lengkap benefit yang akan didapatkan dengan Spotify Premium:
+          </div>
+
+          <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
+          <ul class="cc-benefit-list">
+            <li><strong>Bebas Iklan (No Ads):</strong> Mendengarkan lagu dan playlist favorit secara terus-menerus tanpa terputus oleh iklan audio maupun visual.</li>
+            <li><strong>Download & Mode Offline:</strong> Fitur untuk mengunduh lagu, album, atau podcast langsung ke penyimpanan perangkat, sehingga bisa diputar kapan saja tanpa kuota internet.</li>
+            <li><strong>Kualitas Suara Sangat Tinggi:</strong> Akses kualitas audio premium (hingga 320kbps) untuk suara yang jauh lebih jernih, tajam, dan ngebass.</li>
+            <li><strong>Bebas Pilih & Skip Lagu:</strong> Tidak ada batasan skip lagu. Pengguna bisa memilih, memutar, dan mengulang lagu apa saja secara acak (shuffle) maupun berurutan sesuka hati.</li>
+            <li><strong>Fitur Group Session:</strong> Bisa mendengarkan musik bersama teman atau keluarga secara real-time dari jarak jauh lewat kontrol playlist bersama.</li>
+            <li><strong>Kompatibilitas Multi-Perangkat:</strong> Dengarkan dengan lancar di HP, tablet, laptop, smart TV, hingga speaker pintar tanpa hambatan.</li>
+          </ul>
         </div>
 
-        <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
-        <ul class="cc-benefit-list">
-          <li><strong>Bebas Iklan (No Ads):</strong> Mendengarkan lagu dan playlist favorit secara terus-menerus tanpa terputus oleh iklan audio maupun visual.</li>
-          <li><strong>Download & Mode Offline:</strong> Fitur untuk mengunduh lagu, album, atau podcast langsung ke penyimpanan perangkat, sehingga bisa diputar kapan saja tanpa kuota internet.</li>
-          <li><strong>Kualitas Suara Sangat Tinggi:</strong> Akses kualitas audio premium (hingga 320kbps) untuk suara yang jauh lebih jernih, tajam, dan ngebass.</li>
-          <li><strong>Bebas Pilih & Skip Lagu:</strong> Tidak ada batasan skip lagu. Pengguna bisa memilih, memutar, dan mengulang lagu apa saja secara acak (shuffle) maupun berurutan sesuka hati.</li>
-          <li><strong>Fitur Group Session:</strong> Bisa mendengarkan musik bersama teman atau keluarga secara real-time dari jarak jauh lewat kontrol playlist bersama.</li>
-          <li><strong>Kompatibilitas Multi-Perangkat:</strong> Dengarkan dengan lancar di HP, tablet, laptop, smart TV, hingga speaker pintar tanpa hambatan.</li>
-        </ul>
+        <div class="cc-tab-pane" id="tab-cara">
+          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <ol class="cc-tutorial-list">
+            <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
+            <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
+            <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
+            <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+            <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
+          </ol>
+        </div>
 
-        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
-        <ol class="cc-tutorial-list">
-          <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
-          <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
-          <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
-          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
-          <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
-        </ol>
+        <div class="cc-tab-pane" id="tab-garansi">
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <ul class="cc-refund-list">
+            <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti Invitation berhasil.</li>
+            <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin atau hubungi nomor yang tertera pada link setelah pembayaran berhasil.</li>
+            <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+          </ul>
 
-        <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
-        <ul class="cc-refund-list">
-          <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti Invitation berhasil.</li>
-          <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin atau hubungi nomor yang tertera pada link setelah pembayaran berhasil.</li>
-          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
-        </ul>
-
-        <div class="cc-footer-text">
-          Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Premium! 🚀
+          <div class="cc-footer-text">
+            Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Premium! 🚀
+          </div>
         </div>
 
       </div>
@@ -436,7 +503,16 @@
   </div>
 
   <div class="cc-sticky-order-wrap">
-    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+    <div class="cc-sticky-box">
+      <div class="cc-sticky-product-info">
+        <img class="cc-sticky-product-logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEDhNxt6JfeHejFcjZ-_DolI_FJxu7CxX5aZOt9J7US9BynqQu0tLXMKa7C7eDArAdwu4qg7pe3_7z65jeDJgiqjC1V4OA5oNdOA1GAgCR0n6VkbSzf7ky_CcTHtcTDG_KAZAWV58fu-WZ1RjEEVUNGZ_V4ZFci4SsrsrtV1a2N-66icJLSw3WmO2BraY5/s736/cab06b1685840c68cb1ea9edbfef6694.jpg" alt="Logo">
+        <div>
+          <div class="cc-sticky-product-name">Spotify Premium (1 Bln)</div>
+          <div class="cc-sticky-product-price">Rp15.000</div>
+        </div>
+      </div>
+      <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order</button>
+    </div>
   </div>
 
   <div class="cc-bottom-nav">
@@ -468,7 +544,7 @@
     </div>
 
     <div class="cc-modal-item">
-      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEDhNxt6JfeHejFcjZ-_DolI_FJxu7CxX5aZOt9J7US9BynqQu0tLXMKa7C7eDArAdwu4qg7pe3_7z65jeDJgiqjC1V4OA5oNdOA1GAgCR0n6VkbSzf7ky_CcTHtcTDG_KAZAWV58fu-WZ1RjEEVUNGZ_V4ZFci4SsrsrtV1a2N-66icJLSw3WmO2BraY5/s1600/cab06b1685840c68cb1ea9edbfef6694.jpg" alt="Spotify Premium">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEDhNxt6JfeHejFcjZ-_DolI_FJxu7CxX5aZOt9J7US9BynqQu0tLXMKa7C7eDArAdwu4qg7pe3_7z65jeDJgiqjC1V4OA5oNdOA1GAgCR0n6VkbSzf7ky_CcTHtcTDG_KAZAWV58fu-WZ1RjEEVUNGZ_V4ZFci4SsrsrtV1a2N-66icJLSw3WmO2BraY5/s736/cab06b1685840c68cb1ea9edbfef6694.jpg" alt="Spotify Premium">
       <div>
         <div class="cc-modal-item-name">Spotify Premium</div>
         <div class="cc-modal-item-sub">Akun / Slot Premium · 1 Bulan</div>
@@ -525,7 +601,26 @@
 </div>
 
 <script>
-  // ============ MODAL LOGIC ============
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= TAB TOGGLE LOGIC =================
+  const tabBtns = document.querySelectorAll('.cc-tab-btn');
+  const tabPanes = document.querySelectorAll('.cc-tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -545,7 +640,7 @@
   modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
 
   // Qty stepper & harga
-  const PRICE_PER_SLOT = 15000; 
+  const PRICE_PER_SLOT = 15000;
   let qty = 1;
   const qtyValueEl = document.getElementById('qty-value');
   const totalPriceEl = document.getElementById('total-price');
@@ -619,6 +714,8 @@ Setuju Rules & Ketentuan : Ya, saya menyetujui Rules, Syarat, dan Ketentuan Klai
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
   });
+
+});
 </script>
 
 </body>

@@ -21,7 +21,7 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Overlay Penutup UI Blogger dengan ruang untuk sticky button & bottom navbar */
+  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -29,25 +29,28 @@
   }
 
   /* Background GIF */
-  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrJ7viyfUnWk4BlLj6TFd93Ze_T9XE8oaOmYhTuOD_16gftj2q1EabwmjJIiRBePxe2fMSJJyqrukZWwOUMXsoxGZ4lMqU-SjmrfQIcpmROt1YuoyTJNP1OFcouAhvcgsCHx_SsuoVrzq4tQFC8uCA8UgbBxI5HJ_VgOGPiEFUXVbHc75Swbe6kOPIzWpk/s1600/VID_20260812_133547_096%20%281%29.gif') no-repeat center center; background-size: cover; }
+  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
   .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
 
-  /* EFEK FADE IN / FADE OUT ATAS DAN BAWAH */
-  .cc-fade-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 35px;
-    background: linear-gradient(to bottom, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
+  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-nav { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 15px 30px; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    z-index: 100; 
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .cc-fade-bottom {
-    position: fixed; bottom: 0; left: 0; right: 0; height: 45px;
-    background: linear-gradient(to top, #05060a 0%, transparent 100%);
-    z-index: 90; pointer-events: none;
-  }
-
-  /* Navigasi Presisi (Logo Statis Murni) */
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; position: relative; z-index: 10; }
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
-  .cc-img { width:35px; height:35px; border-radius:10px; object-fit: cover; }
+  .cc-img { 
+    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
+  }
   
   /* Animasi Buat Stroke RGB */
   @keyframes rgbStroke {
@@ -56,7 +59,7 @@
   }
 
   /* Bubble Tutorial RGB */
-  .cc-container { padding: 10px 30px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -67,6 +70,7 @@
     animation: rgbStroke 4s linear infinite;
     overflow: hidden; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 16px;
   }
 
   .cc-tutorial-img {
@@ -79,6 +83,44 @@
 
   .cc-tutorial-body { padding: 25px 20px; }
 
+  /* ===== 3 TOMBOL TAB (DESKRIPSI & BENEFIT JADI SATU, CARA ORDER, GARANSI) ===== */
+  .cc-tab-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .cc-tab-btn {
+    padding: 12px 6px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-tab-btn.active {
+    background: linear-gradient(135deg, #29e0c9, #1fb3a1);
+    color: #05060a;
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.3);
+  }
+  .cc-tab-btn:active { transform: scale(0.97); }
+
+  /* Tab Content Panels */
+  .cc-tab-pane { display: none; }
+  .cc-tab-pane.active { display: block; }
+
   .cc-section-title {
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
   }
@@ -90,15 +132,6 @@
   .cc-benefit-list li {
     font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 8px;
   }
-
-  /* HARGA */
-  .cc-price-highlight {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px; padding: 16px; text-align: center; margin: 0 0 25px 0;
-  }
-  .cc-price-highlight .dur { font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
-  .cc-price-highlight .val { font-size: 22px; font-weight: 800; color: #29e0c9; margin: 6px 0 2px; }
-  .cc-price-highlight .per { font-size: 10px; color: #94a3b8; }
 
   /* TUTORIAL LIST */
   .cc-tutorial-list {
@@ -130,45 +163,78 @@
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BUTTON (Tepat Diatas Pintasan/Bottom Nav) ============ */
+  /* ============ STICKY ORDER BUTTON DENGAN INFO PRODUK & HARGA ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
     left: 0;
     width: 100vw;
-    padding: 10px 20px;
-    background: linear-gradient(to top, #05060a 85%, transparent 100%);
+    padding: 10px 16px;
+    background: linear-gradient(to top, #05060a 90%, transparent 100%);
     z-index: 999998;
     display: flex;
     justify-content: center;
   }
-  .cc-sticky-order-btn {
+  .cc-sticky-box {
     width: 100%;
     max-width: 800px;
-    padding: 14px;
-    border-radius: 14px;
+    background: #0d0f16;
+    border: 1px solid rgba(41, 224, 201, 0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  }
+  .cc-sticky-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cc-sticky-product-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .cc-sticky-product-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .cc-sticky-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #29e0c9;
+  }
+  .cc-sticky-order-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #05060a;
     background: linear-gradient(90deg, #29e0c9, #7c5cff);
-    box-shadow: 0 5px 20px rgba(41, 224, 201, 0.35);
+    box-shadow: 0 4px 15px rgba(41, 224, 201, 0.35);
     transition: transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR (Pintasan Bawah) ============ */
+  /* ============ BOTTOM FLOATING NAVBAR (PINTASAN ASLI) ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(13, 15, 22, 0.75);
+    background: rgba(13, 15, 22, 0.85);
     backdrop-filter: blur(15px);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
@@ -374,66 +440,67 @@
   <div class="cc-bg"></div>
   <div class="cc-overlay"></div>
 
-  <div class="cc-fade-top"></div>
-  <div class="cc-fade-bottom"></div>
-
   <div class="cc-nav">
     <div class="cc-brand">
-      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png" alt="Logo">
+      <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
       CO CENTER
     </div>
   </div>
 
   <div class="cc-container">
     <div class="cc-tutorial-bubble">
-      
       <img class="cc-tutorial-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjxpoQa1FhQjLmGRf5CKC0uq5UHGOUV5T3kGuNzVwh-p8ZAT208mzUyx8OOcMlEA6AYt0Lsljx906BhmjGrTeDZWJE3FUVrIgM_GXix6kCO9k-8qxZ_TPJnkxDz7q-85m3GOS-2__zUPjOkhBEp8axAYSfpDtCerZbXRtZ5IFrnH_pk76f5IPRDxhdzPd_/s736/c0f4ccb0a08c3057a732285fab748b95.jpg" alt="Google AI Pro 5TB Jio">
       
       <div class="cc-tutorial-body">
         
-        <h2 class="cc-section-title">🔥 GOOGLE AI PRO (GEMINI ADVANCED) 5TB VIA JIO 🔥</h2>
-        <div class="cc-intro-text">
-          Google AI Pro (Gemini Advanced) 5TB via Jio memberikan Anda benefit langka dari kerja sama Google dan provider Jio India, yang mengubah akun Gmail pribadi Anda menjadi akun <span class="cc-highlight-text">"Sultan" super premium</span> dengan penyimpanan super masif.<br><br>
-          Berikut adalah detail lengkap benefit dari paket Google AI Pro 5TB Jio:
+        <div class="cc-tab-buttons">
+          <button class="cc-tab-btn active" data-tab="tab-deskripsi">Deskripsi & Benefit</button>
+          <button class="cc-tab-btn" data-tab="tab-cara">Cara Order</button>
+          <button class="cc-tab-btn" data-tab="tab-garansi">Garansi</button>
         </div>
 
-        <h2 class="cc-section-title">💰 Harga Paket</h2>
-        <div class="cc-price-highlight">
-          <div class="dur">Google AI Pro 5TB Jio · 18 Bulan</div>
-          <div class="val">Rp28.000</div>
-          <div class="per">per akun / 18 bulan</div>
+        <div class="cc-tab-pane active" id="tab-deskripsi">
+          <h2 class="cc-section-title">🔥 GOOGLE AI PRO (GEMINI ADVANCED) 5TB VIA JIO 🔥</h2>
+          <div class="cc-intro-text">
+            Google AI Pro (Gemini Advanced) 5TB via Jio memberikan Anda benefit langka dari kerja sama Google dan provider Jio India, yang mengubah akun Gmail pribadi Anda menjadi akun <span class="cc-highlight-text">"Sultan" super premium</span> dengan penyimpanan super masif.<br><br>
+            Berikut adalah detail lengkap benefit dari paket Google AI Pro 5TB Jio:
+          </div>
+
+          <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
+          <ul class="cc-benefit-list">
+            <li><strong>Penyimpanan Cloud Jumbo 5TB:</strong> Kuota Google Drive, Google Photos, dan Gmail langsung melonjak menjadi 5.000 GB (5TB). Sangat leluasa untuk backup file, video resolusi tinggi, atau dokumen kerja tanpa takut penuh.</li>
+            <li><strong>Akses Gemini Model Terbaru:</strong> Akses prioritas penuh ke model AI tercanggih Google (Gemini 3 Pro dan fitur Deep Research) untuk pengerjaan tugas analitis dan pencarian data mendalam yang jauh lebih cerdas dari versi biasa.</li>
+            <li><strong>Pembuatan & Desain Gambar Canggih:</strong> Dukungan model pembuatan gambar Nano Banana langsung di dalam obrolan, menghasilkan visual estetik beresolusi tinggi dengan limit harian yang jauh lebih longgar.</li>
+            <li><strong>Kreativitas Video AI Premium:</strong> Akses eksklusif ke tools pembuat video sinematik Google seperti Flow AI (1.000 poin/bulan), Veo 3.1 Fast, dan Whisk untuk mengubah teks atau gambar menjadi video pendek berkualitas tinggi.</li>
+            <li><strong>NotebookLM Premium:</strong> Akses penuh ke asisten riset cerdas yang mampu merangkum puluhan file PDF atau dokumen sekaligus, lengkap dengan peningkatan kuota Audio Overviews hingga 5x lipat.</li>
+            <li><strong>Integrasi AI di Google Workspace:</strong> Fitur cerdas Gemini langsung menyatu di dalam Gmail, Google Docs, Slides, dan Sheets pribadi Anda untuk bantu menulis email atau merangkum data secara instan.</li>
+            <li><strong>Bukan Akun Sharing (Akun Head):</strong> Akun bersifat privat/pribadi (bukan sistem family invite biasa), bahkan Anda memiliki kontrol penuh sebagai kepala keluarga jika ingin membagikan sebagian ruang storage ke anggota lain.</li>
+          </ul>
         </div>
 
-        <h2 class="cc-section-title">✨ TOTAL BENEFIT</h2>
-        <ul class="cc-benefit-list">
-          <li><strong>Penyimpanan Cloud Jumbo 5TB:</strong> Kuota Google Drive, Google Photos, dan Gmail langsung melonjak menjadi 5.000 GB (5TB). Sangat leluasa untuk backup file, video resolusi tinggi, atau dokumen kerja tanpa takut penuh.</li>
-          <li><strong>Akses Gemini Model Terbaru:</strong> Akses prioritas penuh ke model AI tercanggih Google (Gemini 3 Pro dan fitur Deep Research) untuk pengerjaan tugas analitis dan pencarian data mendalam yang jauh lebih cerdas dari versi biasa.</li>
-          <li><strong>Pembuatan & Desain Gambar Canggih:</strong> Dukungan model pembuatan gambar Nano Banana langsung di dalam obrolan, menghasilkan visual estetik beresolusi tinggi dengan limit harian yang jauh lebih longgar.</li>
-          <li><strong>Kreativitas Video AI Premium:</strong> Akses eksklusif ke tools pembuat video sinematik Google seperti Flow AI (1.000 poin/bulan), Veo 3.1 Fast, dan Whisk untuk mengubah teks atau gambar menjadi video pendek berkualitas tinggi.</li>
-          <li><strong>NotebookLM Premium:</strong> Akses penuh ke asisten riset cerdas yang mampu merangkum puluhan file PDF atau dokumen sekaligus, lengkap dengan peningkatan kuota Audio Overviews hingga 5x lipat.</li>
-          <li><strong>Integrasi AI di Google Workspace:</strong> Fitur cerdas Gemini langsung menyatu di dalam Gmail, Google Docs, Slides, dan Sheets pribadi Anda untuk bantu menulis email atau merangkum data secara instan.</li>
-          <li><strong>Bukan Akun Sharing (Akun Head):</strong> Akun bersifat privat/pribadi (bukan sistem family invite biasa), bahkan Anda memiliki kontrol penuh sebagai kepala keluarga jika ingin membagikan sebagian ruang storage ke anggota lain.</li>
-        </ul>
+        <div class="cc-tab-pane" id="tab-cara">
+          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <ol class="cc-tutorial-list">
+            <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
+            <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
+            <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
+            <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
+            <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
+          </ol>
+        </div>
 
-        <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
-        <ol class="cc-tutorial-list">
-          <li>Masa aktif paket berlaku 27 - 30 Hari sejak invitation diterima.</li>
-          <li>Setelah menerima Invitation Link, harap langsung dikonfirmasi lewat Browser.</li>
-          <li>Dilarang keras membagikan link Invitation ke orang lain.</li>
-          <li>Dilarang mengcancel pembayaran yang sudah diproses.</li>
-          <li>Estimasi proses perbaikan jika terjadi kendala/error: 0 - 3 Hari.</li>
-        </ol>
+        <div class="cc-tab-pane" id="tab-garansi">
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <ul class="cc-refund-list">
+            <li><span class="cc-refund-label">Cakupan Garansi:</span> Garansi hanya berlaku sampai buyer berhasil klaim link Google AI Pro 5TB by Jio yang dikirimkan Admin.</li>
+            <li><span class="cc-refund-label">Setelah Berhasil Klaim:</span> Garansi otomatis berakhir. Tidak ada garansi susulan untuk kendala setelah link berhasil diklaim.</li>
+            <li><span class="cc-refund-label">Prosedur Klaim:</span> Jika link gagal diklaim saat pertama diterima, langsung chat Admin dengan bukti screenshot sebelum keluar dari sesi chat WhatsApp.</li>
+            <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
+          </ul>
 
-        <h2 class="cc-section-title">⚠️ KETENTUAN GARANSI</h2>
-        <ul class="cc-refund-list">
-          <li><span class="cc-refund-label">Cakupan Garansi:</span> Garansi hanya berlaku sampai buyer berhasil klaim link Google AI Pro 5TB by Jio yang dikirimkan Admin.</li>
-          <li><span class="cc-refund-label">Setelah Berhasil Klaim:</span> Garansi otomatis berakhir. Tidak ada garansi susulan untuk kendala setelah link berhasil diklaim.</li>
-          <li><span class="cc-refund-label">Prosedur Klaim:</span> Jika link gagal diklaim saat pertama diterima, langsung chat Admin dengan bukti screenshot sebelum keluar dari sesi chat WhatsApp.</li>
-          <li><span class="cc-refund-label">Sanksi:</span> ❌ Tidak mematuhi rules = GARANSI HANGUS.</li>
-        </ul>
-
-        <div class="cc-footer-text">
-          Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Sultan! 🚀
+          <div class="cc-footer-text">
+            Terima kasih telah membaca rules.<br>Be smart buyers, guys! Selamat menikmati fitur Sultan! 🚀
+          </div>
         </div>
 
       </div>
@@ -441,7 +508,16 @@
   </div>
 
   <div class="cc-sticky-order-wrap">
-    <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order Sekarang</button>
+    <div class="cc-sticky-box">
+      <div class="cc-sticky-product-info">
+        <img class="cc-sticky-product-logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjI89VpN4aoKayYKlOjz4Wycs-MnLVc0HFsTP_NK6mM1nRHm7Ws-m6T-1-eI83X-qlTaUrFILEOgbIpA0I5q3xwH0wMMyFTOvdcU9qrItqHMT0HO_JLLAB-f3sPyL_eyf0qCQXQ_EtEl81xFlJKhAJBn6Pv6q_-qHwPUyE3i4Fgy-j17gxkLox4BStlZ5di/s376/fdb88f0e8e7536e0a65640cae3494007.jpg" alt="Logo">
+        <div>
+          <div class="cc-sticky-product-name">Google AI Pro 5TB Jio (18 Bln)</div>
+          <div class="cc-sticky-product-price">Rp28.000</div>
+        </div>
+      </div>
+      <button class="cc-sticky-order-btn" id="open-order-modal-sticky">Order</button>
+    </div>
   </div>
 
   <div class="cc-bottom-nav">
@@ -542,7 +618,26 @@
 </div>
 
 <script>
-  // ============ MODAL LOGIC ============
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= TAB TOGGLE LOGIC =================
+  const tabBtns = document.querySelectorAll('.cc-tab-btn');
+  const tabPanes = document.querySelectorAll('.cc-tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+
+  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -674,6 +769,8 @@ Setuju Rules & Ketentuan : Ya, saya menyetujui Rules, Syarat, dan Ketentuan Gara
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
   });
+
+});
 </script>
 
 </body>
