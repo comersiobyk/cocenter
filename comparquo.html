@@ -23,6 +23,7 @@
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: 75px;
     padding-bottom: 120px;
   }
 
@@ -51,7 +52,7 @@
     transition: background 0.3s ease;
   }
 
-  /* ============ NAVIGASI BRAND & PROFILE DROPDOWN ============ */
+  /* ============ NAVIGASI BRAND & PROFILE DROPDOWN (STATIS DI ATAS) ============ */
   .cc-nav {
     display: flex;
     align-items: center;
@@ -106,9 +107,15 @@
     -webkit-tap-highlight-color: transparent;
   }
   .cc-profile-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     fill: #ffd23f;
+  }
+  .cc-profile-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .cc-profile-btn:active {
     transform: scale(0.92);
@@ -216,7 +223,7 @@
     overflow-x: auto;
     gap: 12px;
     margin: 15px 30px 20px;
-    margin-top: 95px;
+    margin-top: 20px;
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -500,9 +507,11 @@
     <div class="cc-nav-right">
       <div class="cc-profile-wrap">
         <div class="cc-profile-btn" id="cc-profile-toggle" title="Menu Akun">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-          </svg>
+          <div id="header-avatar-container" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+          </div>
         </div>
         <div class="cc-profile-dropdown" id="cc-profile-dropdown">
           <a href="profile.html">
@@ -584,7 +593,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'cc_bg_mode') {
       applyBackgroundSettings();
     }
+    if (e.key === 'cc_user_avatar') {
+      updateHeaderAvatar();
+    }
   });
+
+  // ================= SINKRONISASI ICON / FOTO PROFIL HEADER =================
+  function updateHeaderAvatar() {
+    var container = document.getElementById('header-avatar-container');
+    var savedAvatar = localStorage.getItem('cc_user_avatar');
+
+    if (container) {
+      if (savedAvatar && savedAvatar.trim() !== "") {
+        container.innerHTML = '<img src="' + savedAvatar + '" alt="Profile" style="width:100%; height:100%; object-fit:cover; display:block;">';
+      } else {
+        container.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>';
+      }
+    }
+  }
+  updateHeaderAvatar();
 
   var profileToggle = document.getElementById('cc-profile-toggle');
   var profileDropdown = document.getElementById('cc-profile-dropdown');

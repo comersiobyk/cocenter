@@ -126,6 +126,7 @@
 </div>
 
 <script>
+  // Konfigurasi Supabase
   const SUPABASE_URL = 'https://xunmofaxuuqhtnyqwvir.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bm1vZmF4dXVxaHRueXF3dmlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzgxMDAsImV4cCI6MjA1NjgxNDEwMH0.placeholder_anon_key';
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -138,15 +139,14 @@
     setTimeout(function() { toast.classList.remove('show'); }, 2000);
   }
 
+  // Fungsi Login Google OAuth via Supabase
   async function loginWithGoogle() {
     try {
       showToast('Menghubungkan ke Google...');
-      // Mengarahkan kembali langsung ke file profile.html lokal lu
-      const targetRedirect = window.location.href.replace('login.html', 'profile.html');
       const { data, error } = await _supabase.auth.signInWithOAuth({
         provider: 'google',
         options: { 
-          redirectTo: targetRedirect
+          redirectTo: 'https://xunmofaxuuqhtnyqwvir.supabase.co/auth/v1/callback'
         }
       });
       if (error) throw error;
@@ -155,50 +155,156 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', async function () {
-    var bgEl = document.getElementById('cc-bg-element');
-    var overlayEl = document.getElementById('cc-overlay-element');
-    var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
-    if (bgEl && overlayEl) {
-      bgEl.className = 'cc-bg ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
-      overlayEl.className = 'cc-overlay ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
-    }
-
-    var urlParams = new URLSearchParams(window.location.search);
-    var loginType = urlParams.get('type');
-    document.getElementById('card-comersio').style.display = (loginType === 'comersio' || !loginType) ? 'flex' : 'none';
-    document.getElementById('card-google').style.display = (loginType === 'google') ? 'flex' : 'none';
-
-    // Penangkap Sesi Pintar File Lokal (Supabase Hash/Token Recovery)
+  // Fungsi Sinkronisasi Data ke Supabase Cloud (Auto-Sync)
+  async function syncDataToSupabase() {
     try {
-      // Cek apakah ada hash token yang dibawa pulang dari browser setelah redirect Google
-      const hash = window.location.hash;
-      if (hash && hash.includes('access_token')) {
-        const { data, error } = await _supabase.auth.getSession();
-        if (data && data.session) {
-          const user = data.session.user;
-          localStorage.setItem('cc_google_linked', 'true');
-          localStorage.setItem('cc_google_email', user.email || '');
-          if (user.user_metadata) {
-            if (user.user_metadata.full_name) localStorage.setItem('cc_temp_google_name', user.user_metadata.full_name);
-            if (user.user_metadata.avatar_url) localStorage.setItem('cc_temp_google_avatar', user.user_metadata.avatar_url);
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session || !session.user) return; // Kalau tidak login, batalkan sync
+      const userId = session.user.id;
+      
+      const profilePayload = {
+        username: localStorage.getItem("cc_temp_google_name") || localStorage.getItem("username") || "",
+        email: localStorage.getItem("cc_google_email") || localStorage.getItem("email") || "",
+        profile_picture: localStorage.getItem("cc_temp_google_avatar") || localStorage.getItem("profile_picture") || ""
+      };
+
+      const appPayload = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        appPayload[key] = localStorage.getItem(key);
+      }
+
+      await _supabase.from('kostku_user_data').upsert({
+        user_id: userId,
+        profile_data: profilePayload,
+        app_data: appPayload,
+        updated_at: new Date()
+      });
+    } catch (err) {
+      console.error("Auto-sync error:", err);
+    }
+  }
+
+  // Fungsi Tarik Data dari Supabase Cloud
+  async function loadDataFromSupabase() {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session || !session.user) return;
+      const userId = session.user.id;
+
+      const { data, error } = await _supabase
+        .from('kostku_user_data')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (data) {
+        if (data.app_data) {
+          for (const key in data.app_data) {
+            if (!localStorage.getItem(key)) {
+              localStorage.setItem(key, data.app_data[key]);
+            }
           }
-          showToast('Login Google Berhasil!');
-          setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
-          return;
+        }
+        if (data.profile_data) {
+          if (data.profile_data.username && !localStorage.getItem("cc_temp_google_name")) localStorage.setItem("cc_temp_google_name", data.profile_data.username);
+          if (data.profile_data.profile_picture) {
+            localStorage.setItem("cc_temp_google_avatar", data.profile_data.profile_picture);
+          }
         }
       }
-
-      // Cek sesi regular
-      const { data: { session } } = await _supabase.auth.getSession();
-      if (session && session.user) {
-        localStorage.setItem('cc_google_linked', 'true');
-        localStorage.setItem('cc_google_email', session.user.email);
-      }
-    } catch(e) {
-      console.error("Local check error:", e);
+    } catch (err) {
+      console.error("Load error:", err);
     }
-  });
+  }
+
+  // --- MIKRO-INTERCEPTOR LOCALSTORAGE UNTUK AUTO-SYNC ---
+  // Memantau setiap perubahan data aplikasi (setItem/removeItem) agar langsung di-sync ke Cloud secara berkala
+  let syncTimer = null;
+  function triggerAutoSync() {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      syncDataToSupabase();
+    }, 2000); // Sinkron otomatis 2 detik setelah ada aktivitas data baru
+  }
+
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    originalSetItem.apply(this, arguments);
+    triggerAutoSync();
+  };
+
+  const originalRemoveItem = localStorage.removeItem;
+  localStorage.removeItem = function(key) {
+    originalRemoveItem.apply(this, arguments);
+    triggerAutoSync();
+  };
+  // -----------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', async function () {
+  var bgEl = document.getElementById('cc-bg-element');
+  var overlayEl = document.getElementById('cc-overlay-element');
+  var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
+  if (bgEl && overlayEl) {
+    bgEl.className = 'cc-bg ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
+    overlayEl.className = 'cc-overlay ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
+  }
+
+  var urlParams = new URLSearchParams(window.location.search);
+  var loginType = urlParams.get('type');
+  document.getElementById('card-comersio').style.display = (loginType === 'comersio' || !loginType) ? 'flex' : 'none';
+  document.getElementById('card-google').style.display = (loginType === 'google') ? 'flex' : 'none';
+
+  // Comérsio Submit
+  var btnSubmit = document.getElementById('btn-submit-comersio');
+  if (btnSubmit) {
+    btnSubmit.addEventListener('click', function() {
+      var email = document.getElementById('comersio-email').value.trim();
+      var pass = document.getElementById('comersio-pass').value;
+      var err = document.getElementById('comersio-error');
+
+      if (!email || !pass) {
+        err.textContent = 'Email dan password wajib diisi!';
+        err.style.display = 'block';
+        return;
+      }
+      if (pass.length < 6 || (pass.match(/\d/g) || []).length < 2) {
+        err.textContent = 'Password min. 6 karakter dan min. 2 angka!';
+        err.style.display = 'block';
+        return;
+      }
+
+      err.style.display = 'none';
+      localStorage.setItem('cc_comersio_linked', 'true');
+      localStorage.setItem('cc_comersio_email', email);
+      showToast('Comérsio Berhasil Terkait!');
+      setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
+    });
+  }
+
+  // Tangkap Sesi Supabase Setelah Redirect OAuth Google Berhasil
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session && session.user) {
+      localStorage.setItem('cc_google_linked', 'true');
+      localStorage.setItem('cc_google_email', session.user.email);
+      if(session.user.user_metadata) {
+        if(session.user.user_metadata.full_name) localStorage.setItem('cc_temp_google_name', session.user.user_metadata.full_name);
+        if(session.user.user_metadata.avatar_url) localStorage.setItem('cc_temp_google_avatar', session.user.user_metadata.avatar_url);
+      }
+      
+      // Tarik data cloud dulu, lalu sinkronisasi ulang
+      await loadDataFromSupabase();
+      await syncDataToSupabase();
+
+      showToast('Login Google Berhasil!');
+      setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
+    } else {
+      // Jika sudah login sebelumnya, jalankan load data saat halaman dibuka
+      await loadDataFromSupabase();
+    }
+  } catch(e) {}
+});
 </script>
 </body>
 </html>
