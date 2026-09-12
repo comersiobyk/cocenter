@@ -159,7 +159,7 @@
   async function syncDataToSupabase() {
     try {
       const { data: { session } } = await _supabase.auth.getSession();
-      if (!session || !session.user) return; // Kalau tidak login, batalkan sync
+      if (!session || !session.user) return;
       const userId = session.user.id;
       
       const profilePayload = {
@@ -219,13 +219,12 @@
   }
 
   // --- MIKRO-INTERCEPTOR LOCALSTORAGE UNTUK AUTO-SYNC ---
-  // Memantau setiap perubahan data aplikasi (setItem/removeItem) agar langsung di-sync ke Cloud secara berkala
   let syncTimer = null;
   function triggerAutoSync() {
     clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       syncDataToSupabase();
-    }, 2000); // Sinkron otomatis 2 detik setelah ada aktivitas data baru
+    }, 2000);
   }
 
   const originalSetItem = localStorage.setItem;
@@ -282,28 +281,45 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
   }
 
-  // Tangkap Sesi Supabase Setelah Redirect OAuth Google Berhasil
+  // Penanganan Sesi Supabase yang Lebih Ketat & Otomatis Set Status Terkait
   try {
+    // Cek sesi aktif langsung dari Supabase
     const { data: { session } } = await _supabase.auth.getSession();
-    if (session && session.user) {
+    let activeUser = session ? session.user : null;
+
+    if (!activeUser) {
+      // Fallback cadangan kalau getSession butuh waktu ambil data
+      const { data: { user } } = await _supabase.auth.getUser();
+      activeUser = user;
+    }
+
+    if (activeUser) {
+      // PAKSA SET STATUS LINKED DI LOCAL STORAGE AGAR TAMPILAN BERUBAH JADI TERKAIT
       localStorage.setItem('cc_google_linked', 'true');
-      localStorage.setItem('cc_google_email', session.user.email);
-      if(session.user.user_metadata) {
-        if(session.user.user_metadata.full_name) localStorage.setItem('cc_temp_google_name', session.user.user_metadata.full_name);
-        if(session.user.user_metadata.avatar_url) localStorage.setItem('cc_temp_google_avatar', session.user.user_metadata.avatar_url);
-      }
+      localStorage.setItem('cc_google_email', activeUser.email || '');
       
-      // Tarik data cloud dulu, lalu sinkronisasi ulang
+      if (activeUser.user_metadata) {
+        if (activeUser.user_metadata.full_name) {
+          localStorage.setItem('cc_temp_google_name', activeUser.user_metadata.full_name);
+        }
+        if (activeUser.user_metadata.avatar_url) {
+          localStorage.setItem('cc_temp_google_avatar', activeUser.user_metadata.avatar_url);
+        }
+      }
+
+      // Tarik dan sinkronisasi data cloud
       await loadDataFromSupabase();
       await syncDataToSupabase();
 
-      showToast('Login Google Berhasil!');
-      setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
-    } else {
-      // Jika sudah login sebelumnya, jalankan load data saat halaman dibuka
-      await loadDataFromSupabase();
+      // Jika halaman baru dibuka dari redirect, berikan notif sukses dan lempar ke profile
+      if (window.location.hash.includes('access_token') || urlParams.has('type')) {
+        showToast('Login Google Berhasil!');
+        setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
+      }
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error("Auth check error:", e);
+  }
 });
 </script>
 </body>
