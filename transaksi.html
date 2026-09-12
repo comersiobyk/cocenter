@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - Log Transaksi</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<style>
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0 !important; padding: 0 !important; height: 100% !important;
+    overflow: hidden !important; background: #05060a !important; color: #fff;
+  }
+
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 90px;
+  }
+
+  /* ================= VARIAN BACKGROUND ================= */
+  .cc-bg.bg-default {
+    position: fixed; inset: 0; z-index: -1;
+    background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-default {
+    position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78);
+    transition: background 0.3s ease;
+  }
+
+  .cc-bg.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #090a0f 0%, #12151f 50%, #1a1614 100%) !important;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: rgba(12, 10, 8, 0.65) !important;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+  }
+
+  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; }
+  .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
+  .cc-img { width:35px; height:35px; border-radius:10px; cursor:default; }
+
+  .cc-brand-wrap { display:flex; flex-direction:column; gap:2px; }
+  .cc-brand-row { display:flex; align-items:center; gap:12px; }
+  .cc-subtitle {
+    font-size: 10px; font-weight:700; color:#a9b2c3;
+    letter-spacing: 2px; text-transform: uppercase; margin-left: 47px;
+  }
+
+  /* KONTEN UTAMA */
+  .cc-section { padding: 15px 30px; }
+
+  /* HEADER SALDO / RINGKASAN M-BANKING STYLE */
+  .cc-balance-card {
+    background: linear-gradient(135deg, #0d0f16 0%, #171b29 100%);
+    border: 1.5px solid rgba(41, 224, 201, 0.3);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cc-balance-title { font-size: 11px; font-weight: 700; color: #a9b2c3; text-transform: uppercase; letter-spacing: 1px; }
+  .cc-balance-amount { font-size: 22px; font-weight: 800; color: #29e0c9; }
+
+  .cc-sec-title {
+    font-weight: 800; color: #ffd23f; margin-bottom: 15px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cc-sec-title::after { content:''; flex:1; height:1px; background: rgba(255,210,63,0.25); }
+
+  /* LIST TRANSAKSI M-BANKING STYLE */
+  .cc-tx-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .cc-tx-item {
+    background: #0d0f16;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .cc-tx-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .cc-tx-icon {
+    width: 40px; height: 40px; border-radius: 10px; background: rgba(41, 224, 201, 0.1);
+    border: 1px solid rgba(41, 224, 201, 0.3); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #29e0c9;
+  }
+  .cc-tx-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .cc-tx-details { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .cc-tx-name { font-weight: 800; font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cc-tx-date { font-size: 10px; color: #a9b2c3; }
+
+  .cc-tx-action-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+  .cc-tx-status { font-size: 10px; font-weight: 800; color: #ffd23f; background: rgba(255, 210, 63, 0.1); padding: 2px 8px; border-radius: 6px; }
+  
+  .cc-btn-cancel {
+    background: rgba(255, 45, 106, 0.15);
+    border: 1px solid rgba(255, 45, 106, 0.4);
+    color: #ff2d6a; font-size: 10px; font-weight: 800;
+    padding: 5px 10px; border-radius: 8px; cursor: pointer;
+    text-decoration: none; display: flex; align-items: center; gap: 4px;
+    transition: transform 0.15s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-btn-cancel:active { transform: scale(0.95); background: rgba(255, 45, 106, 0.3); }
+
+  /* KONDISI KOSONG */
+  .cc-empty-state {
+    text-align: center; padding: 40px 20px; color: #a9b2c3; font-size: 12px; font-weight: 700;
+    background: #0d0f16; border: 1px dashed rgba(255,255,255,0.15); border-radius: 14px;
+  }
+
+  /* BOTTOM FLOATING NAVBAR */
+  .cc-bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100vw;
+    background: rgba(13, 15, 22, 0.75); backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 999999; box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+  }
+  .cc-bottom-item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    text-decoration: none; color: #a9b2c3; font-size: 10px; font-weight: 700;
+    cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-bottom-item svg { width: 22px; height: 22px; fill: #a9b2c3; transition: fill 0.2s ease; }
+  .cc-bottom-item:active { transform: scale(0.92); }
+  .cc-bottom-item:hover, .cc-bottom-item.active { color: #ffd23f; }
+  .cc-bottom-item:hover svg, .cc-bottom-item.active svg { fill: #ffd23f; }
+</style>
+</head>
+<body>
+
+<div id="cc-container">
+  <div class="cc-bg bg-default" id="cc-bg-element"></div>
+  <div class="cc-overlay bg-default" id="cc-overlay-element"></div>
+
+  <div class="cc-nav">
+    <div class="cc-brand-wrap">
+      <div class="cc-brand-row cc-brand">
+        <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
+        CO CENTER
+      </div>
+      <div class="cc-subtitle">Log Transaksi</div>
+    </div>
+  </div>
+
+  <div class="cc-section">
+    
+    <!-- RINGKASAN SALDO / STATUS -->
+    <div class="cc-balance-card">
+      <div class="cc-balance-title">Total Transaksi Aktif</div>
+      <div class="cc-balance-amount" id="tx-total-count">0 Pesanan</div>
+    </div>
+
+    <div class="cc-sec-title">Riwayat Log Real-Time</div>
+    
+    <!-- CONTAINER LIST TRANSAKSI -->
+    <div class="cc-tx-list" id="cc-tx-container">
+      <!-- Diisi otomatis via JavaScript -->
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAVBAR -->
+  <div class="cc-bottom-nav">
+    <a class="cc-bottom-item" href="menu.html">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Menu
+    </a>
+    <a class="cc-bottom-item" href="https://lynk.id/cocenter" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Lynk.id
+    </a>
+    <a class="cc-bottom-item active" href="transaksi.html">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      Transaksi
+    </a>
+    <a class="cc-bottom-item" href="profile.html">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      Profile
+    </a>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ================= 1. BACKGROUND THEME SYNC =================
+  var bgEl = document.getElementById('cc-bg-element');
+  var overlayEl = document.getElementById('cc-overlay-element');
+  var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
+
+  if (bgEl && overlayEl) {
+    if (bgMode === 'sederhana') {
+      bgEl.className = 'cc-bg bg-simple';
+      overlayEl.className = 'cc-overlay bg-simple';
+    } else {
+      bgEl.className = 'cc-bg bg-default';
+      overlayEl.className = 'cc-overlay bg-default';
+    }
+  }
+
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'cc_bg_mode') {
+      var newMode = localStorage.getItem('cc_bg_mode') || 'default';
+      if (bgEl && overlayEl) {
+        if (newMode === 'sederhana') {
+          bgEl.className = 'cc-bg bg-simple';
+          overlayEl.className = 'cc-overlay bg-simple';
+        } else {
+          bgEl.className = 'cc-bg bg-default';
+          overlayEl.className = 'cc-overlay bg-default';
+        }
+      }
+    }
+  });
+
+  // ================= 2. RENDER LOG TRANSAKSI REAL-TIME =================
+  var txContainer = document.getElementById('cc-tx-container');
+  var txTotalCount = document.getElementById('tx-total-count');
+
+  function loadTransactions() {
+    // Ambil data transaksi dari localStorage (disimpan otomatis saat user klik link produk ke WhatsApp)
+    var transactions = JSON.parse(localStorage.getItem('cc_transactions') || '[]');
+
+    if (txTotalCount) {
+      txTotalCount.textContent = transactions.length + ' Pesanan Tercatat';
+    }
+
+    if (!txContainer) return;
+
+    if (transactions.length === 0) {
+      txContainer.innerHTML = '<div class="cc-empty-state">Belum ada log transaksi aktif.<br>Silakan lakukan pemesanan melalui produk pilihan.</div>';
+      return;
+    }
+
+    txContainer.innerHTML = transactions.map(function(tx, index) {
+      // Link WA untuk pembatalan pesanan
+      var waCancelLink = "https://wa.me/6283180663737?text=" + encodeURIComponent("Halo Kak, saya ingin membatalkan pesanan:\n\nProduk: " + tx.productName + "\nWaktu: " + tx.date);
+
+      return '<div class="cc-tx-item">' +
+        '<div class="cc-tx-info">' +
+          '<div class="cc-tx-icon">' +
+            '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>' +
+          '</div>' +
+          '<div class="cc-tx-details">' +
+            '<div class="cc-tx-name">' + tx.productName + '</div>' +
+            '<div class="cc-tx-date">' + tx.date + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cc-tx-action-wrap">' +
+          '<div class="cc-tx-status">Pending</div>' +
+          '<a class="cc-btn-cancel" href="' + waCancelLink + '" target="_blank" rel="noopener">Batalkan</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  loadTransactions();
+
+});
+</script>
+
+</body>
+</html>

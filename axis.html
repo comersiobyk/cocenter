@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
 <style>
-  /* PAKSA SEMUA ELEMEN PAKE FONT TECHY */
   #cc-container, #cc-container * {
     font-family: 'JetBrains Mono', monospace !important;
     box-sizing: border-box;
@@ -21,18 +20,37 @@
     overflow: hidden !important; background: #05060a !important; color: #fff; 
   }
 
-  /* Container Utama dengan padding bawah agar tidak tertutup sticky button & bottom navbar */
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding-bottom: 140px;
   }
 
-  /* Background GIF */
-  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
-  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+  /* ================= VARIAN BACKGROUND ================= */
+  .cc-bg.bg-default {
+    position: fixed; inset: 0; z-index: -1;
+    background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-default {
+    position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78);
+    transition: background 0.3s ease;
+  }
 
-  /* Navigasi Brand (Diset Statis / Fixed) */
+  .cc-bg.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #090a0f 0%, #12151f 50%, #1a1614 100%) !important;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: rgba(12, 10, 8, 0.65) !important;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+  }
+
   .cc-nav { 
     display: flex; 
     align-items: center; 
@@ -47,19 +65,112 @@
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
+  
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
-  .cc-img { 
-    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor: default;
+
+  .cc-img {
+    width:35px; height:35px; border-radius:10px; object-fit: cover; cursor:default;
+  }
+
+  .cc-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+
+  .cc-profile-wrap {
+    position: relative;
+  }
+  .cc-profile-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 210, 63, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #151824;
+    transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-profile-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: #ffd23f;
+  }
+  .cc-profile-btn:active {
+    transform: scale(0.92);
+  }
+  .cc-profile-btn:hover {
+    border-color: #ffd23f;
+    background: rgba(255, 210, 63, 0.1);
+  }
+
+  .cc-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 180px;
+    background: #0d0f16;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    padding: 6px;
+    z-index: 100000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+  .cc-profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .cc-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: #d5dae3;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cc-profile-dropdown a svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .cc-profile-dropdown a:hover {
+    background: rgba(41, 224, 201, 0.1);
+    color: #29e0c9;
+  }
+  .cc-profile-dropdown .cc-dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 4px 0;
+  }
+  .cc-profile-dropdown a.cc-logout {
+    color: #ff2d6a;
+  }
+  .cc-profile-dropdown a.cc-logout:hover {
+    background: rgba(255, 45, 106, 0.1);
+    color: #ff2d6a;
   }
   
-  /* Animasi Buat Stroke RGB */
   @keyframes rgbStroke {
     0% { background-position: 0% 50%; }
     100% { background-position: 200% 50%; }
   }
 
-  /* Bubble Tutorial RGB */
-  .cc-container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
+  .cc-container { padding: 95px 20px 20px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
   
   .cc-tutorial-bubble {
     border-radius: 18px;
@@ -83,7 +194,6 @@
 
   .cc-tutorial-body { padding: 25px 20px; }
 
-  /* ===== 3 TOMBOL TAB ===== */
   .cc-tab-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -117,7 +227,6 @@
   }
   .cc-tab-btn:active { transform: scale(0.97); }
 
-  /* Tab Content Panels */
   .cc-tab-pane { display: none; }
   .cc-tab-pane.active { display: block; }
 
@@ -125,7 +234,6 @@
     color: #29e0c9; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;
   }
 
-  /* PAKET LIST CARD */
   .cc-paket-list { display: flex; flex-direction: column; gap: 12px; margin: 0 0 25px 0; }
   .cc-paket-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
@@ -140,7 +248,6 @@
     padding: 3px 8px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
   }
 
-  /* TUTORIAL LIST */
   .cc-tutorial-list {
     padding-left: 18px; margin: 0 0 25px 0; color: #ffd23f; font-weight: 700;
   }
@@ -148,7 +255,6 @@
     font-size: 13px; line-height: 1.6; color: #e2e8f0; font-weight: 400; margin-bottom: 12px;
   }
 
-  /* WARNING BOX NOMOR */
   .cc-warning-box {
     background: rgba(255,45,106,0.08); border: 1.5px solid rgba(255,45,106,0.35);
     border-radius: 14px; padding: 14px 16px; margin: 0 0 25px 0;
@@ -157,7 +263,6 @@
   .cc-warning-text { font-size: 12.5px; line-height: 1.7; color: #e2e8f0; }
   .cc-warning-text b { color: #ff2d6a; }
 
-  /* REFUND LIST */
   .cc-refund-list {
     padding-left: 0; margin: 0 0 25px 0; list-style: none;
   }
@@ -168,7 +273,6 @@
     color: #ff2d6a; font-weight: 700; display: inline-block; margin-right: 4px;
   }
 
-  /* CUSTOM TEXT STYLES */
   .cc-intro-text {
     font-size: 13px; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px;
   }
@@ -179,7 +283,6 @@
     font-size: 13px; line-height: 1.6; color: #29e0c9; margin-top: 0; text-align: center; font-weight: bold;
   }
 
-  /* ============ STICKY ORDER BAR ============ */
   .cc-sticky-order-wrap {
     position: fixed;
     bottom: calc(65px + env(safe-area-inset-bottom, 0px));
@@ -244,7 +347,6 @@
   }
   .cc-sticky-order-btn:active { transform: scale(0.97); }
 
-  /* ============ BOTTOM FLOATING NAVBAR ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
@@ -289,7 +391,6 @@
     fill: #ffd23f;
   }
 
-  /* ============ MODAL POPUP ULTRA SMOOTH (0.5s) ============ */
   .cc-modal-backdrop {
     position: fixed; inset: 0; z-index: 1000000;
     background: rgba(2,3,6,0); backdrop-filter: blur(0px);
@@ -360,7 +461,6 @@
     letter-spacing: 0.5px; margin-bottom: 10px; display: block;
   }
 
-  /* ===== CARD BATU-BAT (GRID PILIHAN PAKET) DI DALAM MODAL ===== */
   .cc-paket-options-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -377,7 +477,7 @@
     transition: all 0.15s ease;
   }
   .cc-paket-option-card * {
-    pointer-events: none !important; /* Mencegah elemen anak memblokir tap */
+    pointer-events: none !important;
   }
   .cc-paket-option-card.selected {
     border-color: #29e0c9;
@@ -405,7 +505,6 @@
     color: #ff2d6a;
   }
 
-  /* Qty stepper */
   .cc-qty-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .cc-stepper { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 6px 8px; }
   .cc-stepper button {
@@ -416,7 +515,6 @@
   .cc-stepper button:active { background: rgba(255,255,255,0.18); }
   .cc-stepper span { min-width: 22px; text-align: center; font-size: 15px; font-weight: 800; color: #fff; }
 
-  /* Field input umum */
   .cc-input-wrap { margin-bottom: 20px; }
   .cc-input {
     width: 100%; padding: 13px 14px; border-radius: 12px;
@@ -430,10 +528,8 @@
   .cc-input-hint.warn { color: #ff2d6a; font-weight: 700; }
   .cc-input-hint.success { color: #29e0c9; font-weight: 700; }
 
-  /* SVG Icon Helper */
   .svg-icon { width: 14px; height: 14px; flex-shrink: 0; fill: currentColor; }
 
-  /* Voucher/Check Action Row */
   .cc-voucher-row { display: flex; gap: 8px; }
   .cc-voucher-btn {
     padding: 0 16px; border-radius: 12px; border: 1px solid rgba(41,224,201,0.3);
@@ -451,7 +547,6 @@
   .cc-total-label { font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
   .cc-total-value { font-size: 18px; font-weight: 800; color: #29e0c9; }
 
-  /* Payment options */
   .cc-pay-options { display: flex; gap: 10px; margin-bottom: 20px; }
   .cc-pay-option {
     flex: 1; padding: 14px 10px; border-radius: 14px; cursor: pointer;
@@ -489,7 +584,6 @@
     opacity: 0.4; cursor: not-allowed; box-shadow: none;
   }
 
-  /* Checkbox S&K */
   .cc-tnc-row {
     display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px;
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
@@ -514,13 +608,38 @@
 <body>
 
 <div id="cc-container">
-  <div class="cc-bg"></div>
-  <div class="cc-overlay"></div>
+  <div class="cc-bg bg-default" id="cc-bg-element"></div>
+  <div class="cc-overlay bg-default" id="cc-overlay-element"></div>
 
   <div class="cc-nav">
     <div class="cc-brand">
       <img class="cc-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjgKAkQ6fTJOBPoOVz21klx2Vw6CXegaFe7QnvWoaDZTt1raufO5Ikvqu0JrP93QUf_iAcqVp8IkcTZjTx_e1mMqJENEYIpEjv-br9ApdDAeMiPcm8xoO-dFAmPJa-9y22yJdNme0Eb-EFxm-dS0Pd2UwUNu2cfB5pxS7KA7RP1JPKB-79xmqs5Vl9pSYHn/s1600/IMG_20260808_230713.png">
       CO CENTER
+    </div>
+
+    <div class="cc-nav-right">
+      <div class="cc-profile-wrap">
+        <div class="cc-profile-btn" id="cc-profile-toggle" title="Menu Akun">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </svg>
+        </div>
+        <div class="cc-profile-dropdown" id="cc-profile-dropdown">
+          <a href="profile.html">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            Profile
+          </a>
+          <a href="pengaturan.html">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.47l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c-.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c-.24 0 .44-.17.47-.47l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            Pengaturan
+          </a>
+          <div class="cc-dropdown-divider"></div>
+          <a href="login.html" class="cc-logout">
+            <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            Akun / Login
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -626,7 +745,7 @@
         </div>
 
         <div class="cc-tab-pane" id="tab-cara">
-          <h2 class="cc-section-title">📌 RULES & SYARAT (WAJIB DIBACA)</h2>
+          <h2 class="cc-section-title">📌 CARA ORDER & AKTIVASI</h2>
           <ol class="cc-tutorial-list">
             <li>Paket dikirim langsung ke nomor Axis yang kamu input, pastikan nomor aktif dan bisa menerima kuota.</li>
             <li>Masa aktif paket dihitung sejak kuota berhasil masuk ke nomor tujuan.</li>
@@ -647,7 +766,7 @@
             </div>
           </div>
 
-          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI</h2>
+          <h2 class="cc-section-title">⚠️ KETENTUAN KLAIM GARANSI & REFUND</h2>
           <ul class="cc-refund-list">
             <li><span class="cc-refund-label">Syarat Utama:</span> Wajib melampirkan Screenshot bukti pembayaran & nomor tujuan.</li>
             <li><span class="cc-refund-label">Prosedur:</span> Klaim garansi silakan langsung chat Admin dengan menyertakan bukti transaksi.</li>
@@ -686,13 +805,13 @@
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
       Lynk.id
     </a>
-    <a class="cc-bottom-item" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" target="_blank" rel="noopener">
+    <a class="cc-bottom-item" href="transaksi.html">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
       Transaksi
     </a>
-    <a class="cc-bottom-item" href="menu.html#about">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      About Me
+    <a class="cc-bottom-item" href="profile.html">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      Profile
     </a>
   </div>
 
@@ -842,7 +961,7 @@
 
     <label class="cc-tnc-row" for="tnc-checkbox">
       <input type="checkbox" class="cc-tnc-checkbox" id="tnc-checkbox">
-      <span class="cc-tnc-text">Saya sudah membaca dan <b>setuju</b> dengan Rules, Syarat, serta Ketentuan Klaim Garansi Axis Co Center, termasuk bahwa <b>kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund.</b></span>
+      <span class="cc-tnc-text">Membaca dan <b>setuju</b> dengan Syarat & Ketentuan, Garansi, serta Kebijakan Refund Co Center.</span>
     </label>
 
     <button class="cc-confirm-btn" id="confirm-order" disabled>
@@ -855,7 +974,48 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // ================= TAB TOGGLE LOGIC =================
+  // ================= BACKGROUND CMD LISTENER SYSTEM =================
+  function applyBackgroundSettings() {
+    var bgEl = document.getElementById('cc-bg-element');
+    var overlayEl = document.getElementById('cc-overlay-element');
+    var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
+
+    if (bgEl && overlayEl) {
+      if (bgMode === 'sederhana') {
+        bgEl.className = 'cc-bg bg-simple';
+        overlayEl.className = 'cc-overlay bg-simple';
+      } else {
+        bgEl.className = 'cc-bg bg-default';
+        overlayEl.className = 'cc-overlay bg-default';
+      }
+    }
+  }
+
+  applyBackgroundSettings();
+
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'cc_bg_mode') {
+      applyBackgroundSettings();
+    }
+  });
+
+  // ================= PROFILE DROPDOWN LOGIC =================
+  var profileToggle = document.getElementById('cc-profile-toggle');
+  var profileDropdown = document.getElementById('cc-profile-dropdown');
+
+  if (profileToggle && profileDropdown) {
+    profileToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove('show');
+      }
+    });
+  }
+
   const tabBtns = document.querySelectorAll('.cc-tab-btn');
   const tabPanes = document.querySelectorAll('.cc-tab-pane');
 
@@ -872,7 +1032,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ================= MODAL LOGIC =================
   const modalBackdrop = document.getElementById('order-modal-backdrop');
   const openStickyBtn = document.getElementById('open-order-modal-sticky');
   const closeBtn = document.getElementById('close-order-modal');
@@ -891,7 +1050,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   modalBackdrop.querySelector('.cc-modal').addEventListener('click', (e) => e.stopPropagation());
 
-  // Elemen Form
   const modalProductTitle = document.getElementById('modal-product-title');
   const modalItemSub = document.getElementById('modal-item-sub');
   const modalItemPrice = document.getElementById('modal-item-price');
@@ -988,7 +1146,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Pilih Jenis Layanan
   serviceCards.forEach(card => {
     card.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1008,7 +1165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Pilih Paket Kartu
   paketOptionCards.forEach(card => {
     card.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1026,7 +1182,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateDisplay();
 
-  // Qty stepper
   document.getElementById('qty-minus').addEventListener('click', () => {
     if (qty > 1) { qty--; qtyValueEl.textContent = qty; updateTotal(); }
   });
@@ -1034,7 +1189,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (qty < 99) { qty++; qtyValueEl.textContent = qty; updateTotal(); }
   });
 
-  // Voucher Diskon Logic
   const voucherInput = document.getElementById('voucher-code');
   const voucherBtn = document.getElementById('apply-voucher');
   const voucherHint = document.getElementById('voucher-hint');
@@ -1066,7 +1220,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTotal();
   });
 
-  // Payment method selection
   let selectedMethod = 'QRIS';
   const payOptions = document.querySelectorAll('.cc-pay-option');
   payOptions.forEach(opt => {
@@ -1091,7 +1244,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return `${dayName}, ${date} ${month} ${year} - ${hours}:${minutes} WIB`;
   }
 
-  // Confirm order -> generate WA message
   confirmBtn.addEventListener('click', () => {
     if (confirmBtn.disabled || currentServiceType !== 'paket') return;
 
@@ -1117,7 +1269,7 @@ Total Harga : ${totalHargaText}
 Nomor Telepon Axis Tujuan : ${phoneInput}
 Tanggal Pemesanan : ${tanggal}
 Metode Pembayaran : ${selectedMethod}
-Setuju Rules & Ketentuan : Ya, saya menyetujui bahwa kesalahan input nomor tujuan bukan tanggung jawab Admin dan tidak dapat diajukan refund`;
+Setuju S&K : Ya, saya menyetujui Syarat & Ketentuan, Garansi, serta Kebijakan Refund Co Center`;
 
     const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');

@@ -1,68 +1,310 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co Center - Autentikasi Akun</title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<!-- Supabase JS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<title>
-Comérsio Login
-</title>
-
-<link rel="stylesheet"
-href="style.css">
-
+<style>
+  #cc-container, #cc-container * {
+    font-family: 'JetBrains Mono', monospace !important;
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0 !important; padding: 0 !important; height: 100% !important;
+    overflow: hidden !important; background: #05060a !important; color: #fff;
+  }
+  #cc-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .cc-bg.bg-default {
+    position: fixed; inset: 0; z-index: -1;
+    background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center;
+    background-size: cover;
+  }
+  .cc-overlay.bg-default { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.85); }
+  .cc-bg.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #090a0f 0%, #12151f 50%, #1a1614 100%) !important;
+    background-size: cover;
+  }
+  .cc-overlay.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: rgba(12, 10, 8, 0.75) !important; backdrop-filter: blur(10px);
+  }
+  .cc-login-card {
+    width: 100%; max-width: 380px; background: #0d0f16;
+    border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px;
+    padding: 30px 24px; display: flex; flex-direction: column; gap: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6); margin: 20px;
+  }
+  .cc-login-header { text-align: center; display: flex; flex-direction: column; gap: 6px; }
+  .cc-login-title { font-weight: 800; font-size: 18px; color: #ffd23f; }
+  .cc-login-subtitle { font-size: 11px; color: #a9b2c3; line-height: 1.4; }
+  .cc-form-group { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+  .cc-label { font-size: 11px; font-weight: 700; color: #a9b2c3; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cc-input {
+    width: 100%; background: #05060a; border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px; padding: 12px 16px; color: #fff; font-size: 13px; font-weight: 700; outline: none;
+  }
+  .cc-input:focus { border-color: #ffd23f; }
+  .cc-btn {
+    width: 100%; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 12px;
+    cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+  }
+  .cc-btn-primary { background: #ffd23f; color: #0b1226; }
+  .cc-btn-google { background: #fff; color: #000; border: 1px solid rgba(0,0,0,0.2); }
+  .cc-error-msg { font-size: 11px; color: #ff2d6a; font-weight: 700; text-align: center; display: none; }
+  .cc-back-link { text-align: center; font-size: 11px; font-weight: 700; color: #a9b2c3; text-decoration: none; margin-top: 5px; }
+  .cc-back-link:hover { color: #ffd23f; }
+  .cc-toast {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: rgba(13, 15, 22, 0.95); border: 1px solid #ffd23f; color: #ffd23f;
+    padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 800;
+    z-index: 1000000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+  }
+  .cc-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+</style>
 </head>
+<body>
 
-<body class="loginBody">
+<div id="cc-container">
+  <div class="cc-bg bg-default" id="cc-bg-element"></div>
+  <div class="cc-overlay bg-default" id="cc-overlay-element"></div>
 
-<form class="loginContainer"
-onsubmit="loginComersio(event)">
+  <!-- COMÉRCIO LOGIN -->
+  <div class="cc-login-card" id="card-comersio" style="display: none;">
+    <div class="cc-login-header">
+      <div class="cc-login-title">Comérsio Akun</div>
+      <div class="cc-login-subtitle">Masukkan email & password.<br><i>Min. 6 karakter & min. 2 angka.</i></div>
+    </div>
+    <div class="cc-form-group">
+      <label class="cc-label">Email Akun</label>
+      <input type="email" class="cc-input" id="comersio-email" placeholder="nama@email.com">
+    </div>
+    <div class="cc-form-group">
+      <label class="cc-label">Password</label>
+      <input type="password" class="cc-input" id="comersio-pass" placeholder="Min 6 karakter & 2 angka">
+    </div>
+    <div class="cc-error-msg" id="comersio-error">Password salah format!</div>
+    <button class="cc-btn cc-btn-primary" id="btn-submit-comersio">Masuk / Daftar</button>
+    <a class="cc-back-link" href="profile.html">Kembali ke Profil</a>
+  </div>
 
-    <img src="icon.png"
-    class="loginLogo">
+  <!-- GOOGLE LOGIN -->
+  <div class="cc-login-card" id="card-google" style="display: none;">
+    <div class="cc-login-header">
+      <div class="cc-login-title">Autentikasi Google</div>
+      <div class="cc-login-subtitle">Hubungkan akun Google asli via Supabase OAuth.</div>
+    </div>
+    
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 10px 0;">
+      <!-- Tombol Google Supabase OAuth -->
+      <button class="cc-btn cc-btn-google" type="button" onclick="loginWithGoogle()">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;flex-shrink:0;">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.13 21.32 7.22 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.62H1.15C.42 8.09 0 9.75 0 11.5s.42 3.41 1.15 4.88l4.12-3.14z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.13 2.68 1.15 6.62l4.12 3.14c.95-2.85 3.6-4.96 6.73-4.96z"/>
+        </svg>
+        <span>Masuk dengan Google</span>
+      </button>
+    </div>
 
-    <h1 class="loginTitle">
+    <a class="cc-back-link" href="profile.html">Kembali ke Profil</a>
+  </div>
 
-        COMÉRSIO CENTER
-
-    </h1>
-
-    <input type="text"
-    id="nama"
-    placeholder="Nama"
-    required>
-
-    <input type="email"
-    id="email"
-    placeholder="Alamat Email"
-    required>
-
-    <input type="password"
-    id="password"
-    placeholder="Password"
-    required>
-
-    <button type="submit">
-
-        MASUK
-
-    </button>
-
-</form>
-
-<div id="bubbleAlert"
-class="bubbleAlert">
-
+  <div class="cc-toast" id="cc-toast">Berhasil masuk!</div>
 </div>
 
-<script src="script.js">
+<script>
+  // Konfigurasi Supabase
+  const SUPABASE_URL = 'https://xunmofaxuuqhtnyqwvir.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bm1vZmF4dXVxaHRueXF3dmlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzgxMDAsImV4cCI6MjA1NjgxNDEwMH0.placeholder_anon_key';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  var toast = document.getElementById('cc-toast');
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2000);
+  }
+
+  // Fungsi Login Google OAuth via Supabase
+  async function loginWithGoogle() {
+    try {
+      showToast('Menghubungkan ke Google...');
+      const { data, error } = await _supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { 
+          redirectTo: 'https://xunmofaxuuqhtnyqwvir.supabase.co/auth/v1/callback'
+        }
+      });
+      if (error) throw error;
+    } catch (err) {
+      showToast("Gagal Login Google: " + err.message);
+    }
+  }
+
+  // Fungsi Sinkronisasi Data ke Supabase Cloud (Auto-Sync)
+  async function syncDataToSupabase() {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session || !session.user) return; // Kalau tidak login, batalkan sync
+      const userId = session.user.id;
+      
+      const profilePayload = {
+        username: localStorage.getItem("cc_temp_google_name") || localStorage.getItem("username") || "",
+        email: localStorage.getItem("cc_google_email") || localStorage.getItem("email") || "",
+        profile_picture: localStorage.getItem("cc_temp_google_avatar") || localStorage.getItem("profile_picture") || ""
+      };
+
+      const appPayload = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        appPayload[key] = localStorage.getItem(key);
+      }
+
+      await _supabase.from('kostku_user_data').upsert({
+        user_id: userId,
+        profile_data: profilePayload,
+        app_data: appPayload,
+        updated_at: new Date()
+      });
+    } catch (err) {
+      console.error("Auto-sync error:", err);
+    }
+  }
+
+  // Fungsi Tarik Data dari Supabase Cloud
+  async function loadDataFromSupabase() {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session || !session.user) return;
+      const userId = session.user.id;
+
+      const { data, error } = await _supabase
+        .from('kostku_user_data')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (data) {
+        if (data.app_data) {
+          for (const key in data.app_data) {
+            if (!localStorage.getItem(key)) {
+              localStorage.setItem(key, data.app_data[key]);
+            }
+          }
+        }
+        if (data.profile_data) {
+          if (data.profile_data.username && !localStorage.getItem("cc_temp_google_name")) localStorage.setItem("cc_temp_google_name", data.profile_data.username);
+          if (data.profile_data.profile_picture) {
+            localStorage.setItem("cc_temp_google_avatar", data.profile_data.profile_picture);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Load error:", err);
+    }
+  }
+
+  // --- MIKRO-INTERCEPTOR LOCALSTORAGE UNTUK AUTO-SYNC ---
+  // Memantau setiap perubahan data aplikasi (setItem/removeItem) agar langsung di-sync ke Cloud secara berkala
+  let syncTimer = null;
+  function triggerAutoSync() {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      syncDataToSupabase();
+    }, 2000); // Sinkron otomatis 2 detik setelah ada aktivitas data baru
+  }
+
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    originalSetItem.apply(this, arguments);
+    triggerAutoSync();
+  };
+
+  const originalRemoveItem = localStorage.removeItem;
+  localStorage.removeItem = function(key) {
+    originalRemoveItem.apply(this, arguments);
+    triggerAutoSync();
+  };
+  // -----------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', async function () {
+  var bgEl = document.getElementById('cc-bg-element');
+  var overlayEl = document.getElementById('cc-overlay-element');
+  var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
+  if (bgEl && overlayEl) {
+    bgEl.className = 'cc-bg ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
+    overlayEl.className = 'cc-overlay ' + (bgMode === 'sederhana' ? 'bg-simple' : 'bg-default');
+  }
+
+  var urlParams = new URLSearchParams(window.location.search);
+  var loginType = urlParams.get('type');
+  document.getElementById('card-comersio').style.display = (loginType === 'comersio' || !loginType) ? 'flex' : 'none';
+  document.getElementById('card-google').style.display = (loginType === 'google') ? 'flex' : 'none';
+
+  // Comérsio Submit
+  var btnSubmit = document.getElementById('btn-submit-comersio');
+  if (btnSubmit) {
+    btnSubmit.addEventListener('click', function() {
+      var email = document.getElementById('comersio-email').value.trim();
+      var pass = document.getElementById('comersio-pass').value;
+      var err = document.getElementById('comersio-error');
+
+      if (!email || !pass) {
+        err.textContent = 'Email dan password wajib diisi!';
+        err.style.display = 'block';
+        return;
+      }
+      if (pass.length < 6 || (pass.match(/\d/g) || []).length < 2) {
+        err.textContent = 'Password min. 6 karakter dan min. 2 angka!';
+        err.style.display = 'block';
+        return;
+      }
+
+      err.style.display = 'none';
+      localStorage.setItem('cc_comersio_linked', 'true');
+      localStorage.setItem('cc_comersio_email', email);
+      showToast('Comérsio Berhasil Terkait!');
+      setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
+    });
+  }
+
+  // Tangkap Sesi Supabase Setelah Redirect OAuth Google Berhasil
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session && session.user) {
+      localStorage.setItem('cc_google_linked', 'true');
+      localStorage.setItem('cc_google_email', session.user.email);
+      if(session.user.user_metadata) {
+        if(session.user.user_metadata.full_name) localStorage.setItem('cc_temp_google_name', session.user.user_metadata.full_name);
+        if(session.user.user_metadata.avatar_url) localStorage.setItem('cc_temp_google_avatar', session.user.user_metadata.avatar_url);
+      }
+      
+      // Tarik data cloud dulu, lalu sinkronisasi ulang
+      await loadDataFromSupabase();
+      await syncDataToSupabase();
+
+      showToast('Login Google Berhasil!');
+      setTimeout(function() { window.location.href = 'profile.html'; }, 1000);
+    } else {
+      // Jika sudah login sebelumnya, jalankan load data saat halaman dibuka
+      await loadDataFromSupabase();
+    }
+  } catch(e) {}
+});
 </script>
-
 </body>
-
 </html>

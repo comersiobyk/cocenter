@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Co Center - Pilih Provider & Paket Kuota</title>
 
-<!-- IMPORT FONT TECHY (JETBRAINS MONO) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -27,10 +26,32 @@
     padding-bottom: 120px;
   }
 
-  .cc-bg { position: fixed; inset: 0; z-index: -1; background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center; background-size: cover; }
-  .cc-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78); }
+  /* ================= VARIAN BACKGROUND ================= */
+  .cc-bg.bg-default {
+    position: fixed; inset: 0; z-index: -1;
+    background: #000 url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9DocQHrQw9p05Lbkght7m-rpO8O2HS6s3VG28Nc7FW6LPePf_AYJ3E104I15aD8OUsQRINz7QGbgv7EeJXKZKXdecQ-RAHvowdbS5vPqDrfZ63ZC3w-FOPKWPcVBKY5IFdenDmRixqc-Jy8BvVpAp6ReI7Io5UdxjNnlzY_TZLuTW6xaepq9RkRMA92kV/s1600/11.gif') no-repeat center center;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-default {
+    position: fixed; inset: 0; z-index: -1; background: rgba(3,4,8,0.78);
+    transition: background 0.3s ease;
+  }
 
-  /* ============ NAVIGASI BRAND (FIXED, DARI KODE 1) ============ */
+  .cc-bg.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #090a0f 0%, #12151f 50%, #1a1614 100%) !important;
+    background-size: cover;
+    transition: background 0.3s ease;
+  }
+  .cc-overlay.bg-simple {
+    position: fixed; inset: 0; z-index: -1;
+    background: rgba(12, 10, 8, 0.65) !important;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+  }
+
+  /* ============ NAVIGASI BRAND & PROFILE DROPDOWN ============ */
   .cc-nav {
     display: flex;
     align-items: center;
@@ -58,6 +79,99 @@
     object-fit: cover;
     transition: transform 0.5s ease;
     transform: rotate(var(--rot, 0deg));
+  }
+
+  .cc-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+
+  .cc-profile-wrap {
+    position: relative;
+  }
+  .cc-profile-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 210, 63, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #151824;
+    transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cc-profile-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: #ffd23f;
+  }
+  .cc-profile-btn:active {
+    transform: scale(0.92);
+  }
+  .cc-profile-btn:hover {
+    border-color: #ffd23f;
+    background: rgba(255, 210, 63, 0.1);
+  }
+
+  .cc-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 180px;
+    background: #0d0f16;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    padding: 6px;
+    z-index: 100000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+  .cc-profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .cc-profile-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: #d5dae3;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cc-profile-dropdown a svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .cc-profile-dropdown a:hover {
+    background: rgba(41, 224, 201, 0.1);
+    color: #29e0c9;
+  }
+  .cc-profile-dropdown .cc-dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 4px 0;
+  }
+  .cc-profile-dropdown a.cc-logout {
+    color: #ff2d6a;
+  }
+  .cc-profile-dropdown a.cc-logout:hover {
+    background: rgba(255, 45, 106, 0.1);
+    color: #ff2d6a;
   }
 
   .cc-menu {
@@ -322,7 +436,7 @@
     font-size: 12px;
   }
 
-  /* ============ BOTTOM FLOATING NAVBAR (DARI KODE 1) ============ */
+  /* ============ BOTTOM FLOATING NAVBAR ============ */
   .cc-bottom-nav {
     position: fixed;
     bottom: 0;
@@ -371,10 +485,9 @@
 <body>
 
 <div id="cc-container">
-  <div class="cc-bg"></div>
-  <div class="cc-overlay"></div>
+  <div class="cc-bg bg-default" id="cc-bg-element"></div>
+  <div class="cc-overlay bg-default" id="cc-overlay-element"></div>
 
-  <!-- NAVBAR (dari kode 1, brand tetap bisa klik untuk toggle menu dropdown) -->
   <div class="cc-nav">
     <div class="cc-brand-wrap">
       <div class="cc-brand-row cc-brand">
@@ -383,15 +496,33 @@
       </div>
       <div class="cc-subtitle">Cek Paket Kuota</div>
     </div>
-    <div id="menu" class="cc-menu">
-      <a href="https://cocenterpublic.blogspot.com">Home</a>
-      <a href="https://lynk.id/cocenter">Lynk.id</a>
-      <a href="#about">About Me</a>
-      <a href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12">Bukti Transaksi</a>
+
+    <div class="cc-nav-right">
+      <div class="cc-profile-wrap">
+        <div class="cc-profile-btn" id="cc-profile-toggle" title="Menu Akun">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </svg>
+        </div>
+        <div class="cc-profile-dropdown" id="cc-profile-dropdown">
+          <a href="profile.html">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            Profile
+          </a>
+          <a href="pengaturan.html">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.47l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c-.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c-.24 0 .44-.17.47-.47l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            Pengaturan
+          </a>
+          <div class="cc-dropdown-divider"></div>
+          <a href="login.html" class="cc-logout">
+            <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            Akun / Login
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- OPERATOR SELECTOR (PILLS) -->
   <div class="cc-op-wrapper" id="cc-op-wrapper">
     <div class="cc-op-pill cc-op-active" data-op="Indosat">Indosat</div>
     <div class="cc-op-pill" data-op="Axis">Axis</div>
@@ -401,14 +532,11 @@
     <div class="cc-op-pill" data-op="XL">XL</div>
   </div>
 
-  <!-- SECTION AKORDION KATEGORI BERDASARKAN OPERATOR TERPILIH -->
   <div class="cc-section">
     <div class="cc-accordion-list" id="cc-accordion-container">
-      <!-- Diisi dinamis via JS -->
-    </div>
+      </div>
   </div>
 
-  <!-- BOTTOM NAV (FAB, dari kode 1) -->
   <div class="cc-bottom-nav">
     <a class="cc-bottom-item active" href="menu.html">
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
@@ -418,13 +546,13 @@
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
       Lynk.id
     </a>
-    <a class="cc-bottom-item" href="https://whatsapp.com/channel/0029Vb8J3S2Id7nQxpJJAK12" target="_blank" rel="noopener">
+    <a class="cc-bottom-item" href="transaksi.html">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
       Transaksi
     </a>
-    <a class="cc-bottom-item" href="menu.html#about">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      About Me
+    <a class="cc-bottom-item" href="profile.html">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      Profile
     </a>
   </div>
 
@@ -433,7 +561,47 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Map operator ke file HTML tujuannya masing-masing
+  // ================= BACKGROUND CMD LISTENER SYSTEM =================
+  function applyBackgroundSettings() {
+    var bgEl = document.getElementById('cc-bg-element');
+    var overlayEl = document.getElementById('cc-overlay-element');
+    var bgMode = localStorage.getItem('cc_bg_mode') || 'default';
+
+    if (bgEl && overlayEl) {
+      if (bgMode === 'sederhana') {
+        bgEl.className = 'cc-bg bg-simple';
+        overlayEl.className = 'cc-overlay bg-simple';
+      } else {
+        bgEl.className = 'cc-bg bg-default';
+        overlayEl.className = 'cc-overlay bg-default';
+      }
+    }
+  }
+
+  applyBackgroundSettings();
+
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'cc_bg_mode') {
+      applyBackgroundSettings();
+    }
+  });
+
+  var profileToggle = document.getElementById('cc-profile-toggle');
+  var profileDropdown = document.getElementById('cc-profile-dropdown');
+
+  if (profileToggle && profileDropdown) {
+    profileToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove('show');
+      }
+    });
+  }
+
   var OPERATOR_CONFIG = {
     "Axis": {
       link: "axis.html",
@@ -461,9 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  // Master Data Paket Kuota Lengkap per Operator & Masuk ke 3 Bagan Kategori
   var ALL_PACKETS = [
-    // === INDOSAT ===
     { op: "Indosat", name: "Freedom Internet Harian 7GB All Net", price: "Rp10.500", sub: "7GB All Net · Masa aktif 1 Hari", cat: "hemat" },
     { op: "Indosat", name: "Freedom Internet Harian 9GB All Net", price: "Rp14.000", sub: "9GB All Net · Masa aktif 2 Hari", cat: "hemat" },
     { op: "Indosat", name: "Freedom Internet Harian 30GB All Net", price: "Rp26.500", sub: "30GB All Net · Masa aktif 3 Hari", cat: "untung" },
@@ -471,7 +637,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Indosat", name: "Freedom Internet Harian 21GB", price: "Rp32.000", sub: "21GB All Net · Masa aktif 7 Hari", cat: "untung" },
     { op: "Indosat", name: "Freedom Internet Bulanan 150GB", price: "Rp130.000", sub: "150GB All Net + Bonus Nelpon · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
 
-    // === AXIS ===
     { op: "Axis", name: "Axis Warnet Unlimited 1 Jam", price: "Rp3.600", sub: "Unlimited Paket Internet All Net · 1 Jam", cat: "hemat" },
     { op: "Axis", name: "Axis Warnet Unlimited 3 Jam", price: "Rp6.000", sub: "Unlimited Paket Internet All Net · 3 Jam", cat: "hemat" },
     { op: "Axis", name: "Paket Harian Axis 15GB + Lokal", price: "Rp10.500", sub: "15GB Paket Internet All Net + Lokal · Masa aktif 1 Hari", cat: "hemat" },
@@ -484,7 +649,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Axis", name: "Paket Harian Axis 15GB + Lokal", price: "Rp39.500", sub: "15GB All Net + Lokal · Masa aktif 7 Hari", cat: "untung" },
     { op: "Axis", name: "Axis AIGO 26GB + Lokal", price: "Rp62.000", sub: "26GB All Net + Lokal · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
 
-    // === THREE ===
     { op: "Three", name: "Paket Three Happy 10GB", price: "Rp12.000", sub: "10GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
     { op: "Three", name: "Paket Three Happy 10GB", price: "Rp14.000", sub: "10GB Paket Internet All Net · Masa aktif 2 Hari", cat: "hemat" },
     { op: "Three", name: "Paket Three Happy 20GB", price: "Rp19.500", sub: "20GB All Net · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
@@ -493,7 +657,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Three", name: "Paket Three Happy 100GB", price: "Rp48.000", sub: "100GB All Net · Masa aktif 7 Hari", badge: "Popular", cat: "akhirbulan" },
     { op: "Three", name: "Paket Three Happy 150GB", price: "Rp125.000", sub: "150GB All Nett · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
 
-    // === SMARTFREN ===
     { op: "Smartfren", name: "Smartfren Nonstop 10GB", price: "Rp11.000", sub: "10GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
     { op: "Smartfren", name: "Smartfren Nonstop 6GB", price: "Rp11.500", sub: "6GB Paket Internet All Net · Masa aktif 2 Hari", cat: "hemat" },
     { op: "Smartfren", name: "Smartfren Nonstop 10GB", price: "Rp17.500", sub: "15GB All Net · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
@@ -504,7 +667,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Smartfren", name: "Paket Smartfren Unlimited", price: "Rp146.000", sub: "Unlimited dengan FUP 5GB/Hari · Masa aktif 28 Hari", badge: "Best Value", cat: "akhirbulan" },
     { op: "Smartfren", name: "Smartfren Nonstop 150GB", price: "Rp144.000", sub: "150GB All Net · Masa aktif 28 Hari", badge: "Bulanan", cat: "akhirbulan" },
 
-    // === TELKOMSEL === 
     { op: "Telkomsel", name: "Telkomsel Data 8GB", price: "Rp12.500", sub: "8GB Paket Internet All Net · Masa aktif 1 Hari", cat: "hemat" },
     { op: "Telkomsel", name: "Telkomsel Data 2.5GB", price: "Rp14.000", sub: "2,5GB All Net · Masa aktif 5 Hari", cat: "hemat" },
     { op: "Telkomsel", name: "Telkomsel Data 8GB", price: "Rp30.000", sub: "8GB Paket Internet All Net · Masa aktif 3 Hari", cat: "untung" },
@@ -515,7 +677,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { op: "Telkomsel", name: "Telkomsel Data 10GB", price: "Rp53.000", sub: "10GB All Net · Masa aktif 30 Hari", cat: "akhirbulan" },
     { op: "Telkomsel", name: "Telkomsel Data 15GB", price: "Rp68.000", sub: "15GB All Net · Masa aktif 30 Hari", badge: "Best Value", cat: "akhirbulan" },
 
-    // === XL ===
     { op: "XL", name: "XL Flex Mini 10GB + Bonus Nelpon", price: "Rp13.000", sub: "10GB Paket Internet All Net + Bonus Nelpon · Masa aktif 1 Hari", cat: "hemat" },
     { op: "XL", name: "XL Flex Mini 12GB", price: "Rp16.500", sub: "8GB Paket Internet All Net · Masa aktif 3 Hari", cat: "untung" },
     { op: "XL", name: "XL Flex Mini 20GB + Bonus Nelpon", price: "Rp22.500", sub: "20GB All Net + Bonus Nelpon · Masa aktif 3 Hari", badge: "Hemat", cat: "untung" },
@@ -615,26 +776,6 @@ document.addEventListener('DOMContentLoaded', function () {
       var offset = (pillRect.left + pillRect.width / 2) - (wrapRect.left + wrapRect.width / 2);
       opWrapper.scrollLeft += offset;
     });
-  });
-
-  // Navbar Menu Toggle
-  var trigger = document.getElementById('menu-trigger');
-  var menu = document.getElementById('menu');
-  var rotation = 0;
-
-  trigger.onclick = function (e) {
-    e.stopPropagation();
-    menu.classList.toggle('active');
-    rotation += 180;
-    trigger.style.setProperty('--rot', rotation + 'deg');
-  };
-
-  document.addEventListener('click', function () {
-    menu.classList.remove('active');
-  });
-
-  menu.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function (e) { e.stopPropagation(); });
   });
 
   renderAccordion();
