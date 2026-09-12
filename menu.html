@@ -23,6 +23,7 @@
   #cc-container {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 999999; background: #05060a; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: 75px; /* Mengimbangi tinggi header fixed */
     padding-bottom: 90px;
   }
 
@@ -51,7 +52,22 @@
     transition: background 0.3s ease;
   }
 
-  .cc-nav { display:flex; align-items:center; justify-content:space-between; padding:20px 30px 10px; }
+  /* ================= HEADER FIXED (STATIS DI ATAS) ================= */
+  .cc-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: rgba(5, 6, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
   .cc-brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#fff; letter-spacing:-0.5px; }
 
   .cc-img {
@@ -450,14 +466,12 @@
       <div class="cc-subtitle">Listing</div>
     </div>
 
-    <!-- KANAN ATAS: PATCH, BUKTI TRANSAKSI, & PROFILE DROPDOWN -->
     <div class="cc-nav-right">
       <div class="cc-patch-badge" id="open-patch-popup">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
         Patch v2.6
       </div>
 
-      <!-- ICON BUKTI TRANSAKSI DI SEBELAH PATCH -->
       <a class="cc-receipt-badge" href="transaksi.html" title="Bukti Transaksi">
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
         Bukti
@@ -592,7 +606,6 @@
     </div>
   </div>
 
-  <!-- NAVBAR BAWAH (TRANSAKSI DIGANTI KE PAGE transaksi.html) -->
   <div class="cc-bottom-nav">
     <a class="cc-bottom-item active" href="menu.html">
       <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
